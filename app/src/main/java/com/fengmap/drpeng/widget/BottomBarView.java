@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 
 
 /**

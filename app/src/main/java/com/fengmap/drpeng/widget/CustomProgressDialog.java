@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.fengmap.android.FMDevice;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 
 /**
  * 自定义进度条视图。

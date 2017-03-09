@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 
 /**
  * Created by yangbin on 16/8/9.

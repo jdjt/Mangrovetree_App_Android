@@ -1,7 +1,6 @@
-package com.fengmap.drpeng;
+package com.jdjt.mangrove.activity;
 
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,16 +9,24 @@ import android.os.Handler;
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.data.FMDataManager;
 import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
+import com.jdjt.mangrove.R;
+import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends SysBaseAppCompatActivity {
 
 	private Handler mHandler = new Handler();
 
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+	protected int initPageLayoutID() {
+		return R.layout.activity_main;
+	}
+
+	@Override
+	protected void initView() {
 
 		if (Build.VERSION.SDK_INT < 23) {
 			copyMap();
@@ -30,7 +37,7 @@ public class MainActivity extends Activity {
 			if (p1 != PackageManager.PERMISSION_GRANTED || p2 != PackageManager.PERMISSION_GRANTED ) {
 				// apply
 				MainActivity.this.requestPermissions(FMMapSDK.SDK_PERMISSIONS,
-													 FMMapSDK.SDK_PERMISSION_RESULT_CODE);
+						FMMapSDK.SDK_PERMISSION_RESULT_CODE);
 			} else {
 				copyMap();
 			}

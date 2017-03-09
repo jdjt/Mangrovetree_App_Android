@@ -3,7 +3,7 @@ package com.fengmap.drpeng.adapter;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 import com.fengmap.drpeng.common.ViewHolder;
 import com.fengmap.drpeng.entity.ItemMap;
 

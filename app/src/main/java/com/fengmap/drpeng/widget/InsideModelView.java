@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengmap.android.FMDevice;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 
 /**
  * Created by yangbin on 16/8/11.

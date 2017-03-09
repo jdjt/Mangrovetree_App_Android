@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.fengmap.android.utils.FMLog;
 import com.fengmap.android.wrapmv.db.FMDBMapElement;
 import com.fengmap.android.wrapmv.db.FMDBSearchElement;
+import com.jdjt.mangrove.R;
 
 
 /**

@@ -13,7 +13,7 @@ import com.fengmap.android.wrapmv.db.FMDatabaseDefine;
 import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.IndoorMapActivity;
 import com.fengmap.drpeng.OutdoorMapActivity;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 import com.fengmap.drpeng.SearchActivity;
 import com.fengmap.drpeng.SearchFragment;
 import com.fengmap.drpeng.common.ViewHolder;

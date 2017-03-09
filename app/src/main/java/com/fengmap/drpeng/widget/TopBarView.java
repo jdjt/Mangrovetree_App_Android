@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.IndoorMapActivity;
 import com.fengmap.drpeng.OutdoorMapActivity;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 import com.fengmap.drpeng.SearchActivity;
 
 

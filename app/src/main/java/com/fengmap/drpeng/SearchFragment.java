@@ -18,6 +18,7 @@ import com.fengmap.android.wrapmv.db.FMDBSearchElement;
 import com.fengmap.android.wrapmv.db.FMDBSearchElementDAO;
 import com.fengmap.android.wrapmv.db.FMDatabaseDefine;
 import com.fengmap.drpeng.adapter.HistoryTextAdapter;
+import com.jdjt.mangrove.R;
 
 import java.util.List;
 

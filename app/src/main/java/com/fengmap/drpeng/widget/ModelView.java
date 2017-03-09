@@ -17,7 +17,7 @@ import com.fengmap.android.wrapmv.entity.FMExternalModelRelation;
 import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.IndoorMapActivity;
 import com.fengmap.drpeng.OutdoorMapActivity;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 
 /**
  * Created by yangbin on 16/8/11.
