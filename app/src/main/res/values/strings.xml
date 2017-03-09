@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">红树林酒店</string>
+    <string name="app_name">红树林导航</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -9,5 +9,9 @@
         <item>休闲线1</item>
         <item>美食线1</item>
     </string-array>
+    <string name="title_activity_mangrove_main">MangroveMainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

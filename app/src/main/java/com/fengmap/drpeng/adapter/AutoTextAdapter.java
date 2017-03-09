@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fengmap.android.wrapmv.db.FMDBMapElement;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 import com.fengmap.drpeng.common.ViewHolder;
 import com.fengmap.drpeng.widget.DrawableCenterTextView;
 

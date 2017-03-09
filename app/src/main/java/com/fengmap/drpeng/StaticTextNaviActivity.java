@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.jdjt.mangrove.R;
+
 import java.util.ArrayList;
 
 /**
  * Created by yangbin on 16/5/23.
  */
 public class StaticTextNaviActivity extends Activity {
+
 
 
     @Override

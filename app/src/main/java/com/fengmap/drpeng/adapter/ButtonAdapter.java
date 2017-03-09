@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.fengmap.android.utils.FMLog;
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 import com.fengmap.drpeng.common.ControlItemHold;
 
 import java.util.ArrayList;
@@ -55,9 +55,9 @@ public class ButtonAdapter extends RecyclerView.Adapter<ControlItemHold> {
 				listener.onItemClick(v, position);
 			}
 		});
-        
+
     }
-    
+
     public void setOnItemClickListener(OnItemClickListener l) {
         this.listener = l;
     }
@@ -68,15 +68,15 @@ public class ButtonAdapter extends RecyclerView.Adapter<ControlItemHold> {
         return buttonTypes.length;
     }
 
- 
+
     public String[] getButtonTypes() {
         return buttonTypes;
     }
 
-    
+
     public interface OnItemClickListener {
         void onItemClick(View v, int position);
     }
 
-   
+
 }

@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.fengmap.drpeng.R;
+import com.jdjt.mangrove.R;
 
 
 /**
@@ -13,10 +13,10 @@ import com.fengmap.drpeng.R;
  */
 public class ControlItemHold extends RecyclerView.ViewHolder {
     public Button button;
-    
+
     public ControlItemHold(View itemView) {
         super(itemView);
-        if(button == null) 
+        if(button == null)
         	button = (Button) itemView.findViewById(R.id.button);
     }
 

@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengmap.android.FMDevice;
-import com.fengmap.drpeng.R;
 import com.fengmap.drpeng.entity.Floor;
+import com.jdjt.mangrove.R;
 
 import java.util.ArrayList;
 import java.util.List;

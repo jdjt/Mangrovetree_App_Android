@@ -20,7 +20,6 @@ import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.analysis.navi.FMNaviAnalyser;
 import com.fengmap.android.analysis.navi.FMNaviMultiAnalyer;
 import com.fengmap.android.analysis.navi.FMNaviResult;
-import com.fengmap.android.analysis.search.FMSearchAnalyser;
 import com.fengmap.android.map.FMMap;
 import com.fengmap.android.map.FMMapInfo;
 import com.fengmap.android.map.FMPickMapCoordResult;
@@ -82,6 +81,8 @@ import com.fengmap.drpeng.widget.NaviView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
+import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.activity.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -608,7 +609,7 @@ public class OutdoorMapActivity extends Activity implements View.OnClickListener
         mFoodActGroup = FMAPI.instance().mActivityManager.createGroup("data/food.json");
         mShopActGroup = FMAPI.instance().mActivityManager.createGroup("data/shop.json");
     }
-    
+
     private void prepareTestData() {
         byte[] buffer = FMMapSDK.getFMResourceManager().readAssetsFile("data/geo.json");
         if (buffer != null) {
