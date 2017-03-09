@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">红树林酒店</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="ButtonFuction">
+        <item>导航</item>
+        <item>定位</item>
+        <item>休闲线1</item>
+        <item>美食线1</item>
+    </string-array>
+
+</resources>

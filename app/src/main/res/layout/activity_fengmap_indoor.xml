@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#565656"
+    android:fitsSystemWindows="true">
+
+    <com.fengmap.drpeng.widget.TopBarView
+        android:visibility="gone"
+        android:background="@color/filter_bg"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/fm_topbar"/>
+
+    <com.fengmap.android.map.FMMapView
+        android:id="@+id/indoor_mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.fengmap.drpeng.widget.SwitchFloorView
+            android:id="@+id/indoor_switch_floor"
+            android:layout_below="@+id/fm_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp" />
+
+    </com.fengmap.android.map.FMMapView>
+
+    <com.fengmap.drpeng.widget.DrawableCenterTextView
+        android:id="@+id/indoor_call"
+        android:text="呼叫"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:drawablePadding="1dp"
+        android:textColor="@color/white"
+        android:layout_alignBottom="@+id/indoor_location"
+        android:drawableTop="@mipmap/fm_call"
+        android:background="@drawable/fm_green_normal_button"
+        android:layout_width="47dp"
+        android:layout_height="47dp"/>
+
+
+
+    <ImageView
+        android:id="@+id/indoor_location"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/main_bottom_bar"
+        android:background="@drawable/fm_green_normal_button"
+        android:src="@mipmap/fm_loc"
+        android:scaleType="centerInside"
+        android:layout_width="35dp"
+        android:layout_height="35dp"/>
+
+    <include layout="@layout/main_bottom_bar"/>
+</RelativeLayout>
