@@ -14,14 +14,19 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
 
-public class MangroveMainActivity extends AppCompatActivity
+public class MangroveMainActivity extends SysBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_mangrove);
+    protected int initPageLayoutID() {
+        return R.layout.activity_main_mangrove;
+    }
+
+    @Override
+    protected void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
