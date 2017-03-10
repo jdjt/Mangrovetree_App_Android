@@ -8,8 +8,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
-
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
@@ -47,4 +45,24 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:gravity">center</item>-->
+        <!--<item name="android:layout_gravity">center</item>-->
+    </style>
+
+    <style name="AppTheme.Base" parent="AppTheme.NoActionBar">
+        <!--<item name="android:textColorPrimary">@color/white</item>-->
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">#3fff</item>
+        <!--选中状态icon的颜色和字体颜色-->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/half_full</item>
+        <!--正常状态下字体颜色和icon颜色-->
+        <item name="android:textColorPrimary">@android:color/darker_gray</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionMenuTextColor">@color/white</item>
+
+    </style>
 </resources>

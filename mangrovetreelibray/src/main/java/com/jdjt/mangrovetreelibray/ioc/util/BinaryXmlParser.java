@@ -2,13 +2,17 @@ package com.jdjt.mangrovetreelibray.ioc.util;
 
 import android.util.Log;
 
-import org.apache.http.util.ByteArrayBuffer;
-
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  修正过时类引起的错误
+ *  2017.3.10
+ */
 public class BinaryXmlParser {
 
     private static final int END_DOC_TAG = 0x00100101;
@@ -22,13 +26,18 @@ public class BinaryXmlParser {
     }
 
     public BinaryXmlParser(InputStream input) throws IOException {
-        ByteArrayBuffer content = new ByteArrayBuffer(1024);
-        int size;
-        byte[] buffer = new byte[1024];
-        while (-1 != (size = input.read(buffer))) {
-            content.append(buffer, 0, size);
+
+        BufferedInputStream bis = new BufferedInputStream(input);
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        //We create an array of bytes
+        byte[] data = new byte[1024];
+        int current = 0;
+
+        while((current = bis.read(data,0,data.length)) != -1){
+            content.write(data,0,current);
         }
         mData = content.toByteArray();
+
         input.close();
     }
 

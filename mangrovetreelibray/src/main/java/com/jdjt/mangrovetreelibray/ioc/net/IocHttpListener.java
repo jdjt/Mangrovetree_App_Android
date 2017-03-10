@@ -61,15 +61,14 @@ public abstract class IocHttpListener<T> {
 	 * 这里将对回调进行分发
 	 *
 	 * @author gdpancheng@gmail.com 2014年12月26日 上午12:10:52
-	 * @param url
-	 * @param param
-	 * @param type
+	 * @param config
+	 * @param result
 	 * @return void
 	 */
 	final public void callback(NetConfig config, T result) {
 		Object object = config.getObject();
 		if (isDestory(object)) {
-			Ioc.getIoc().getLogger().d(object + "已经回收，无法回掉");
+			Ioc.getIoc().getLogger().d(object + "已经回收，无法回调");
 			config.setObject(null);
 		} else {
 			reBackPreview(config, object, result);
@@ -150,9 +149,8 @@ public abstract class IocHttpListener<T> {
 	/**
 	 *
 	 * @author gdpancheng@gmail.com 2014年12月26日 上午12:11:37
-	 * @param url
-	 * @param param
-	 * @param type
+	 * @param config
+	 * @param result
 	 * @return void
 	 */
 	final public void dealsuccess(NetConfig config, T result) {
@@ -161,9 +159,8 @@ public abstract class IocHttpListener<T> {
 	/**
 	 *
 	 * @author gdpancheng@gmail.com 2014年12月26日 上午12:11:37
-	 * @param url
-	 * @param param
-	 * @param type
+	 * @param config
+	 * @param result
 	 * @return void
 	 */
 	final public void dealError(NetConfig config, T result) {

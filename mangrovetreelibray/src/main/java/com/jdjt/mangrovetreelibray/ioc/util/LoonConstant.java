@@ -2,7 +2,7 @@ package com.jdjt.mangrovetreelibray.ioc.util;
 
 import android.graphics.drawable.Drawable;
 
-import com.jdjt.mangrovetreelibray.ioc.animation.entity.AnimationEntity;
+import com.jdjt.mangrovetreelibray.ioc.entity.AnimationEntity;
 import com.jdjt.mangrovetreelibray.ioc.inject.InjcetActivity;
 import com.jdjt.mangrovetreelibray.ioc.inject.InjectExcutor;
 import com.jdjt.mangrovetreelibray.ioc.inject.InjectView;

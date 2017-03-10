@@ -7,7 +7,8 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
-import com.jdjt.mangrovetreelibray.ioc.animation.entity.AnimationEntity;
+import com.jdjt.mangrovetreelibray.ioc.entity.AnimationEntity;
+
 
 /*
  * Author: Administrator Email:gdpancheng@gmail.com

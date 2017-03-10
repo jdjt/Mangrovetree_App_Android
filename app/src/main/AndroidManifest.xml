@@ -38,7 +38,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.Base"
         tools:ignore="HardcodedDebugMode">
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
@@ -55,25 +55,29 @@
             android:name="com.fengmap.drpeng.OutdoorMapActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.fengmap.drpeng.IndoorMapActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.fengmap.drpeng.SearchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.jdjt.mangrove.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MangroveMainActivity"
             android:label="@string/title_activity_mangrove_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.Main1Activity"
+            android:label="@string/title_activity_main1"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
