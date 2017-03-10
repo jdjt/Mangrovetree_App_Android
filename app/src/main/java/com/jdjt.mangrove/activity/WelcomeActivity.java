@@ -101,9 +101,9 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
             @Override
             public void run() {
                 Bundle b = new Bundle();
-                b.putString(FMAPI.ACTIVITY_WHERE, MainActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
                 b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-                FMAPI.instance().gotoActivity(WelcomeActivity.this, MangroveMainActivity.class, b);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
                 WelcomeActivity.this.finish();
             }
         }, 500);
@@ -127,11 +127,11 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
             @Override
             public void run() {
                 Bundle b = new Bundle();
-                b.putString(FMAPI.ACTIVITY_WHERE, MainActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
                 b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-                FMAPI.instance().gotoActivity(WelcomeActivity.this, MangroveMainActivity.class, b);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
                 WelcomeActivity.this.finish();
             }
-        }, 2500);
+        }, 500);
     }
 }

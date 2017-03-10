@@ -8,8 +8,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -82,7 +92,8 @@ import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
-import com.jdjt.mangrove.activity.MainActivity;
+import com.jdjt.mangrove.activity.WelcomeActivity;
+import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -102,7 +113,8 @@ import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
  * 室外地图。注意: 退出整个应用前,需要把查询数据库给关了FMDatabaseHelper.getDatabaseHelper().close();
  * @author yangbin
  */
-public class OutdoorMapActivity extends Activity implements View.OnClickListener,
+public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View.OnClickListener,
+                                                NavigationView.OnNavigationItemSelectedListener,
                                                             ButtonGroup.OnButtonGroupListener,
                                                             OnFMMapInitListener,
                                                             OnFMMapClickListener,
@@ -186,12 +198,137 @@ public class OutdoorMapActivity extends Activity implements View.OnClickListener
     private RelativeLayout call_service_btn;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mInstance = this;
-        setContentView(R.layout.activity_fengmap);
-        init();
+    protected int initPageLayoutID() {
+        return R.layout.activity_main_mangrove;
     }
+
+    @Override
+    protected void initView() {
+        mInstance = this;
+        initSlidingView();
+        mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
+        mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
+
+        mButtonGroup = (ButtonGroup) findViewById(R.id.fm_btgroup);
+        mButtonGroup.setOnButtonGroupListener(this);
+
+        mLocationView = (ImageView) findViewById(R.id.fm_map_img_location);
+        mLocationView.setOnClickListener(this);
+
+        mShowRouteView = (DrawableCenterTextView) findViewById(R.id.fm_bt_route);
+        mShowRouteView.setOnClickListener(this);
+
+        mCallView = (DrawableCenterTextView) findViewById(R.id.fm_bt_call);
+        mCallView.setOnClickListener(this);
+
+        search_dest_btn = (RelativeLayout) findViewById(R.id.search_dest_btn);
+        search_dest_btn.setOnClickListener(this);
+
+        call_service_btn = (RelativeLayout) findViewById(R.id.call_service_btn);
+        call_service_btn.setOnClickListener(this);
+
+        globle_plateform_btn = (RelativeLayout) findViewById(R.id.globle_plateform_btn);
+        globle_plateform_btn.setOnClickListener(this);
+
+        mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
+        mMap = mMapView.getFMMap();
+
+        // 初始化定位服务
+        initFMLocationService();
+        // 开启定位服务
+        boolean openedResult = FMMapSDK.setLocateServiceState(true);
+        if (!openedResult) {
+            CustomToast.show(this, "请检测WIFI连接和GPS状态...");
+        }
+
+        // 进度条
+        mProgressDialog = new CustomProgressDialog(this, R.style.custom_dialog);
+        mProgressDialog.setCustomContentView(R.layout.fm_custome_dialog);
+        mProgressDialog.setInfoViewContext("加载中...");
+        mProgressDialog.show();
+
+        // 搜索
+        mMapElementDAO = new FMDBMapElementDAO();
+
+        // 初始化数据
+        initJsonData();
+
+        // 初始化弹窗
+        initWindow();
+
+        // 处理bundle
+        dealIntentBundle();
+
+        mMapView.setManager(FMAPI.instance().mActivityManager,
+                FMAPI.instance().mRouteManager,
+                FMAPI.instance().mZoneManager);
+    }
+
+    /**
+    * @method 侧滑栏相关View初始化
+    */
+    public void initSlidingView() {
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        Log.d("TAGTAGTAG","你好好哈哈哈哈啊哈哈哈哈哈哈哈哈哈=========================");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.mangrove_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 
     public FMMap getMap() {
         return mMap;
@@ -360,8 +497,9 @@ public class OutdoorMapActivity extends Activity implements View.OnClickListener
                 // 地图选点
 
             }
-        } else if (MainActivity.class.getName().equals(pWhere)) {
+        } else if (WelcomeActivity.class.getName().equals(pWhere)) {
             // 正常进入
+
         } else if (IndoorMapActivity.class.getName().equals(pWhere)) {
             // 从室内地图界面而来
             // 目的
@@ -697,6 +835,14 @@ public class OutdoorMapActivity extends Activity implements View.OnClickListener
             b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_RESULT, mMapElement);
             FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
             mFromWhere = null;
+        } else {
+            super.onBackPressed();
+        }
+
+        // 侧滑键 回退键逻辑
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
