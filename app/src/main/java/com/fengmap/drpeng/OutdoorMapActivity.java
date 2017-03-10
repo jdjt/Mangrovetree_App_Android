@@ -192,6 +192,9 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
     private boolean isLocateSuccess = false;
 
+    // 侧滑栏
+    private  DrawerLayout drawer;
+
     // 底部栏按钮
     private RelativeLayout search_dest_btn;
     private RelativeLayout globle_plateform_btn;
@@ -271,7 +274,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -324,7 +327,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -332,66 +334,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
     public FMMap getMap() {
         return mMap;
-    }
-
-    private void init() {
-        mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
-        mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
-
-        mButtonGroup = (ButtonGroup) findViewById(R.id.fm_btgroup);
-        mButtonGroup.setOnButtonGroupListener(this);
-
-        mLocationView = (ImageView) findViewById(R.id.fm_map_img_location);
-        mLocationView.setOnClickListener(this);
-
-        mShowRouteView = (DrawableCenterTextView) findViewById(R.id.fm_bt_route);
-        mShowRouteView.setOnClickListener(this);
-
-        mCallView = (DrawableCenterTextView) findViewById(R.id.fm_bt_call);
-        mCallView.setOnClickListener(this);
-
-        search_dest_btn = (RelativeLayout) findViewById(R.id.search_dest_btn);
-        search_dest_btn.setOnClickListener(this);
-
-        call_service_btn = (RelativeLayout) findViewById(R.id.call_service_btn);
-        call_service_btn.setOnClickListener(this);
-
-        globle_plateform_btn = (RelativeLayout) findViewById(R.id.globle_plateform_btn);
-        globle_plateform_btn.setOnClickListener(this);
-
-        mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
-        mMap = mMapView.getFMMap();
-
-        // 初始化定位服务
-        initFMLocationService();
-        // 开启定位服务
-        boolean openedResult = FMMapSDK.setLocateServiceState(true);
-        if (!openedResult) {
-            CustomToast.show(this, "请检测WIFI连接和GPS状态...");
-        }
-
-        // 进度条
-        mProgressDialog = new CustomProgressDialog(this, R.style.custom_dialog);
-        mProgressDialog.setCustomContentView(R.layout.fm_custome_dialog);
-        mProgressDialog.setInfoViewContext("加载中...");
-        mProgressDialog.show();
-
-        // 搜索
-        mMapElementDAO = new FMDBMapElementDAO();
-
-        // 初始化数据
-        initJsonData();
-
-        // 初始化弹窗
-        initWindow();
-
-        // 处理bundle
-        dealIntentBundle();
-
-        mMapView.setManager(FMAPI.instance().mActivityManager,
-                            FMAPI.instance().mRouteManager,
-                            FMAPI.instance().mZoneManager);
-
     }
 
     @Override
@@ -817,6 +759,12 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             mSceneAnimator.cancel();
         }
 
+        // 侧滑键 回退键逻辑
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            return;
+        }
+
         clearWalkedTemporaryValue();
         clearCalculatedPathResults();
         clearCalculateRouteLineMarker();
@@ -835,14 +783,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_RESULT, mMapElement);
             FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
             mFromWhere = null;
-        } else {
-            super.onBackPressed();
-        }
-
-        // 侧滑键 回退键逻辑
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
