@@ -1,25 +1,35 @@
 package com.jdjt.mangrove.activity;
 
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.activity.demo.LoginApi;
+import com.jdjt.mangrove.activity.demo.LoginService;
+import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
+
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MangroveMainActivity extends SysBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    private LoginApi _loginService;
     @Override
     protected int initPageLayoutID() {
         return R.layout.activity_main_mangrove;
@@ -27,6 +37,10 @@ public class MangroveMainActivity extends SysBaseAppCompatActivity
 
     @Override
     protected void initView() {
+
+        _loginService= LoginService.INSTANCE.getLoginApi();
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -88,6 +102,9 @@ public class MangroveMainActivity extends SysBaseAppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            HeaderConst.inHeaders();
+            login();
+
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -104,5 +121,29 @@ public class MangroveMainActivity extends SysBaseAppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void login(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(LoginApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        _loginService = LoginService.INSTANCE.getLoginApi();  //retrofit.create(LoginService.class);
+        Call<Map> call = (Call<Map>) _loginService.login("15201027064","123456");
+        call.enqueue(new Callback<Map>() {
+            @Override
+            public void onResponse(Call<Map> call, Response<Map> response) {
+                Map entity = response.body();
+                Log.i("tag", "onResponse----->" + entity.get("ticket"));
+            }
+
+            @Override
+            public void onFailure(Call<Map> call, Throwable t) {
+                Log.i("tag", "onFailure----->" + t.toString());
+
+            }
+
+
+        });
     }
 }

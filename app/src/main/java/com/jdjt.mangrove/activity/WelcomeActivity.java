@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
@@ -20,6 +22,7 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
     private static final int REQUEST_CODE = 919; // 请求码
     @Override
     protected int initPageLayoutID() {
+
         return R.layout.activity_welcome;
     }
     /**

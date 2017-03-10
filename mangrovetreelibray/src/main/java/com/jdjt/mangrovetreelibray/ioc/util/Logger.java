@@ -1,12 +1,15 @@
-package com.jdjt.mangrovetreelibray.utils;
-
-import java.util.Hashtable;
+package com.jdjt.mangrovetreelibray.ioc.util;
 
 import android.util.Log;
 
+import com.jdjt.mangrovetreelibray.ioc.ioc.kernel.KernelClass;
+
+import java.lang.reflect.Field;
+import java.util.Hashtable;
+
 /**
  * 日志工具类
- * @author mars 2013-10-31 上午10:46:17
+ * @author gdpancheng@gmail.com 2013-10-31 上午10:46:17
  */
 public class Logger {
 
@@ -18,10 +21,21 @@ public class Logger {
 
 	private Logger(String name) {
 		this.name = name;
+		Class clazz = KernelClass.forName(Util.getPackageName() + "." + "BuildConfig");
+		if (null == clazz) {
+			debug = false;
+			return;
+        }
+		 try {
+	        Field filed = clazz.getDeclaredField("DEBUG");
+	        debug = Boolean.valueOf(filed.get(null).toString());
+        } catch (Exception e) {
+        }
 	}
 
 	/**
 	 *
+	 * @param className
 	 * @return
 	 */
 	public static Logger getLogger(String name) {
