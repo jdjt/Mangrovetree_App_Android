@@ -67,7 +67,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.jdjt.mangrove.activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>

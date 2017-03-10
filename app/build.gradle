@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24.0.3'
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.fengmap.test_hotel_interface"
@@ -10,6 +10,9 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        ndk {// 设置支持的 SO 库构架，注意这里要根据你的实际情况来设置
+            abiFilters 'armeabi', 'x86'// 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'mips', 'mips64'
+        }
     }
     buildTypes {
         release {
