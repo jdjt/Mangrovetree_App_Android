@@ -66,19 +66,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MangroveMainActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.Main1Activity"
-            android:label="@string/title_activity_main1"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

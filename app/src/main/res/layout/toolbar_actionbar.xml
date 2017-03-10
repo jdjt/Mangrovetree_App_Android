@@ -9,10 +9,17 @@
     app:contentInsetStart="@dimen/keyline_2"
     app:popupTheme="@style/AppTheme.PopupOverlay"
     app:layout_collapseMode="pin"
-
     app:titleTextAppearance="@style/ActionBar.TitleText"
   >
 
+    <TextView
+        android:id="@+id/textview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_32"
+        android:visibility="gone" />
 
 
 
