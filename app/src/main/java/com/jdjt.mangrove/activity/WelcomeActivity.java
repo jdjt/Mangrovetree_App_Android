@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.fengmap.android.FMMapSDK;
@@ -30,6 +32,7 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
 
     @Override
     protected int initPageLayoutID() {
+
         return R.layout.activity_welcome;
     }
     /**

@@ -35,11 +35,10 @@
     <application
         android:name=".application.MangrovetreeApplication"
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.Base"
         tools:ignore="HardcodedDebugMode">
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
@@ -56,26 +55,17 @@
             android:name="com.fengmap.drpeng.OutdoorMapActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.fengmap.drpeng.IndoorMapActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.fengmap.drpeng.SearchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name="com.jdjt.mangrove.activity.MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".activity.MangroveMainActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 
 /**
  * @author wmy
@@ -19,7 +18,7 @@ public abstract class SysBaseActivity extends Activity {
     protected ProgressDialog dialog = null;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (initPageLayoutID() != 0) {
             setContentView(initPageLayoutID());

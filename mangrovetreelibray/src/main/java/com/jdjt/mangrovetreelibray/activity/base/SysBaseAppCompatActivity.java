@@ -1,10 +1,20 @@
 package com.jdjt.mangrovetreelibray.activity.base;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
+import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 /**
  * @author wmy
@@ -15,6 +25,8 @@ import android.support.v7.app.AppCompatActivity;
  * @Date 2017/3/9 10:24
  */
 public abstract class SysBaseAppCompatActivity extends AppCompatActivity {
+    private Toolbar mActionBarToolbar;
+    public static final String EXTRA_TITLE = "title";
     //定义遮罩层
     protected ProgressDialog dialog = null;
     @Override
@@ -36,6 +48,7 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity {
      * @return
      */
     protected abstract void initView();
+
 
 
     /**
@@ -126,5 +139,76 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         closeProgress();
+    }
+
+    /**
+     * 修改状态栏
+     *
+     * @param on
+     */
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
+    /**
+     * 设置状态栏背景状态
+     */
+    public void setTranslucentStatus(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            setTranslucentStatus(true);
+            SystemStatusManager tintManager = new SystemStatusManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(color);//状态栏无背景
+            // 设置状态栏的文字颜色
+            tintManager.setStatusBarDarkMode(true, this);
+        }
+
+    }
+
+    // 获取顶部status bar 高度
+    public int getStatusBarHeight() {
+        Resources resources = this.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
+    }
+    /**
+     * 初始化标题栏
+     */
+    protected void initActionBar(int laoutId) {
+        if (getActionBarToolbar(laoutId) == null) {
+            return;
+        }
+//        mActionBarToolbar.setNavigationIcon(iconId);
+        mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        String title = getIntent().getStringExtra(EXTRA_TITLE);
+        if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
+    protected Toolbar getActionBarToolbar(int viewId) {
+        if (mActionBarToolbar == null) {
+            mActionBarToolbar = (Toolbar) findViewById(viewId);
+            if (mActionBarToolbar != null) {
+                setSupportActionBar(mActionBarToolbar);
+            }
+        }
+        return mActionBarToolbar;
     }
 }
