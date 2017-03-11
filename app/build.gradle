@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "com.fengmap.test_hotel_interface"
+        applicationId "com.jdjt.mangrove"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
@@ -28,9 +28,16 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+
+
+
     compile project(path: ':mangrovetreelibray')
-    compile 'com.android.support:recyclerview-v7:24.1.1'
-    compile 'com.android.support:support-v4:24.1.1'
+    compile project(path: ':sildingMenu')
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    compile 'com.github.1em0nsOft:LemonBubble4Android:1.0.11'
+//    compile 'com.github.1em0nsOft:LemonBubble4Android:1.0.11'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
 }
