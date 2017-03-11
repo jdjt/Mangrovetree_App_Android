@@ -95,6 +95,7 @@ import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.activity.WelcomeActivity;
 import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -192,21 +193,20 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
     private boolean isLocateSuccess = false;
 
-    // 侧滑栏
-    private  DrawerLayout drawer;
-
     // 底部栏按钮
     private RelativeLayout search_dest_btn;
     private RelativeLayout globle_plateform_btn;
     private RelativeLayout call_service_btn;
-
+//    导航菜单
+    SlidingMenu menu=null;
     @Override
     protected int initPageLayoutID() {
-        return R.layout.app_bar_mangrove_main;
+        return R.layout.activity_main_mangrove;
     }
 
     @Override
     protected void initView() {
+        initSlidingMenu();
         mInstance = this;
 //        initSlidingView();
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
@@ -715,9 +715,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_RESULT, mMapElement);
             FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
             mFromWhere = null;
-        } else  if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }  else {
             super.onBackPressed();
         }
 
@@ -874,6 +872,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 break;
             case R.id.call_service_btn:
                 Toast.makeText(this,"呼叫服务",Toast.LENGTH_SHORT).show();
+                menu.toggle();
                 break;
             default:
                 break;
@@ -2028,25 +2027,29 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             }
         });
     }
-    /**
-     * @method 侧滑栏相关View初始化
-     */
-    public void initSlidingView() {
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
-//        super.initActionBar(R.id.toolbar_actionbar);
-//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-        Log.d("TAGTAGTAG","你好好哈哈哈哈啊哈哈哈哈哈哈哈哈哈=========================");
+
+    private void initSlidingMenu(){
+        // configure the SlidingMenu
+        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(toolbar);
+         menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        // 设置触摸屏幕的模式
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
+
+        // 设置滑动菜单视图的宽度
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        // 设置渐入渐出效果的值
+        menu.setFadeDegree(0.35f);
+        /**
+         * SLIDING_WINDOW will include the Title/ActionBar in the content
+         * section of the SlidingMenu, while SLIDING_CONTENT does not.
+         */
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        //为侧滑菜单设置布局
+        menu.setMenu(R.layout.header_nav);
     }
-
-
 }
