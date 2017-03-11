@@ -74,3 +74,8 @@ build/android-profile/profile-2017-03-09-18-02-55-493.rawproto
 build/android-profile/profile-2017-03-09-18-02-57-262.rawproto
 build/android-profile/profile-2017-03-09-18-03-35-420.rawproto
 mangrovetree_navegation.iml
+.gradle/3.3/tasks/_dex_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin
+.gradle/3.3/tasks/_dex_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock
+.gradle/3.3/tasks/_dex_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock
+.gradle/
+build/
