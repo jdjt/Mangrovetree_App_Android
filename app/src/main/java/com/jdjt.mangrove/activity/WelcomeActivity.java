@@ -20,6 +20,7 @@ import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.utils.PermissionsChecker;
 
 /**
@@ -44,6 +45,7 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.CAMERA,
+            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.ACCESS_WIFI_STATE
 
     };
@@ -60,8 +62,8 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
             if (mChecker.lacksPermissions(PERMISSIONS)) {
                 this.requestPermissions(PERMISSIONS,REQUEST_CODE); // 请求权限
             }else{
+
                 copyMap();
-                startActivity();
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -83,14 +85,13 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
         }
         //通过权限校验 并且赋予权限后触发跳转到 主页面
         if (requestCode == REQUEST_CODE) {
-            startActivity();//跳转页面
+            copyMap();//跳转页面
         }
     }
 
     void copyMap() {
-
+        Ioc.getIoc().init(getApplication());
         FMMapSDK.initResource();
-
         writeMapFile("79980");
         writeMapFile("79981");
         writeMapFile("79982");
@@ -100,17 +101,7 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
         writeMapFile("70147");
         writeMapFile("70148");
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Bundle b = new Bundle();
-                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
-                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
-                WelcomeActivity.this.finish();
-            }
-        }, 500);
-
+        startActivity();
     }
 
 

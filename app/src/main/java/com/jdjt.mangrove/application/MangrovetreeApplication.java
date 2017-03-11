@@ -6,6 +6,7 @@ import android.content.Context;
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.drpeng.CrashHandler;
 import com.fengmap.drpeng.common.ResourcesUtils;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 /**
  * @author wmy
@@ -32,6 +33,7 @@ public class MangrovetreeApplication extends Application {
 
     @Override
     public void onCreate() {
+
         MangrovetreeApplication.context = getApplicationContext();
         FMMapSDK.init(this, ResourcesUtils.getSDPath() + "/fm_drpeng");
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getAppExceptionHandler(this));

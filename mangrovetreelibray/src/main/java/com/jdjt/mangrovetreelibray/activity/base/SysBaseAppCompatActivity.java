@@ -16,6 +16,8 @@ import android.view.WindowManager;
 
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
+import java.io.Serializable;
+
 /**
  * @author wmy
  * @Description: 项目基础 activity  用于公用控件控制
@@ -24,7 +26,8 @@ import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
  * @Package com.jdjt.mangrovetreelibray.Activity.base
  * @Date 2017/3/9 10:24
  */
-public abstract class SysBaseAppCompatActivity extends AppCompatActivity {
+public abstract class SysBaseAppCompatActivity extends AppCompatActivity  implements Serializable {
+
     private Toolbar mActionBarToolbar;
     public static final String EXTRA_TITLE = "title";
     //定义遮罩层

@@ -6,5 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
  >
+
     <include layout="@layout/content_mangrove_main"/>
+
 </android.support.design.widget.CoordinatorLayout>

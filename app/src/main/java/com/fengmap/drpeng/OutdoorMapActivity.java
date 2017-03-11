@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +96,7 @@ import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.activity.WelcomeActivity;
 import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -115,7 +117,7 @@ import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
  * @author yangbin
  */
 public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View.OnClickListener,
-                                                NavigationView.OnNavigationItemSelectedListener,
+                                                                            View.OnTouchListener,
                                                             ButtonGroup.OnButtonGroupListener,
                                                             OnFMMapInitListener,
                                                             OnFMMapClickListener,
@@ -193,23 +195,24 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
     private boolean isLocateSuccess = false;
 
-    // 侧滑栏
-    private  DrawerLayout drawer;
-
     // 底部栏按钮
-    private RelativeLayout search_dest_btn;
-    private RelativeLayout globle_plateform_btn;
-    private RelativeLayout call_service_btn;
 
+    private LinearLayout search_dest_btn;
+    private LinearLayout globle_plateform_btn;
+    private LinearLayout call_service_btn;
+    private TextView call_button,search_button,globle_plateform_button;//呼叫按钮
+    private TextView call_button_text,search_button_text,globle_plateform_button_text;
+    //    导航菜单
+    private  SlidingMenu menu=null;
     @Override
     protected int initPageLayoutID() {
-        return R.layout.activity_main;
+        return R.layout.content_mangrove_main
     }
 
     @Override
     protected void initView() {
+        initSlidingMenu();
         mInstance = this;
-        initSlidingView();
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
 
@@ -225,14 +228,25 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         mCallView = (DrawableCenterTextView) findViewById(R.id.fm_bt_call);
         mCallView.setOnClickListener(this);
 
-        search_dest_btn = (RelativeLayout) findViewById(R.id.search_dest_btn);
+        search_dest_btn = (LinearLayout) findViewById(R.id.search_dest_btn);
         search_dest_btn.setOnClickListener(this);
+        search_dest_btn.setOnTouchListener(this);
 
-        call_service_btn = (RelativeLayout) findViewById(R.id.call_service_btn);
+        call_service_btn = (LinearLayout) findViewById(R.id.call_service_btn);
         call_service_btn.setOnClickListener(this);
+        call_service_btn.setOnTouchListener(this);
 
-        globle_plateform_btn = (RelativeLayout) findViewById(R.id.globle_plateform_btn);
+        globle_plateform_btn = (LinearLayout) findViewById(R.id.globle_plateform_btn);
         globle_plateform_btn.setOnClickListener(this);
+        globle_plateform_btn.setOnTouchListener(this);
+
+        call_button = (TextView) findViewById(R.id.call_button);
+        search_button = (TextView) findViewById(R.id.search_button);
+        globle_plateform_button = (TextView) findViewById(R.id.globle_plateform_button);
+
+        call_button_text = (TextView) findViewById(R.id.call_button_text);
+        search_button_text = (TextView) findViewById(R.id.search_button_text);
+        globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
 
         mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
         mMap = mMapView.getFMMap();
@@ -268,8 +282,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 FMAPI.instance().mZoneManager);
     }
 
-
-
     public FMMap getMap() {
         return mMap;
     }
@@ -277,7 +289,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     @Override
     protected void onNewIntent(Intent intent) {
         FMLog.le("OutdoorMapActivity", "OutdoorMapActivity#onNewIntent");
-
+        Log.d("TAGTAGTAG"," onNewIntent() 被执行");
         isMapLoadCompleted = false;
         dealOnNewIntent(intent);
         isMapLoadCompleted = true;
@@ -308,6 +320,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
 
     private void dealOnNewIntent(Intent intent) {
+        Log.d("TAGTAGTAG"," dealOnNewIntent() 被执行");
         Bundle b = intent.getExtras();
         mFromWhere = b.getString(FMAPI.ACTIVITY_WHERE);
 
@@ -716,9 +729,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_RESULT, mMapElement);
             FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
             mFromWhere = null;
-        } else  if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }  else {
             super.onBackPressed();
         }
 
@@ -770,7 +781,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 //        if (!checkIpThread.isAlive()) {
 //            checkIpThread.start();
 //        }
-
+        Log.d("TAGTAGTAG"," onResume() 被执行");
         super.onResume();
     }
 
@@ -875,10 +886,72 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 break;
             case R.id.call_service_btn:
                 Toast.makeText(this,"呼叫服务",Toast.LENGTH_SHORT).show();
+                menu.toggle();
                 break;
             default:
                 break;
         }
+    }
+
+    // 按钮触摸事件
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (v.getId()){
+            //搜索
+            case R.id.search_dest_btn:
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                }
+
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    search_button_text.setTextColor(Color.parseColor("#565656"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_normal);
+                }
+            break;
+            //全球
+            case R.id.globle_plateform_btn:
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                }
+
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#565656"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_normal);
+                }
+                break;
+            //呼叫
+            case R.id.call_service_btn:
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_press);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_press);
+                }
+
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    call_button_text.setTextColor(Color.parseColor("#565656"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_normal);
+                }
+                break;
+            default:
+            break;
+        }
+        return false;
     }
 
     public static String WaiterMacAddress = "1C:77:F6:64:49:0C";
@@ -1144,6 +1217,10 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         mMap.updateMap();
     }
 
+    /**
+     *  地图加载成功
+     * @param mapId
+     */
     @Override
     public void onMapInitSuccess(String mapId) {
         mMapInfo = mMap.getFMMapInfo();
@@ -2029,72 +2106,29 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             }
         });
     }
-    /**
-     * @method 侧滑栏相关View初始化
-     */
-    public void initSlidingView() {
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-        super.initActionBar(R.id.toolbar_actionbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        Log.d("TAGTAGTAG","你好好哈哈哈哈啊哈哈哈哈哈哈哈哈哈=========================");
-    }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.mangrove_main, menu);
-        return true;
-    }
+    private void initSlidingMenu(){
+        // configure the SlidingMenu
+        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(toolbar);
+         menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        // 设置触摸屏幕的模式
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        // 设置滑动菜单视图的宽度
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        // 设置渐入渐出效果的值
+        menu.setFadeDegree(0.35f);
+        /**
+         * SLIDING_WINDOW will include the Title/ActionBar in the content
+         * section of the SlidingMenu, while SLIDING_CONTENT does not.
+         */
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        //为侧滑菜单设置布局
+        menu.setMenu(R.layout.header_nav);
     }
 }
