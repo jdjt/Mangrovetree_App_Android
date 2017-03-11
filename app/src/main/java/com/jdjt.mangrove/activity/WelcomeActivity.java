@@ -4,11 +4,20 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.fengmap.android.FMMapSDK;
+import com.fengmap.android.data.FMDataManager;
+import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
+import com.fengmap.drpeng.OutdoorMapActivity;
+import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrovetreelibray.activity.base.SysBaseAppCompatActivity;
 import com.jdjt.mangrovetreelibray.utils.PermissionsChecker;
@@ -18,8 +27,12 @@ import com.jdjt.mangrovetreelibray.utils.PermissionsChecker;
  */
 public class WelcomeActivity extends SysBaseAppCompatActivity {
     private static final int REQUEST_CODE = 919; // 请求码
+
+    private Handler mHandler = new Handler();
+
     @Override
     protected int initPageLayoutID() {
+
         return R.layout.activity_welcome;
     }
     /**
@@ -47,6 +60,7 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
             if (mChecker.lacksPermissions(PERMISSIONS)) {
                 this.requestPermissions(PERMISSIONS,REQUEST_CODE); // 请求权限
             }else{
+                copyMap();
                 startActivity();
             }
         } catch (PackageManager.NameNotFoundException e) {
@@ -73,19 +87,54 @@ public class WelcomeActivity extends SysBaseAppCompatActivity {
         }
     }
 
+    void copyMap() {
+
+        FMMapSDK.initResource();
+
+        writeMapFile("79980");
+        writeMapFile("79981");
+        writeMapFile("79982");
+        writeMapFile("70144");
+        writeMapFile("70145");
+        writeMapFile("70146");
+        writeMapFile("70147");
+        writeMapFile("70148");
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Bundle b = new Bundle();
+                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
+                WelcomeActivity.this.finish();
+            }
+        }, 500);
+
+    }
+
+
+    private void writeMapFile(String mapId) {
+        String dstFileName = mapId + ".fmap";
+        String srcFileName = "data/" + dstFileName;
+        ResourcesUtils.writeRc(this,
+                FMDataManager.getFMMapResourceDirectory() + mapId + "/", dstFileName, srcFileName);
+    }
+
+
     /**
      * 跳转到主页面
      */
     private  void startActivity(){
-        new Handler().postDelayed(new Runnable(){
-
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(WelcomeActivity.this,MangroveMainActivity.class);
-                startActivity(intent);
+                Bundle b = new Bundle();
+                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
                 WelcomeActivity.this.finish();
             }
-
-        }, 2500);
+        }, 500);
     }
 }

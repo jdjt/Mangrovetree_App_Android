@@ -3,6 +3,7 @@
 
     <ImageView
         android:id="@+id/fm_topbar_back"
+        android:visibility="gone"
         android:layout_alignParentLeft="true"
         android:src="@mipmap/fm_back"
         android:scaleType="centerInside"
@@ -13,7 +14,7 @@
         android:text="三亚"
         android:textSize="20sp"
         android:id="@+id/fm_topbar_title"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_toRightOf="@+id/fm_topbar_back"
         android:layout_toLeftOf="@+id/fm_topbar_search"
         android:gravity="center"
@@ -22,6 +23,7 @@
 
     <ImageView
         android:id="@+id/fm_topbar_search"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         android:src="@mipmap/icon_searcher_white"
         android:scaleType="centerInside"

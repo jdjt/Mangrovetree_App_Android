@@ -10,12 +10,19 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        ndk {// 设置支持的 SO 库构架，注意这里要根据你的实际情况来设置
+            abiFilters 'armeabi', 'x86'// 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'mips', 'mips64'
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    //为什么加入这个呢？防止冲突，比如我同时用了dagger-compiler就会报错，说下面这个`Processor`重复了
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 }
 
@@ -24,9 +31,15 @@ dependencies {
     //testCompile 'junit:junit:4.12'
     compile project(path: ':mangrovetreelibray')
     compile 'com.android.support:appcompat-v7:24.1.1'
+
+
+
+
+    compile project(path: ':mangrovetreelibray')
     compile 'com.android.support:recyclerview-v7:24.1.1'
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.github.1em0nsOft:LemonBubble4Android:1.0.11'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
 }

@@ -35,11 +35,10 @@
     <application
         android:name=".application.MangrovetreeApplication"
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.Base"
         tools:ignore="HardcodedDebugMode">
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
