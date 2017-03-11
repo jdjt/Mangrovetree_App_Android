@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,6 +117,7 @@ import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
  * @author yangbin
  */
 public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View.OnClickListener,
+                                                                            View.OnTouchListener,
                                                             ButtonGroup.OnButtonGroupListener,
                                                             OnFMMapInitListener,
                                                             OnFMMapClickListener,
@@ -194,21 +196,23 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     private boolean isLocateSuccess = false;
 
     // 底部栏按钮
-    private RelativeLayout search_dest_btn;
-    private RelativeLayout globle_plateform_btn;
-    private RelativeLayout call_service_btn;
-//    导航菜单
-    SlidingMenu menu=null;
+
+    private LinearLayout search_dest_btn;
+    private LinearLayout globle_plateform_btn;
+    private LinearLayout call_service_btn;
+    private TextView call_button,search_button,globle_plateform_button;//呼叫按钮
+    private TextView call_button_text,search_button_text,globle_plateform_button_text;
+    //    导航菜单
+    private  SlidingMenu menu=null;
     @Override
     protected int initPageLayoutID() {
-        return R.layout.activity_main_mangrove;
+        return R.layout.content_mangrove_main;
     }
 
     @Override
     protected void initView() {
         initSlidingMenu();
         mInstance = this;
-//        initSlidingView();
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
 
@@ -224,14 +228,25 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         mCallView = (DrawableCenterTextView) findViewById(R.id.fm_bt_call);
         mCallView.setOnClickListener(this);
 
-        search_dest_btn = (RelativeLayout) findViewById(R.id.search_dest_btn);
+        search_dest_btn = (LinearLayout) findViewById(R.id.search_dest_btn);
         search_dest_btn.setOnClickListener(this);
+        search_dest_btn.setOnTouchListener(this);
 
-        call_service_btn = (RelativeLayout) findViewById(R.id.call_service_btn);
+        call_service_btn = (LinearLayout) findViewById(R.id.call_service_btn);
         call_service_btn.setOnClickListener(this);
+        call_service_btn.setOnTouchListener(this);
 
-        globle_plateform_btn = (RelativeLayout) findViewById(R.id.globle_plateform_btn);
+        globle_plateform_btn = (LinearLayout) findViewById(R.id.globle_plateform_btn);
         globle_plateform_btn.setOnClickListener(this);
+        globle_plateform_btn.setOnTouchListener(this);
+
+        call_button = (TextView) findViewById(R.id.call_button);
+        search_button = (TextView) findViewById(R.id.search_button);
+        globle_plateform_button = (TextView) findViewById(R.id.globle_plateform_button);
+
+        call_button_text = (TextView) findViewById(R.id.call_button_text);
+        search_button_text = (TextView) findViewById(R.id.search_button_text);
+        globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
 
         mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
         mMap = mMapView.getFMMap();
@@ -267,8 +282,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 FMAPI.instance().mZoneManager);
     }
 
-
-
     public FMMap getMap() {
         return mMap;
     }
@@ -276,7 +289,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     @Override
     protected void onNewIntent(Intent intent) {
         FMLog.le("OutdoorMapActivity", "OutdoorMapActivity#onNewIntent");
-
+        Log.d("TAGTAGTAG"," onNewIntent() 被执行");
         isMapLoadCompleted = false;
         dealOnNewIntent(intent);
         isMapLoadCompleted = true;
@@ -307,6 +320,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
 
     private void dealOnNewIntent(Intent intent) {
+        Log.d("TAGTAGTAG"," dealOnNewIntent() 被执行");
         Bundle b = intent.getExtras();
         mFromWhere = b.getString(FMAPI.ACTIVITY_WHERE);
 
@@ -767,7 +781,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 //        if (!checkIpThread.isAlive()) {
 //            checkIpThread.start();
 //        }
-
+        Log.d("TAGTAGTAG"," onResume() 被执行");
         super.onResume();
     }
 
@@ -877,6 +891,67 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
             default:
                 break;
         }
+    }
+
+    // 按钮触摸事件
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (v.getId()){
+            //搜索
+            case R.id.search_dest_btn:
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                }
+
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    search_button_text.setTextColor(Color.parseColor("#565656"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_normal);
+                }
+            break;
+            //全球
+            case R.id.globle_plateform_btn:
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                }
+
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#565656"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_normal);
+                }
+                break;
+            //呼叫
+            case R.id.call_service_btn:
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_press);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_press);
+                }
+
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    call_button_text.setTextColor(Color.parseColor("#565656"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_normal);
+                }
+                break;
+            default:
+            break;
+        }
+        return false;
     }
 
     public static String WaiterMacAddress = "1C:77:F6:64:49:0C";
@@ -1142,6 +1217,10 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         mMap.updateMap();
     }
 
+    /**
+     *  地图加载成功
+     * @param mapId
+     */
     @Override
     public void onMapInitSuccess(String mapId) {
         mMapInfo = mMap.getFMMapInfo();

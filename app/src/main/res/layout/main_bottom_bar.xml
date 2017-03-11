@@ -8,6 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
         android:layout_height="60dp">
         <TextView
             android:id="@+id/location_text"
@@ -15,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/black"
+            android:textColor="@color/location_text_color"
             android:text="我的位置"
             android:textSize="@dimen/t_l"/>
         <TextView
@@ -25,13 +26,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/common_text_color_2"
+            android:textColor="@color/app_bar_text_color"
             android:text="大王棕酒店"
             android:textSize="@dimen/t_s"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/app_theme_color"
+        android:background="@color/divider_view_color"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_height="0.1dp"/>
@@ -42,55 +43,91 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/search_dest_btn"
             android:padding="3dp"
             android:background="@drawable/my_button_bg"
-            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1">
+
             <TextView
+                android:id="@+id/search_button"
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_height="wrap_content"
-                android:drawableTop="@mipmap/search_destination_normal"
-                android:textColor="@color/app_theme_color"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@mipmap/search_destination_normal" />
+
+            <TextView
+                android:id="@+id/search_button_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/app_bar_text_color"
                 android:textSize="12dp"
                 android:text="去哪"/>
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/globle_plateform_btn"
             android:padding="3dp"
+            android:orientation="vertical"
             android:background="@drawable/my_button_bg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1">
+
             <TextView
+                android:id="@+id/globle_plateform_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:drawableTop="@mipmap/holiday_plateform_normal"
-                android:textColor="@color/app_theme_color"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@mipmap/holiday_plateform_normal" />
+
+            <TextView
+                android:id="@+id/globle_plateform_button_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@color/app_bar_text_color"
                 android:textSize="12dp"
                 android:text="全球度假平台"/>
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/call_service_btn"
             android:padding="3dp"
             android:background="@drawable/my_button_bg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
             android:layout_height="60dp"
             android:layout_weight="1">
             <TextView
+                android:id="@+id/call_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@mipmap/call_center_normal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/app_bar_text_color"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/call_button_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:drawableTop="@mipmap/call_center_normal"
-                android:textColor="@color/app_theme_color"
+                android:clickable="true"
+                android:gravity="center"
+                android:textColor="@color/app_bar_text_color"
                 android:textSize="12dp"
                 android:text="呼叫服务"/>
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
