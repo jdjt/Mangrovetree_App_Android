@@ -1,6 +1,7 @@
 package com.jdjt.mangrove;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
