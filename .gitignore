@@ -79,3 +79,6 @@ mangrovetree_navegation.iml
 .gradle/3.3/tasks/_dex_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock
 .gradle/
 build/
+dex/dex.iml
+local.properties
+sildingMenu/sildingMenu.iml
