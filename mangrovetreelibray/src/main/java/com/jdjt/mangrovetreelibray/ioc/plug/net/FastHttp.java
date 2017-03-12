@@ -8,6 +8,7 @@ import android.util.Xml;
 
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
+import com.jdjt.mangrovetreelibray.ioc.util.HeaderConst;
 
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.xmlpull.v1.XmlSerializer;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -253,7 +255,9 @@ public class FastHttp {
 			out.flush();
 			out.close();
 			InputStream inStream = conn.getInputStream();
-
+			if(null==responseEntity.getHeaders()){
+				responseEntity.setHeaders(outHeaders(conn));
+			}
 			getCookies(config, responseEntity, conn);
 
 			responseEntity.setContent(inputStreamToString(inStream, config.getCharset()), config.isSave());
@@ -269,7 +273,40 @@ public class FastHttp {
 		}
 		return responseEntity;
 	}
+	private static 	Map<String, String> outHeaders(HttpURLConnection conn) throws UnsupportedEncodingException {
+		Map<String, List<String>> resHeaders = conn.getHeaderFields();
+		// 取出头部信息
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(HeaderConst.MYMHOTEL_TYPE,
+				resHeaders.get(HeaderConst.MYMHOTEL_TYPE) == null ? ""
+						: resHeaders.get(HeaderConst.MYMHOTEL_TYPE).get(0));
+		map.put(HeaderConst.MYMHOTEL_VERSION, resHeaders
+				.get(HeaderConst.MYMHOTEL_VERSION) == null ? "" : resHeaders
+				.get(HeaderConst.MYMHOTEL_VERSION).get(0));
+		map.put(HeaderConst.MYMHOTEL_DATATYPE, resHeaders
+				.get(HeaderConst.MYMHOTEL_DATATYPE) == null ? "" : resHeaders
+				.get(HeaderConst.MYMHOTEL_DATATYPE).get(0));
+		map.put(HeaderConst.MYMHOTEL_SOURCECODE, resHeaders
+				.get(HeaderConst.MYMHOTEL_SOURCECODE) == null ? "" : resHeaders
+				.get(HeaderConst.MYMHOTEL_SOURCECODE).get(0));
+		map.put(HeaderConst.MYMHOTEL_DATETIME, resHeaders
+				.get(HeaderConst.MYMHOTEL_DATETIME) == null ? "" : resHeaders
+				.get(HeaderConst.MYMHOTEL_DATETIME).get(0));
+		map.put(HeaderConst.MYMHOTEL_STATUS, resHeaders
+				.get(HeaderConst.MYMHOTEL_STATUS) == null ? "" : resHeaders
+				.get(HeaderConst.MYMHOTEL_STATUS).get(0));
 
+		String msg = resHeaders.get(HeaderConst.MYMHOTEL_MESSAGE) == null ? ""
+				: resHeaders.get(HeaderConst.MYMHOTEL_MESSAGE).get(0);
+		Ioc.getIoc().getLogger().i("mssage转换之前:"+msg);
+//		String androidVersion=Handler_System.getAndroidDisplayVersion(Ioc.getIoc().getApplication());
+//		if(!androidVersion.contains("HUAWEI"))
+		msg = new String(msg.getBytes("ISO8859-1"), "UTF-8");
+		map.put(HeaderConst.MYMHOTEL_MESSAGE, msg);
+		// 设置输出头部参数信息
+		Ioc.getIoc().getLogger().i("mssage转换之前:"+msg);
+		return map;
+	}
 	public static ResponseEntity postString(String url, String params, InternetConfig config) {
 		config.setRequest_type(InternetConfig.request_post);
 		ResponseEntity responseEntity = new ResponseEntity();

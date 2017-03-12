@@ -86,8 +86,8 @@ public abstract class IocHttpListener<T> {
 			Class<?> clazz = Class.forName("android.support.v4.app.Fragment");
 			Class<?> clazz2 = Class.forName("android.app.Fragment");
 			if (clazz.isAssignableFrom(object.getClass()) || clazz2.isAssignableFrom(object.getClass())) {
-				Method isDetached = object.getClass().getMethod("isDetached", null);
-				Method isRemoving = object.getClass().getMethod("isRemoving", null);
+				Method isDetached = object.getClass().getMethod("isDetached", new Class<?>[0]);
+				Method isRemoving = object.getClass().getMethod("isRemoving",new Class<?>[0]);
 				return Boolean.valueOf(isDetached.invoke(object).toString()) && Boolean.valueOf(isRemoving.invoke(object).toString());
 			}
 		} catch (Exception e) {

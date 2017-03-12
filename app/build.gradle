@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
@@ -7,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.jdjt.mangrove"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         ndk {// 设置支持的 SO 库构架，注意这里要根据你的实际情况来设置
@@ -28,15 +27,19 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
-
-
+//    androidTestCompile('com.android.support:appcompat-v7:24.2.1', {
+//        exclude group: 'com.android.support', module: 'appcompat'
+//    })
 
     compile project(path: ':mangrovetreelibray')
     compile project(path: ':sildingMenu')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+
+
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
+
+
     compile 'com.android.support:design:24.2.1'
 //    compile 'com.github.1em0nsOft:LemonBubble4Android:1.0.11'
 //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'

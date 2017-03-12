@@ -22,6 +22,8 @@ import android.util.AttributeSet;
 
 import com.jdjt.mangrovetreelibray.ioc.util.LoonConstant;
 
+import static com.jdjt.mangrovetreelibray.ioc.util.LoonConstant.*;
+
 public class PullToRefreshViewPager extends PullToRefreshBase<ViewPager> {
 
 	public PullToRefreshViewPager(Context context) {
@@ -40,7 +42,7 @@ public class PullToRefreshViewPager extends PullToRefreshBase<ViewPager> {
 	@Override
 	protected ViewPager createRefreshableView(Context context, AttributeSet attrs) {
 		ViewPager viewPager = new ViewPager(context, attrs);
-		viewPager.setId(LoonConstant.pullToRefresh.viewpager_id);
+		viewPager.setId(pullToRefresh.viewpager_id);
 		return viewPager;
 	}
 

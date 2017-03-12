@@ -102,7 +102,6 @@ public class InVaEntity extends Invoker implements InjectInvoker {
 				if (!TextView.class.isAssignableFrom(view.getClass())) {
 					isOk = false;
 					Ioc.getIoc().getLogger().e("当前验证的View不是TextView");
-					;
 					return;
 				}
 				vaDefault.setView((TextView) view);
