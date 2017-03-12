@@ -2,16 +2,13 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -23,9 +20,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    })
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     //------------- RxJava + Retrofit 2.0  + OKhttp 网络框架支持 引入依赖开始------------------//
 //    compile 'io.reactivex:rxjava:1.1.0'
 //    compile 'io.reactivex:rxandroid:1.1.0'
@@ -36,7 +33,7 @@ dependencies {
 
     //-------------- Retrofit 2.0 网络框架支持 引入依赖结束------------------ //
     //common
-    provided  'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
-    compile project(path: ':dex')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile project(':dex')
 }

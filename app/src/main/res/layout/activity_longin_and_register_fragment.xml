@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".login.LonginAndRegisterFragmentActivity">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/title_bg"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rd_login_button"
+            style="@style/tab_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radiobutton_left_off"
+            android:checked="true"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="登录"/>
+
+        <RadioButton
+            android:id="@+id/rd_register_button"
+            style="@style/tab_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radiobutton_off"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="注册"/>
+
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:id="@+id/login_register_fragment"
+        android:layout_below="@+id/radioGroup"
+        android:background="@color/action_bar_bg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 省略... -->
+
+
+    </LinearLayout>
+
+    <!--<FrameLayout-->
+    <!--android:id="@+id/login_register_fragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentStart="true" >-->
+
+    <!--</FrameLayout>-->
+</LinearLayout>

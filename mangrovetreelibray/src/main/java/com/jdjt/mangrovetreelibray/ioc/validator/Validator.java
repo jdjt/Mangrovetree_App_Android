@@ -1,6 +1,5 @@
 package com.jdjt.mangrovetreelibray.ioc.validator;
 
-import com.jdjt.mangrovetreelibray.ioc.core.AnalysisManager;
 
 /*
  * Author: pancheng Email:gdpancheng@gmail.com
@@ -10,6 +9,8 @@ import com.jdjt.mangrovetreelibray.ioc.core.AnalysisManager;
  *
  * History:
  */
+
+import com.jdjt.mangrovetreelibray.ioc.core.AnalysisManager;
 
 /**
  * 字符串验证类 <br>
@@ -21,14 +22,14 @@ import com.jdjt.mangrovetreelibray.ioc.core.AnalysisManager;
  * .......... (_/.......... <br>
  * 微信 gdpancheng <br>
  * -----------------------------------------------
- *
+ * 
  * @author gdpancheng@gmail.com 2015年11月26日 下午5:04:26
  */
 public class Validator {
 
 	/**
 	 * 有关UI上文字的验证
-	 *
+	 * 
 	 * @author gdpancheng@gmail.com 2015年11月26日 下午5:06:03
 	 * @param object
 	 * @return void

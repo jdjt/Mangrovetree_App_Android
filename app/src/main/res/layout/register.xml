@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!-- ~~~~~~~~~~~~注册信息~~~~~~~~~~~~~ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:text="账        号"
+                android:textColor="@color/text_gray_lable"
+                android:textSize="@dimen/textsize_30" />
+
+            <EditText
+                android:id="@+id/register_account"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginLeft="14dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="手机号"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/text_gray_lable"
+                android:textColorHint="@color/line_color_out"
+                android:textSize="@dimen/textsize_30" />
+
+            <Button
+                android:id="@+id/register_valitation"
+                android:layout_width="67dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/setbtn_bg"
+                android:clickable="true"
+                android:text="验 证"
+                android:textColor="@drawable/text_state_whitetogreen"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="18dp"
+            android:background="@color/line_color_in" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:text="验  证  码"
+                android:textColor="@color/text_gray_lable"
+                android:textSize="@dimen/textsize_30" />
+
+            <EditText
+                android:id="@+id/register_security_code"
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_marginLeft="14dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="6位数字"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/text_gray_lable"
+                android:textColorHint="@color/line_color_out"
+                android:textSize="@dimen/textsize_30" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="18dp"
+            android:background="@color/line_color_in" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:text="登录密码"
+                android:textColor="@color/text_gray_lable"
+                android:textSize="@dimen/textsize_30" />
+
+            <EditText
+                android:id="@+id/register_password"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginLeft="14dp"
+                android:background="@null"
+                android:hint="6-18位数字或字母"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/text_gray_lable"
+                android:textColorHint="@color/line_color_out"
+                android:textSize="@dimen/textsize_30" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color_out" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/register_agree_text"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:layout_marginLeft="8dp"
+        android:background="@null"
+        android:gravity="left"
+        android:layout_marginTop="8dp"
+        android:text="《红树林管家用户协议》"
+        android:textColor="@color/text_color_green"
+        android:textSize="@dimen/textsize_30" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:visibility="visible">
+
+        <CheckBox
+            android:id="@+id/read_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="已阅读用户协议并接受所有条款"
+            android:textColor="@color/text_gray_lable"
+            android:textSize="@dimen/textsize_30" />
+
+        <!--<com.android.mymhotel.view.SlipButton-->
+        <!--android:id="@+id/register_agree_btn"-->
+        <!--android:layout_width="77dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_marginRight="18dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--/>-->
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/register_button"
+        style="@style/AppBtn"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:text="注  册" />
+
+    <!--<Button-->
+    <!--android:id="@+id/register_email_btn"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="30dp"-->
+    <!--android:layout_marginTop="30dp"-->
+    <!--android:layout_marginRight="18dp"-->
+    <!--android:textColor="@color/text_color_green"-->
+    <!--android:textSize="@dimen/textsize_26"-->
+    <!--android:gravity="right"-->
+    <!--android:background="@null"-->
+    <!--android:text="无法获得手机验证码?" />-->
+
+</LinearLayout>

@@ -62,6 +62,13 @@ build/generated/mockable-android-24.jar
 Mangrovetree_app.iml
 .idea/
 app/app.iml
+.gradle/
+Mangrovetree_App_Android.iml
+build/android-profile/profile-2017-03-09-17-07-32-096.rawproto
+build/android-profile/profile-2017-03-09-17-07-48-825.rawproto
+build/android-profile/profile-2017-03-09-17-07-59-019.rawproto
+build/android-profile/profile-2017-03-09-17-08-07-756.rawproto
+build/android-profile/profile-2017-03-09-17-09-46-919.rawproto
 .gradle/3.3/tasks/_mangrovetreelibray_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin
 .gradle/3.3/tasks/_mangrovetreelibray_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock
 .gradle/3.3/tasks/_mangrovetreelibray_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin
