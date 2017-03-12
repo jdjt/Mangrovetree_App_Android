@@ -11,17 +11,17 @@ public class ResponseEntity implements Serializable {
 	private int status = -1;
 	private String url;
 	private String content;
-	private Map<String, String> headers;
+	private Map<String, Object> headers;
 	private Map<String, String> cookies;
 	private Map<String, Object> params;
 	private int key;
 	private InternetConfig config;
 
-	public Map<String, String> getHeaders() {
+	public Map<String, Object> getHeaders() {
 		return headers;
 	}
 
-	public void setHeaders(Map<String, String> headers) {
+	public void setHeaders(Map<String, Object> headers) {
 		this.headers = headers;
 	}
 
@@ -104,7 +104,7 @@ public class ResponseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ResponseEntity [status=" + status + ", url=" + url + ", content=" + content + ", cookies=" + cookies + ", params=" + params + ", key=" + key + "]";
+		return "ResponseEntity [status=" + status + ", url=" + url + ", content=" + content + ", cookies=" + cookies + ", heard	=" + headers +", params=" + params + ", key=" + key + "]";
 	}
 
 	public int getKey() {

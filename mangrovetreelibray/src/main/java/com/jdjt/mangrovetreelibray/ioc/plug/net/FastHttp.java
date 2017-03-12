@@ -220,11 +220,13 @@ public class FastHttp {
 	 */
 	public static ResponseEntity post(String url, LinkedHashMap<String, Object> params, InternetConfig config) {
 		config.setRequest_type(InternetConfig.request_post);
+		config.setContent_type_web(InternetConfig.content_type_json);
 		ResponseEntity responseEntity = new ResponseEntity();
 		responseEntity.setUrl(url);
 		responseEntity.setParams(params);
 		responseEntity.setKey(config.getKey());
 		responseEntity.setConfig(config);
+		responseEntity.setHeaders(config.getHead());
 		// 判断是否需要离线
 		if (config.isSave()) {
 			if (!Handler_Network.isNetworkAvailable(Ioc.getIoc().getApplication())) {
@@ -273,10 +275,10 @@ public class FastHttp {
 		}
 		return responseEntity;
 	}
-	private static 	Map<String, String> outHeaders(HttpURLConnection conn) throws UnsupportedEncodingException {
+	private static 	Map<String, Object> outHeaders(HttpURLConnection conn) throws UnsupportedEncodingException {
 		Map<String, List<String>> resHeaders = conn.getHeaderFields();
 		// 取出头部信息
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(HeaderConst.MYMHOTEL_TYPE,
 				resHeaders.get(HeaderConst.MYMHOTEL_TYPE) == null ? ""
 						: resHeaders.get(HeaderConst.MYMHOTEL_TYPE).get(0));
