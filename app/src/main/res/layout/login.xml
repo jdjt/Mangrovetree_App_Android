@@ -31,6 +31,7 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="58dp"
 	            android:hint="手机号"
+				android:inputType="phone"
 	            android:textSize="@dimen/textsize_30"
 	            android:textColorHint="@color/line_color_out"
 	            android:layout_marginLeft="14dp"

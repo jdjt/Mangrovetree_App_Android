@@ -67,15 +67,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MangroveMainActivity"
+            android:name=".activity.login.LonginAndRegisterFragmentActivity"
             android:label="@string/title_activity_mangrove_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.login.Main2Activity"></activity>
     </application>
 
 </manifest>

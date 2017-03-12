@@ -67,10 +67,10 @@ public class HeaderConst {
 
 
 
-	public static String inHeaders() {
+	public static HashMap<String, Object> inHeaders() {
 
 		// 取出头部信息
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<>();
 		String ticket= Handler_SharedPreferences.getValueByName("User", "ticket",0);
 //        if (Handler_String.isBlank(ticket)&&null!=MapVo.get("ticket")) {
 //            Ioc.getIoc().getLogger().i("获取Handler_SharedPreferences 下的ticket 失败");
@@ -84,7 +84,7 @@ public class HeaderConst {
 		map.put(HeaderConst.MYMHOTEL_DATETIME, new Date().getTime() + "");
 		map.put(HeaderConst.MYMHOTEL_ACKDATATYPE, "JSON");
 		Log.i("LoginApi","输入头部参数信息:{" + map.toString() + "}");
-		return map.toString();
+		return map;
 	}
 
 

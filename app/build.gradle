@@ -28,7 +28,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
+//    androidTestCompile('com.android.support:appcompat-v7:24.2.1', {
+//        exclude group: 'com.android.support', module: 'appcompat'
+//    })
 
 
 
@@ -36,7 +38,8 @@ dependencies {
     compile project(path: ':sildingMenu')
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
+
+
     compile 'com.android.support:design:24.2.1'
 //    compile 'com.github.1em0nsOft:LemonBubble4Android:1.0.11'
 //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'

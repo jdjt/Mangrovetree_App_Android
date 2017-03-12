@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.mymhotel.R;
-import com.android.mymhotel.view.BadgeView;
-import com.android.pc.ioc.download.FileLoaderManager;
-import com.android.pc.ioc.download.NotfiEntity;
-import com.android.pc.util.Handler_TextStyle;
+
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_TextStyle;
+import com.jdjt.mangrovetreelibray.views.BadgeView;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -37,7 +35,7 @@ public class CommonUtils {
 	public static final String SERVER_ADDRESS=SERVER_IP+"try_downloadFile_progress_server/index.php";//软件更新包地址
 	public static final String UPDATESOFTADDRESS=SERVER_IP+"try_downloadFile_progress_server/update_pakage/baidu.apk";//软件更新包地址
 	private static CommonUtils cu;
-	private BadgeView  badge;
+	private BadgeView badge;
 	public static CommonUtils newInstence(){
 		if(cu==null){
 			cu=new CommonUtils();
@@ -186,31 +184,6 @@ public class CommonUtils {
        ( i >> 24 & 0xFF) ;
     }
 
-	 /*************************************************
-	 @Title: update
-	 @Description: TODO(更新通知)
-	 @param url    设定文件
-	 @return void    返回类型
-	 @throws
-	 @date  2015-1-30
-	*************************************************/
-	public static void update(String url) {
-		try {
-			// 构建一个下载通知栏对象 并填充资源
-						NotfiEntity notfi = new NotfiEntity();
-						notfi.setLayout_id(R.layout.update_notification_progress);
-						notfi.setIcon_id(R.id.updatehelper_notification_progress_icon);
-						notfi.setProgress_id(R.id.updatehelper_notification_progress_pb);
-						notfi.setProgress_txt_id(R.id.updatehelper_notification_progress_tv);
-//						FileLoaderManager.showNotif(url, notfi);
-						FileLoaderManager.downloadUpdate(url, 3, notfi);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-
-			// 构建一个下载通知栏对象 并填充资源
-		}
 	/*************************************************
 	 * @Title: getVersionName
 	 * @Description: TODO(获取当前版本号)

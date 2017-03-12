@@ -206,7 +206,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     private  SlidingMenu menu=null;
     @Override
     protected int initPageLayoutID() {
-        return R.layout.content_mangrove_main
+        return R.layout.content_mangrove_main;
     }
 
     @Override

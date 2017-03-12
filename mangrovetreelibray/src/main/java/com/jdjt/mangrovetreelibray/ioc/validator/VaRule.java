@@ -8,7 +8,7 @@ package com.jdjt.mangrovetreelibray.ioc.validator;
 * History:
 */
 /**
- *
+ * 
  * 	<br>-----------------------------------------------
  * <br>oooO...............
  * <br>(....) ... Oooo...
@@ -20,10 +20,10 @@ package com.jdjt.mangrovetreelibray.ioc.validator;
  * @author gdpancheng@gmail.com 2015年12月2日 下午11:28:59
  */
 public interface  VaRule {
-
+	
 	/**
 	 * 所有回调的检测 如果子类有实现 则走这里
 	 */
 	public  boolean check();
-
+	
 }

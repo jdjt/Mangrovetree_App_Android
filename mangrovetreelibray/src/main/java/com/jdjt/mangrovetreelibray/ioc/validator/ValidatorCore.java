@@ -4,9 +4,12 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.jdjt.mangrovetreelibray.ioc.annotation.InVa.StringType;
+
+import com.jdjt.mangrovetreelibray.ioc.annotation.InVa;
 
 import java.lang.ref.WeakReference;
+
+import static com.jdjt.mangrovetreelibray.ioc.annotation.InVa.*;
 
 /*
  * Author: pancheng Email:gdpancheng@gmail.com
@@ -52,11 +55,11 @@ public class ValidatorCore {
 		if (!empty&&str.trim().length()==0) {
 	        return false;
         }
-
+		
 		if (str.length()<minLength||str.length()>maxLength) {
 			return false;
         }
-
+		
 		boolean result = true;
 		switch (type) {
 		case INTEGER:
@@ -80,11 +83,11 @@ public class ValidatorCore {
 		if (!result) {
 	        return false;
         }
-
+		
 		if (reg!=null&&reg.trim().length()>0) {
 	        return Regex.Regular(str, reg.trim());
         }
-
+		
 		return true;
 	}
 

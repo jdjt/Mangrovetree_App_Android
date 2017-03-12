@@ -370,7 +370,7 @@ public class Regex {
 	// //------------------验证方法
 	/**
 	 * 判断字段是否为空 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -380,7 +380,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是非空 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -390,7 +390,7 @@ public class Regex {
 
 	/**
 	 * 字符串null转空
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -400,7 +400,7 @@ public class Regex {
 
 	/**
 	 * 字符串null赋值默认值
-	 *
+	 * 
 	 * @param str
 	 *            目标字符串
 	 * @param defaut
@@ -413,7 +413,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为Email 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -423,7 +423,7 @@ public class Regex {
 
 	/**
 	 * 判断是否为电话号码 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -433,7 +433,7 @@ public class Regex {
 
 	/**
 	 * 判断是否为手机号码 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -443,7 +443,7 @@ public class Regex {
 
 	/**
 	 * 判断是否为Url 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -453,7 +453,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为数字 正负整数 正负浮点数 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -463,7 +463,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为INTEGER 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -473,7 +473,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为正整数正则表达式 >=0 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -483,7 +483,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为负整数正则表达式 <=0 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -493,7 +493,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为DOUBLE 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -503,7 +503,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为正浮点数正则表达式 >=0 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -513,7 +513,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为负浮点数正则表达式 <=0 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -523,7 +523,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为日期 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -533,7 +533,7 @@ public class Regex {
 
 	/**
 	 * 验证2010-12-10
-	 *
+	 * 
 	 * @param str
 	 * @return
 	 */
@@ -543,7 +543,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为年龄 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -553,7 +553,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否超长 字串为空返回fasle, 超过长度{leng}返回ture 反之返回false
-	 *
+	 * 
 	 * @param str
 	 * @param leng
 	 * @return boolean
@@ -564,7 +564,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为身份证 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -581,7 +581,7 @@ public class Regex {
 
 	/**
 	 * 判断字段是否为邮编 符合返回ture
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -591,7 +591,7 @@ public class Regex {
 
 	/**
 	 * 判断字符串是不是全部是英文字母
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -601,7 +601,7 @@ public class Regex {
 
 	/**
 	 * 判断字符串是不是全部是英文字母+数字
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -611,7 +611,7 @@ public class Regex {
 
 	/**
 	 * 判断字符串是不是全部是英文字母+数字+下划线
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -621,7 +621,7 @@ public class Regex {
 
 	/**
 	 * 过滤特殊字符串 返回过滤后的字符串
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -633,7 +633,7 @@ public class Regex {
 
 	/**
 	 * 校验机构代码格式
-	 *
+	 * 
 	 * @return
 	 */
 	public static boolean isJigouCode(String str) {
@@ -642,7 +642,7 @@ public class Regex {
 
 	/**
 	 * 判断字符串是不是数字组成
-	 *
+	 * 
 	 * @param str
 	 * @return boolean
 	 */
@@ -652,7 +652,7 @@ public class Regex {
 
 	/**
 	 * 匹配是否符合正则表达式pattern 匹配返回true
-	 *
+	 * 
 	 * @param str
 	 *            匹配的字符串
 	 * @param pattern
