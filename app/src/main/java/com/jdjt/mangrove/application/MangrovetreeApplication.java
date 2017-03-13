@@ -75,7 +75,7 @@ public class MangrovetreeApplication extends Application {
                     reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
                     break;
                 case POST:
-                    reslut = FastHttp.post(config.getUrl(), config.getParams(), netConfig);
+                    reslut = FastHttp.postString(config.getUrl(), config.getParam(), netConfig);
                     break;
                 case FORM:
                     reslut = FastHttp.form(config.getUrl(), config.getParams(), new HashMap<String, File>(), netConfig);

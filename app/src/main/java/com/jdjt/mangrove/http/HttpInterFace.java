@@ -16,7 +16,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InPost;
  * .......... (_/.......... <br>
  * 微信 gdpancheng <br>
  * -----------------------------------------------
- * 
+ *
  * @author gdpancheng@gmail.com 2015年1月7日 下午2:16:21
  * @param <T>
  */
@@ -44,10 +44,12 @@ public interface HttpInterFace {
 //	public <T> T asyncLoginWeb(@InParam("theRegionCode") String theRegionCode, NetConfig config);
 //
 	//---------------------------------------------------------------------------------------
+//	//异步
+//	@InPost(Constant.HttpUrl.LOGIN)
+//	public void login(@InParam("account") String name, @InParam("password") String password);
 	//异步
 	@InPost(Constant.HttpUrl.LOGIN)
-	public void login(@InParam("account") String name, @InParam("password") String password);
-
+	public void login(@InParam() String json);
 //	@InPost(Constant.HttpUrl.LOGIN)
 //	public void loginPost(@InParam LinkedHashMap<String, Object> params);
 //
