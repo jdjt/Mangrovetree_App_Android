@@ -70,6 +70,11 @@
             android:name=".login.LonginAndRegisterFragmentActivity"
             android:label="@string/title_activity_mangrove_main"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".base.CommonActivity"
+            android:label="@string/title_activity_mangrove_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

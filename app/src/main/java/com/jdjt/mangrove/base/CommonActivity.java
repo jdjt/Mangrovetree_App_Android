@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,43 +12,27 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.jdjt.mangrove.R;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 /**
  * @author wmy
- * @Description: 项目基础 activity  用于公用控件控制
- * @version:1.0
- * @FileName:SysBaseAppCompatActivity
- * @Package com.jdjt.mangrovetreelibray.Activity.base
- * @Date 2017/3/9 10:24
+ * @Description:
+ * @version:${MODULE_VERSION}
+ * @FileName:CommonActivity
+ * @Package com.jdjt.mangrove.base
+ * @Date 2017/3/13 13:23
  */
-public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
-
+@InPLayer(R.layout.activity_common)
+public class CommonActivity extends AppCompatActivity {
     private Toolbar mActionBarToolbar;
-    public static final String EXTRA_TITLE = "title";
-    //定义遮罩层
+
     protected ProgressDialog dialog = null;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(initPageLayoutID()!=0){
-            setContentView(initPageLayoutID());
-        }
-        initView();
-    }
 
-    /**
-     * 返回主布局id
-     */
-    protected abstract int initPageLayoutID();
-
-    /**
-     * 执行初始化 view
-     * @return
-     */
-    protected abstract void initView();
-
-
+    public static final String EXTRA_TITLE = "title";
 
     /**
      * 显示进度条
@@ -113,11 +96,12 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        dialog=null;
+        dialog = null;
     }
 
     /**
      * 关闭进度条
+     *
      * @param handler
      */
     protected void closeProgress(Handler handler) {
@@ -129,7 +113,7 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
                 }
             });
         }
-        dialog=null;
+        dialog = null;
     }
 
     /**
@@ -182,6 +166,7 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
     }
+
     /**
      * 初始化标题栏
      */
@@ -189,7 +174,7 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
         if (getActionBarToolbar(laoutId) == null) {
             return;
         }
-//        mActionBarToolbar.setNavigationIcon(iconId);
+//        mActionBarToolbar.setNavigationIcon(R.drawable.ic_menu_manage);
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,8 +184,8 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
         String title = getIntent().getStringExtra(EXTRA_TITLE);
         if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
+
         }
-        getSupportActionBar().setTitle("");
     }
 
     protected Toolbar getActionBarToolbar(int viewId) {
@@ -211,5 +196,15 @@ public abstract class SysBaseAppCompatActivity extends AppCompatActivity   {
             }
         }
         return mActionBarToolbar;
+    }
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg),0);
+    }
+
+
+    @Init
+    private void initActivity(){
+        initActionBar(R.id.toolbar_actionbar);
+        setStatusBar();
     }
 }
