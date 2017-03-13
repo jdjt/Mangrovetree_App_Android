@@ -26,35 +26,42 @@ import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 @InLayer(R.layout.header_nav)
 public class LeftFragment extends Fragment {
 
-    @InView(binder = @InBinder(listener = OnClick.class, method = "click"))
+    @InView(R.id.account_islogin)
     LinearLayout account_islogin; //用户中心
-    @InView(R.id.account_setting_layout)
-    LinearLayout account_setting_layout;//设置
-
+    @InView(R.id.ll_account_setting_layout)
+    LinearLayout ll_account_setting_layout;//设置
 
 
     @Init
-    public void init(){
-        account_islogin.setOnClickListener((View.OnClickListener) getActivity());
-        account_setting_layout.setOnClickListener((View.OnClickListener) getActivity());
-
-    }
-    public void onClick(View view){
-        switch (view.getId()){
-            //跳转到用户中心
-            case R.id.account_islogin:
-                Toast.makeText(getContext(),"好的",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
-                break;
-            //跳转到设置
-            case R.id.account_setting_layout:
+    public void init() {
+        account_islogin.setOnClickListener(onClickListener);
+        ll_account_setting_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
-                break;
-            default:
-                break;
-        }
+            }
+        });
+//        ll_account_setting_layout.setOnClickListener(onClickListener);
+
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        public void onClick(View view) {
+            switch (view.getId()) {
+//                //跳转到用户中心
+                case R.id.account_islogin:
+                    Toast.makeText(getContext(), "好的", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
+                    break;
+                //跳转到设置
+//                case R.id.ll_account_setting_layout:
+//                    Toast.makeText(getContext(), "不好", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(getActivity(), SettingActivity.class));
+//                    break;
+            }
+        }
+    };
+}
 //    protected LayoutInflater inflater;
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,5 +76,5 @@ public class LeftFragment extends Fragment {
 //    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
 //    }
-}
+
 

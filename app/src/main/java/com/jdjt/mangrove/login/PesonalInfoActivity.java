@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
@@ -16,25 +17,21 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
  */
 
 @InLayer(value = R.layout.mem_pesonal_info,parent = R.id.center_common,isTitle = true)
-public class PesonalInfoActivity extends AppCompatActivity {
-    //标题栏
-    Toolbar toolbar_actionbar;
+public class PesonalInfoActivity extends CommonActivity {
 
-    @InView(value = R.id.personal_name)
-    TextView personal_name;   //姓名
-    @InView(value = R.id.personal_telphone)
-    TextView personal_telphone;  //手机号
-    @InView(value = R.id.personal_layout)
-    LinearLayout personal_layout;  //姓名layout
-    @InView(value = R.id.account_tel_layout)
-    LinearLayout account_tel_layout;  //手机号layout
-    @InView(value = R.id.account_password_layout)
-    LinearLayout account_password_layout;  //密码layout
+    @InView(value = R.id.tv_personal_name)
+    TextView tv_personal_name;   //姓名
+    @InView(value = R.id.tv_personal_telphone)
+    TextView tv_personal_telphone;  //手机号
+    @InView(value = R.id.ll_personal_layout)
+    LinearLayout ll_personal_layout;  //姓名layout
+    @InView(value = R.id.ll_account_tel_layout)
+    LinearLayout ll_account_tel_layout;  //手机号layout
+    @InView(value = R.id.ll_account_password_layout)
+    LinearLayout ll_account_password_layout;  //密码layout
 
 
     @Init
     public void init() {
-        toolbar_actionbar.findViewById(R.id.toolbar_actionbar);
-        toolbar_actionbar.setTitle("用户中心");
     }
 }

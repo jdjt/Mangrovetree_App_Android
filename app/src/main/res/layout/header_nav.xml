@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    >
+    android:gravity="center">
 
     <LinearLayout
         android:id="@+id/account_islogin"
@@ -60,11 +59,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:id="@+id/account_setting_layout"
+        android:id="@+id/ll_account_setting_layout"
         style="@style/member_order_click"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <ImageView
@@ -72,7 +71,7 @@
             android:layout_height="38dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="13dp"
-            android:background="@mipmap/icon_setting" />
+            android:background="@drawable/ic_person" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,6 +80,7 @@
             android:layout_marginLeft="11dp"
             android:layout_weight="1"
             android:text="设置"
+            android:textColor="@drawable/text_mem_content_selector"
             android:textSize="@dimen/textsize_32" />
 
     </LinearLayout>
