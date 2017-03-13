@@ -6,7 +6,9 @@
     android:layout_height="?attr/actionBarSize"
     android:minHeight="?attr/actionBarSize"
     app:layout_scrollFlags="scroll|enterAlways"
-    app:popupTheme="@style/AppTheme.PopupOverlay"
+
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:background="@color/title_bg"
     app:layout_collapseMode="pin"
     app:titleTextAppearance="@style/ActionBar.TitleText"
