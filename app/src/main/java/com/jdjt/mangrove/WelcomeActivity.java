@@ -62,9 +62,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
             } else {
                 Log.d(WelcomeActivity.this.getLocalClassName(), "权限认证完毕" );
-//                Ioc.getIoc().getLogger().e("权限认证完毕");
-//            copyMap();
-
                 startActivity();
 
             }
@@ -83,8 +80,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
         //通过权限校验 并且赋予权限后触发跳转到 主页面
         if (requestCode == REQUEST_CODE) {
-//
-//            copyMap();//跳转页面
             try {
                 startActivity();
             } catch (InterruptedException e) {
