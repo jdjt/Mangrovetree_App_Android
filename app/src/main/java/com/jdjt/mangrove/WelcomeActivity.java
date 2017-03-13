@@ -1,7 +1,6 @@
 package com.jdjt.mangrove;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,9 +13,11 @@ import android.widget.TextView;
 
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.data.FMDataManager;
+import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
-import com.jdjt.mangrove.login.LonginAndRegisterFragmentActivity;
 import com.jdjt.mangrove.util.PermissionsChecker;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
@@ -92,7 +93,11 @@ public class WelcomeActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE) {
 //
 //            copyMap();//跳转页面
-            startActivity();
+            try {
+                startActivity();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -123,19 +128,21 @@ public class WelcomeActivity extends AppCompatActivity {
     /**
      * 跳转到主页面
      */
-    private  void startActivity(){
+    private  void startActivity() throws InterruptedException {
         Ioc.getIoc().init(MangrovetreeApplication.instance);
-        startActivity(new Intent(WelcomeActivity.this, LonginAndRegisterFragmentActivity.class));
-        finish();
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Bundle b = new Bundle();
-//                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
-//                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-//                FMAPI.instance().gotoActivity(WelcomeActivity.this, LonginAndRegisterFragmentActivity.class, b);
-//                WelcomeActivity.this.finish();
-//            }
-//        }, 500);
+        copyMap();
+//        Thread.sleep(3000);
+//        startActivity(new Intent(WelcomeActivity.this, OutdoorMapActivity.class));
+//        finish();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Bundle b = new Bundle();
+                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
+                WelcomeActivity.this.finish();
+            }
+        }, 500);
     }
 }

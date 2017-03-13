@@ -181,6 +181,7 @@ public class CommonActivity extends AppCompatActivity {
                 finish();
             }
         });
+        mActionBarToolbar.setTitle("");
         String title = getIntent().getStringExtra(EXTRA_TITLE);
         if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
