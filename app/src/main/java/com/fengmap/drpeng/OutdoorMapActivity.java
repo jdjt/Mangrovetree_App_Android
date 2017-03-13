@@ -193,6 +193,9 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     private TextView call_button_text,search_button_text,globle_plateform_button_text;
     //    导航菜单
     private  SlidingMenu menu=null;
+
+    // 更新Ui的Handler
+    private  Handler UiHandler;
     @Override
     protected int initPageLayoutID() {
         return R.layout.content_mangrove_main;
@@ -202,6 +205,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     protected void initView() {
         initSlidingMenu();
         mInstance = this;
+//        UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
 
@@ -1252,7 +1256,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 }
 
                 mMapView.setHighlight(mCurrentModel, true);
-
+                Log.d("TAGTAGTAG","打印坐标："+mCurrentModel.getName()+": "+mCurrentModel.getCenterMapCoord());
                 mLastModel = mCurrentModel;
 
                 mMap.updateMap();
