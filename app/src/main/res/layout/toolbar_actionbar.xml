@@ -1,27 +1,24 @@
-<android.support.v7.widget.Toolbar
-    android:id="@+id/toolbar_actionbar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_actionbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:minHeight="?attr/actionBarSize"
-    app:layout_scrollFlags="scroll|enterAlways"
-    app:popupTheme="@style/AppTheme.PopupOverlay"
     android:background="@color/title_bg"
+    android:minHeight="?attr/actionBarSize"
     app:layout_collapseMode="pin"
-    app:titleTextAppearance="@style/ActionBar.TitleText"
-  >
+    app:layout_scrollFlags="scroll|enterAlways"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:titleTextAppearance="@style/ActionBar.TitleText">
+
     <TextView
         android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:layout_gravity="center"
-    android:text="www.dastorm.com"
-    android:textColor="@android:color/white"
-    android:textSize="20sp"
-    android:textStyle="bold" />
-
-
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
 
 </android.support.v7.widget.Toolbar>

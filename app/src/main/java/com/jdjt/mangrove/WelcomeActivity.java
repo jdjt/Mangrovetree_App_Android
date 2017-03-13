@@ -1,11 +1,8 @@
 package com.jdjt.mangrove;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,7 +18,6 @@ import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
-import com.jdjt.mangrove.login.LonginAndRegisterFragmentActivity;
 import com.jdjt.mangrove.util.PermissionsChecker;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
@@ -59,7 +55,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     };
 
-    @TargetApi(Build.VERSION_CODES.M)
     protected void init() throws InterruptedException {
         PackageManager pm = getPackageManager();
         try {
@@ -72,7 +67,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 this.requestPermissions(PERMISSIONS, REQUEST_CODE); // 请求权限
             } else {
 
-            copyMap();
+//            copyMap();
                 startActivity();
                 return;
             }
@@ -97,8 +92,12 @@ public class WelcomeActivity extends AppCompatActivity {
         //通过权限校验 并且赋予权限后触发跳转到 主页面
         if (requestCode == REQUEST_CODE) {
 //
-            copyMap();//跳转页面
-            startActivity();
+//            copyMap();//跳转页面
+            try {
+                startActivity();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -129,9 +128,11 @@ public class WelcomeActivity extends AppCompatActivity {
     /**
      * 跳转到主页面
      */
-    private  void startActivity(){
+    private  void startActivity() throws InterruptedException {
         Ioc.getIoc().init(MangrovetreeApplication.instance);
-//        startActivity(new Intent(WelcomeActivity.this, LonginAndRegisterFragmentActivity.class));
+        copyMap();
+//        Thread.sleep(3000);
+//        startActivity(new Intent(WelcomeActivity.this, OutdoorMapActivity.class));
 //        finish();
         mHandler.postDelayed(new Runnable() {
             @Override

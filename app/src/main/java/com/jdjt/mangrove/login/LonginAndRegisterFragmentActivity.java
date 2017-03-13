@@ -3,10 +3,10 @@ package com.jdjt.mangrove.login;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.RadioGroup;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InAfter;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
@@ -18,8 +18,8 @@ import com.jdjt.mangrovetreelibray.ioc.listener.OnRadioChecked;
 /**
  * Created by huyanan on 2017/3/9.
  */
-@InLayer(R.layout.activity_longin_and_register_fragment)
-public class LonginAndRegisterFragmentActivity extends AppCompatActivity {
+@InLayer(value = R.layout.activity_longin_and_register_fragment,parent = R.id.center_common, isTitle = true)
+public class LonginAndRegisterFragmentActivity extends CommonActivity {
     @InBean
     private LoginFragment loginFragment;
     @InBean
@@ -28,7 +28,7 @@ public class LonginAndRegisterFragmentActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     @InAfter
     protected void initView() {
-
+        getSupportActionBar().setTitle("");
         startFragmentAdd(loginFragment);
     }
 //

@@ -137,31 +137,18 @@
         android:layout_marginTop="8dp"
         android:text="《红树林管家用户协议》"
         android:textColor="@color/text_color_green"
-        android:textSize="@dimen/textsize_30" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:visibility="visible">
+        android:textSize="@dimen/textsize_28" />
 
         <CheckBox
+            android:layout_marginTop="8dp"
             android:id="@+id/read_agreement"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/textsize_26"
+            android:text="已阅读用户协议并接受所有条款"
             android:layout_marginLeft="8dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:text="已阅读用户协议并接受所有条款"
-            android:textColor="@color/text_gray_lable"
-            android:textSize="@dimen/textsize_30" />
 
         <!--<com.android.mymhotel.view.SlipButton-->
         <!--android:id="@+id/register_agree_btn"-->
@@ -171,7 +158,6 @@
         <!--android:layout_gravity="center_vertical"-->
         <!--/>-->
 
-    </LinearLayout>
 
     <Button
         android:id="@+id/register_button"

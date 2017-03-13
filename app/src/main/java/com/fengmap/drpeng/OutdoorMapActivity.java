@@ -84,7 +84,9 @@ import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
-import com.jdjt.mangrove.base.SysBaseAppCompatActivity;
+import com.jdjt.mangrove.base.CommonActivity;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.io.BufferedReader;
@@ -105,7 +107,8 @@ import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
  * 室外地图。注意: 退出整个应用前,需要把查询数据库给关了FMDatabaseHelper.getDatabaseHelper().close();
  * @author yangbin
  */
-public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View.OnClickListener,
+@InLayer(value = R.layout.content_mangrove_main,parent = R.id.center_common)
+public class OutdoorMapActivity extends CommonActivity implements View.OnClickListener,
                                                                             View.OnTouchListener,
                                                             ButtonGroup.OnButtonGroupListener,
                                                             OnFMMapInitListener,
@@ -197,12 +200,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     // 更新Ui的Handler
     private  Handler UiHandler;
 
-    @Override
-    protected int initPageLayoutID() {
-        return R.layout.content_mangrove_main;
-    }
-
-    @Override
+    @Init
     protected void initView() {
         initSlidingMenu();
         mInstance = this;
@@ -880,7 +878,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 break;
             case R.id.call_service_btn:
                 Toast.makeText(this,"呼叫服务",Toast.LENGTH_SHORT).show();
-                menu.toggle();
                 break;
             default:
                 break;
@@ -2117,6 +2114,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         // configure the SlidingMenu
         Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
+
          menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
@@ -2135,5 +2133,12 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         //为侧滑菜单设置布局
         menu.setMenu(R.layout.header_nav);
+        toolbar.setNavigationIcon(R.mipmap.ic_person);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.toggle();
+            }
+        });
     }
 }
