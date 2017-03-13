@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -107,7 +108,7 @@ public class Ioc {
 		LayoutInflater.from(this.mApplication).setFactory(new XmlFactory(this.mApplication));
 		// ----------------------------------------------------------------------------------
 		// 先判断sdk版本，低于4.0 无法使用registerActivityLifecycleCallbacks
-		if (Handler_System.hasICS()) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			application.registerActivityLifecycleCallbacks(callbacks);
 		}
 		// ----------------------------------------------------------------------------------
