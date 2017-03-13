@@ -12,6 +12,6 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
  */
 @InLayer(R.layout.mem_find_password)
 public class FindPassword extends AppCompatActivity {
-    @InView(value = R.id.toolbar_actionbar);
+//    @InView(value = R.id.toolbar_actionbar);
 
 }

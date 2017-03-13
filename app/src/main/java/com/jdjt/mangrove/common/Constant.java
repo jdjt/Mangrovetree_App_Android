@@ -144,7 +144,9 @@ public class Constant {
 
 	public static class HttpUrl {
 		/** 系统配置的数据库名 **/
-        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
+//        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
+		public static final String BASE = "http://rc-ws.mymhotel.com/";
+
 		public static final String BASIC = "http://cs2.137home.com/index.php?m=api&a=";
 		public static final String LOGIN = BASE+ "uum/mem/sso/login";
 		public static final String LONGIN_POST = BASIC + "login";

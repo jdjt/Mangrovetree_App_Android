@@ -1,13 +1,12 @@
 package com.jdjt.mangrove.login;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.fengmap.drpeng.OutdoorMapActivity;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.common.Constant;
@@ -105,8 +104,10 @@ public class LoginFragment extends Fragment implements ValidationListener {
     @Override
     public void onValidationSucceeded() {
         Toast.makeText(getContext(), "验证成功"+login_password.getText(), Toast.LENGTH_SHORT).show();
-        MangrovetreeApplication.instance.http.u(this).login(login_account.getText().toString(), login_password.getText().toString());
-        startActivity(new Intent(getActivity(), OutdoorMapActivity.class));
+        JsonObject jsonObject=new JsonObject();
+        jsonObject.addProperty("account",login_account.getText().toString());
+        jsonObject.addProperty("password",login_password.getText().toString());
+        MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
     }
 
     @Override

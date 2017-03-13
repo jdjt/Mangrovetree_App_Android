@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -26,6 +30,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <h1>框架类</h1> 进行了如下操作<br>
@@ -107,7 +112,7 @@ public class Ioc {
 		LayoutInflater.from(this.mApplication).setFactory(new XmlFactory(this.mApplication));
 		// ----------------------------------------------------------------------------------
 		// 先判断sdk版本，低于4.0 无法使用registerActivityLifecycleCallbacks
-		if (Handler_System.hasICS()) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			application.registerActivityLifecycleCallbacks(callbacks);
 		}
 		// ----------------------------------------------------------------------------------
@@ -129,7 +134,7 @@ public class Ioc {
 		// -------------------------------------------------------------------------------------------------
 		// 设置程序的入口，保证第一个activity最新被解析，这样可以加快启动速度
 		String packageName = ioc.getApplication().getPackageName();
-		main = Handler_System.getMainActivity(mApplication, packageName);
+		main = getMainActivity(mApplication, packageName);
 		// --------------------------------------------------------------------------------------------------
 		// 开启线程来提前遍历需要注入的activity 此处也是框架异步解析的核心入口
 		IocAnalysis.asyncAnalysis();
@@ -151,7 +156,22 @@ public class Ioc {
 		// --------------------------------------------------------------------------------------------------
 		logger.d("appliaction 加载时间为:" + (System.currentTimeMillis() - time));
 	}
-
+	public static String getMainActivity(Context context, String packageName) {
+		try {
+			PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
+			Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+			resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			resolveIntent.setPackage(pi.packageName);
+			List<ResolveInfo> apps = context.getPackageManager().queryIntentActivities(resolveIntent, 0);
+			ResolveInfo ri = apps.iterator().next();
+			if (ri != null) {
+				return ri.activityInfo.name;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	/**
 	 * 设置子父关系记录
 	 *

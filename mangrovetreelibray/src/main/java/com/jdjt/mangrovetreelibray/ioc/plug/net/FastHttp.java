@@ -7,6 +7,7 @@ import android.os.Message;
 import android.util.Xml;
 
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.util.HeaderConst;
 
@@ -276,6 +277,7 @@ public class FastHttp {
 		}
 		return responseEntity;
 	}
+
 	private static 	Map<String, Object> outHeaders(HttpURLConnection conn) throws UnsupportedEncodingException {
 		Map<String, List<String>> resHeaders = conn.getHeaderFields();
 		// 取出头部信息
@@ -311,10 +313,14 @@ public class FastHttp {
 	}
 	public static ResponseEntity postString(String url, String params, InternetConfig config) {
 		config.setRequest_type(InternetConfig.request_post);
+		config.setContent_type_web(InternetConfig.content_type_json);
 		ResponseEntity responseEntity = new ResponseEntity();
 		responseEntity.setUrl(url);
+		responseEntity.setJsonParams(params);
+		Ioc.getIoc().getLogger().i("头部参数："+ params);
+		HttpURLConnection conn=null;
 		try {
-			HttpURLConnection conn = getDefaultHttpClient(url, config);
+			 conn = getDefaultHttpClient(url, config);
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.connect();
@@ -335,17 +341,23 @@ public class FastHttp {
 					}
 				}
 			}
+			if(null==responseEntity.getHeaders()){
+				responseEntity.setHeaders(outHeaders(conn));
+			}
 			responseEntity.setContent(inputStreamToString(inStream, config.getCharset()), config.isSave());
-			conn.disconnect();
+
 			responseEntity.setStatus(result_ok);
 			if (responseEntity.getContentAsString().length() == 0) {
 				responseEntity.setStatus(result_net_err);
 			}
+			conn.disconnect();
 			return responseEntity;
 		} catch (Exception e) {
 			responseEntity.setStatus(result_net_err);
 			e.printStackTrace();
 		}
+		if(conn!=null)
+			conn.disconnect();
 		return responseEntity;
 	}
 
