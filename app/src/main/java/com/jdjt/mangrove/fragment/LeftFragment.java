@@ -35,13 +35,7 @@ public class LeftFragment extends Fragment {
     @Init
     public void init() {
         account_islogin.setOnClickListener(onClickListener);
-        ll_account_setting_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SettingActivity.class));
-            }
-        });
-//        ll_account_setting_layout.setOnClickListener(onClickListener);
+        ll_account_setting_layout.setOnClickListener(onClickListener);
 
     }
 
@@ -54,10 +48,10 @@ public class LeftFragment extends Fragment {
                     startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
                     break;
                 //跳转到设置
-//                case R.id.ll_account_setting_layout:
-//                    Toast.makeText(getContext(), "不好", Toast.LENGTH_SHORT).show();
-//                    startActivity(new Intent(getActivity(), SettingActivity.class));
-//                    break;
+                case R.id.ll_account_setting_layout:
+                    Toast.makeText(getContext(), "不好", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), SettingActivity.class));
+                    break;
             }
         }
     };
