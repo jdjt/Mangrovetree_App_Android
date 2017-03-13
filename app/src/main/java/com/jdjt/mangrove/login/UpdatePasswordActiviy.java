@@ -1,8 +1,7 @@
 package com.jdjt.mangrove.login;
 
-import android.support.v7.app.AppCompatActivity;
-
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
@@ -11,7 +10,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
  * 修改登录密码
  */
 @InLayer(value = R.layout.mem_update_password,parent = R.id.center_common,isTitle = true)
-public class UpdatePasswordActiviy extends AppCompatActivity {
+public class UpdatePasswordActiviy extends CommonActivity {
 
     @Init
     public void init(){

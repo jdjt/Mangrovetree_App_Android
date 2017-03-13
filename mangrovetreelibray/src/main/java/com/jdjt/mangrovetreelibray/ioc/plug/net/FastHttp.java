@@ -317,7 +317,6 @@ public class FastHttp {
 		ResponseEntity responseEntity = new ResponseEntity();
 		responseEntity.setUrl(url);
 		responseEntity.setJsonParams(params);
-		Ioc.getIoc().getLogger().i("头部参数："+ params);
 		HttpURLConnection conn=null;
 		try {
 			 conn = getDefaultHttpClient(url, config);

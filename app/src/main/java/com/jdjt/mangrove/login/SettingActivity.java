@@ -1,7 +1,5 @@
 package com.jdjt.mangrove.login;
 
-import android.support.v7.app.AppCompatActivity;
-
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;

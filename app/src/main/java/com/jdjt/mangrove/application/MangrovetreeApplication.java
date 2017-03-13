@@ -42,7 +42,8 @@ public class MangrovetreeApplication extends Application {
 
         FMMapSDK.init(this, ResourcesUtils.getSDPath() + "/fm_drpeng");
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getAppExceptionHandler(this));
-
+//        CrashHandler crashHandler = CrashHandler.getInstance();
+//        crashHandler.init(getApplicationContext());
         super.onCreate();
     }
 
@@ -67,8 +68,6 @@ public class MangrovetreeApplication extends Application {
             System.out.println("拦截请求："+config);
             config.setHead(HeaderConst.inHeaders());
             InternetConfig netConfig = InternetConfig.defaultConfig();
-//            netConfig.setHead();
-
             ResponseEntity reslut = null;
             switch (config.getType()) {
                 case GET:

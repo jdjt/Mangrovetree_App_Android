@@ -70,7 +70,7 @@ public class HeaderConst {
 
 		// 取出头部信息
 		HashMap<String, Object> map = new HashMap<>();
-		String ticket= Handler_SharedPreferences.getValueByName("User", "ticket",0);
+		String ticket= Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "ticket",0);
 //        if (Handler_String.isBlank(ticket)&&null!=MapVo.get("ticket")) {
 //            Ioc.getIoc().getLogger().i("获取Handler_SharedPreferences 下的ticket 失败");
 //            ticket = MapVo.get("ticket").toString();

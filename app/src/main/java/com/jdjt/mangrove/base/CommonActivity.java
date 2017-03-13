@@ -3,8 +3,8 @@ package com.jdjt.mangrove.base;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -17,6 +17,8 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * @author wmy
@@ -33,96 +35,123 @@ public class CommonActivity extends AppCompatActivity {
     protected ProgressDialog dialog = null;
 
     public static final String EXTRA_TITLE = "title";
+//
+//    /**
+//     * 显示进度条
+//     *
+//     * @param title 标题
+//     * @param msg   内容
+//     */
+//    protected void showProgress(String title, String msg) {
+//        if (dialog == null) {
+//            doCreateProgress();
+//        }
+//
+//        dialog.setTitle(title);
+//        dialog.setMessage(msg);
+//
+//        if (!dialog.isShowing()) {
+//            dialog.show();
+//        }
+//    }
+//
+//    /**
+//     * 单独开启线程显示 dialog
+//     *
+//     * @param handler 创建线程
+//     * @param title   标题
+//     * @param msg     内容
+//     */
+//    protected void showProgress(Handler handler, String title, String msg) {
+//        if (dialog == null) {
+//            doCreateProgress();
+//        }
+//
+//        dialog.setTitle(title);
+//        dialog.setMessage(msg);
+//
+//        if (!dialog.isShowing()) {
+//            handler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    dialog.show();
+//                }
+//            });
+//        }
+//    }
+//
+//    /**
+//     * 初始化dialog
+//     */
+//    private void doCreateProgress() {
+//        dialog = new ProgressDialog(this);
+//        dialog.setProgressStyle(dialog.STYLE_SPINNER);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.setIndeterminate(false);
+//        dialog.setCancelable(true);
+//    }
+//
+//    /**
+//     * 关闭进度条
+//     */
+//    protected void closeProgress() {
+//        if (dialog != null && dialog.isShowing()) {
+//            dialog.dismiss();
+//        }
+//        dialog = null;
+//    }
+//
+//    /**
+//     * 关闭进度条
+//     *
+//     * @param handler
+//     */
+//    protected void closeProgress(Handler handler) {
+//        if (dialog != null && dialog.isShowing()) {
+//            handler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    dialog.dismiss();
+//                }
+//            });
+//        }
+//        dialog = null;
+//    }
 
-    /**
-     * 显示进度条
-     *
-     * @param title 标题
-     * @param msg   内容
-     */
-    protected void showProgress(String title, String msg) {
-        if (dialog == null) {
-            doCreateProgress();
-        }
-
-        dialog.setTitle(title);
-        dialog.setMessage(msg);
-
-        if (!dialog.isShowing()) {
-            dialog.show();
-        }
+    SweetAlertDialog pDialog=null;
+    public void showLoading(){
+        if(pDialog==null)
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("加载中...");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
-
-    /**
-     * 单独开启线程显示 dialog
-     *
-     * @param handler 创建线程
-     * @param title   标题
-     * @param msg     内容
-     */
-    protected void showProgress(Handler handler, String title, String msg) {
-        if (dialog == null) {
-            doCreateProgress();
-        }
-
-        dialog.setTitle(title);
-        dialog.setMessage(msg);
-
-        if (!dialog.isShowing()) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    dialog.show();
-                }
-            });
-        }
+    public void showConfirm(String msg ,SweetAlertDialog.OnSweetClickListener listener){
+        pDialog = new SweetAlertDialog(this);
+        pDialog.setTitleText("温馨提示")
+                .setContentText(msg)
+                .setCancelText("取消")
+                .setConfirmText("确定")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                }).setConfirmClickListener(listener)
+                .show();
     }
-
-    /**
-     * 初始化dialog
-     */
-    private void doCreateProgress() {
-        dialog = new ProgressDialog(this);
-        dialog.setProgressStyle(dialog.STYLE_SPINNER);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setIndeterminate(false);
-        dialog.setCancelable(true);
-    }
-
-    /**
-     * 关闭进度条
-     */
-    protected void closeProgress() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-        dialog = null;
-    }
-
-    /**
-     * 关闭进度条
-     *
-     * @param handler
-     */
-    protected void closeProgress(Handler handler) {
-        if (dialog != null && dialog.isShowing()) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                }
-            });
-        }
-        dialog = null;
-    }
-
     /**
      * activity销毁时 同时销毁
      */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        closeProgress();
+        if(pDialog!=null){
+            pDialog.dismiss();
+            pDialog=null;
+        }
     }
 
     /**
@@ -202,6 +231,23 @@ public class CommonActivity extends AppCompatActivity {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg),0);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(isTaskRoot()){
+            showConfirm("是否确定退出？", new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismissWithAnimation();
+                    sweetAlertDialog.dismiss();
+                    System.exit(0);
+
+                }
+            });
+        }else{
+            finish();
+        }
+//        super.onBackPressed();
+    }
 
     @Init
     private void initActivity(){

@@ -1,6 +1,5 @@
 package com.jdjt.mangrove.login;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +17,8 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
 @InLayer(value = R.layout.mem_pesonal_info,parent = R.id.center_common,isTitle = true)
 public class PesonalInfoActivity extends CommonActivity {
+    //标题栏
+    Toolbar toolbar_actionbar;
 
     @InView(value = R.id.tv_personal_name)
     TextView tv_personal_name;   //姓名
