@@ -66,8 +66,10 @@ public class MangrovetreeApplication extends Application {
         @Override
         public ResponseEntity netCore(NetConfig config) {
             System.out.println("拦截请求："+config);
+            config.setHead(HeaderConst.inHeaders());
             InternetConfig netConfig = InternetConfig.defaultConfig();
-            netConfig.setHead(HeaderConst.inHeaders());
+//            netConfig.setHead();
+
             ResponseEntity reslut = null;
             switch (config.getType()) {
                 case GET:

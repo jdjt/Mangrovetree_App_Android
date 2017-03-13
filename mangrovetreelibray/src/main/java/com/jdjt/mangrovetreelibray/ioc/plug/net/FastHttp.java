@@ -225,8 +225,7 @@ public class FastHttp {
 		responseEntity.setUrl(url);
 		responseEntity.setParams(params);
 		responseEntity.setKey(config.getKey());
-		responseEntity.setConfig(config);
-		responseEntity.setHeaders(config.getHead());
+
 		// 判断是否需要离线
 		if (config.isSave()) {
 			if (!Handler_Network.isNetworkAvailable(Ioc.getIoc().getApplication())) {
@@ -242,6 +241,8 @@ public class FastHttp {
 
 		try {
 			HttpURLConnection conn = getDefaultHttpClient(url, config);
+			//不使用缓存
+			conn.setUseCaches(false);
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.connect();
