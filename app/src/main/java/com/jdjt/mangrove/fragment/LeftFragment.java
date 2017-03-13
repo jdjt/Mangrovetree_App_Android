@@ -12,6 +12,7 @@ import com.jdjt.mangrove.login.PesonalInfoActivity;
 import com.jdjt.mangrove.login.SettingActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBinder;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
@@ -26,35 +27,49 @@ import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 @InLayer(R.layout.header_nav)
 public class LeftFragment extends Fragment {
 
-    @InView(R.id.account_islogin)
+    @InView(value =R.id.account_islogin,binder = @InBinder(listener = OnClick.class,method = "click"))
     LinearLayout account_islogin; //用户中心
-    @InView(R.id.ll_account_setting_layout)
+    @InView(value = R.id.ll_account_setting_layout,binder = @InBinder(listener = OnClick.class,method = "click"))
     LinearLayout ll_account_setting_layout;//设置
 
 
-    @Init
-    public void init() {
-        account_islogin.setOnClickListener(onClickListener);
-        ll_account_setting_layout.setOnClickListener(onClickListener);
-
-    }
-
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        public void onClick(View view) {
-            switch (view.getId()) {
+//    @Init
+//    public void init() {
+//        account_islogin.setOnClickListener(onClickListener);
+//        ll_account_setting_layout.setOnClickListener(onClickListener);
+//
+//    }
+private void click(View view){
+    switch (view.getId()) {
 //                //跳转到用户中心
-                case R.id.account_islogin:
-                    Toast.makeText(getContext(), "好的", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
-                    break;
-                //跳转到设置
-                case R.id.ll_account_setting_layout:
-                    Toast.makeText(getContext(), "不好", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), SettingActivity.class));
-                    break;
-            }
-        }
-    };
+        case R.id.account_islogin:
+            Toast.makeText(getContext(), "好的", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
+            break;
+        //跳转到设置
+        case R.id.ll_account_setting_layout:
+            Toast.makeText(getContext(), "不好", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), SettingActivity.class));
+
+            break;
+    }
+}
+//    View.OnClickListener onClickListener = new View.OnClickListener() {
+//        public void onClick(View view) {
+//            switch (view.getId()) {
+////                //跳转到用户中心
+//                case R.id.account_islogin:
+//                    Toast.makeText(getContext(), "好的", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
+//                    break;
+//                //跳转到设置
+//                case R.id.ll_account_setting_layout:
+//                    Toast.makeText(getContext(), "不好", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(getActivity(), SettingActivity.class));
+//                    break;
+//            }
+//        }
+//    };
 }
 //    protected LayoutInflater inflater;
 //    @Override
