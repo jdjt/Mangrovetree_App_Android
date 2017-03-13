@@ -70,6 +70,18 @@
             android:name=".login.LoginAndRegisterFragmentActivity"
             android:label="@string/title_activity_mangrove_main"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".login.PesonalInfoActivity"
+            android:label="@string/title_activity_mangrove_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".login.FindPasswordActivity"
+            android:label="@string/title_activity_mangrove_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".login.LoginAndRegisterFragmentActivity"
+            android:label="@string/title_activity_mangrove_main"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

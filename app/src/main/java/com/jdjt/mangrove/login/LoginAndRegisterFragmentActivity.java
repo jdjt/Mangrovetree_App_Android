@@ -28,7 +28,6 @@ public class LoginAndRegisterFragmentActivity extends CommonActivity {
     RadioGroup radioGroup;
     @InAfter
     protected void initView() {
-//        getSupportActionBar().setTitle("");
         startFragmentAdd(loginFragment);
     }
 //

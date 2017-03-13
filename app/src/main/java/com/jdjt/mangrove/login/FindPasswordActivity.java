@@ -10,9 +10,10 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
 /**
- * Created by uuuu on 2017/3/13.
+ * Created by huyanan on 2017/3/13.
+ * 忘记密码（验证手机号）
  */
-@InLayer(R.layout.mem_find_password)
+@InLayer(value = R.layout.mem_find_password,parent = R.id.center_common,isTitle = true)
 public class FindPasswordActivity extends AppCompatActivity {
 //    @InView(value = R.id.toolbar_actionbar);
         Toolbar toolbar_actionbar;

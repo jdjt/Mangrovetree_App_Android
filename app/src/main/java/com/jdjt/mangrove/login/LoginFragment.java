@@ -87,8 +87,8 @@ public class LoginFragment extends Fragment implements ValidationListener {
         System.out.print("huyanan" + account);
         System.out.print("huyanan" + password);
 
-//        login_account.setText(account);
-//        login_password.setText(password);
+        login_account.setText(account);
+        login_password.setText(password);
         password_visible.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

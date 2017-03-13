@@ -11,10 +11,11 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
 /**
- * Created by uuuu on 2017/3/13.
+ * Created by huyanan on 2017/3/13.
+ * 个人资料
  */
 
-@InLayer(R.layout.mem_pesonal_info)
+@InLayer(value = R.layout.mem_pesonal_info,parent = R.id.center_common,isTitle = true)
 public class PesonalInfoActivity extends AppCompatActivity {
     //标题栏
     Toolbar toolbar_actionbar;
