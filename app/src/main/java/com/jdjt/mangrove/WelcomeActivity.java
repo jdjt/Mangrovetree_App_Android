@@ -15,9 +15,9 @@ import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.data.FMDataManager;
 import com.fengmap.android.wrapmv.Tools;
 import com.fengmap.drpeng.FMAPI;
-import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
+import com.jdjt.mangrove.login.LoginAndRegisterFragmentActivity;
 import com.jdjt.mangrove.util.PermissionsChecker;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
@@ -140,7 +140,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
                 b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class, b);
                 WelcomeActivity.this.finish();
             }
         }, 500);
