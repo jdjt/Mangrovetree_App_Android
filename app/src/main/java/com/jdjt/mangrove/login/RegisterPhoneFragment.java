@@ -1,5 +1,6 @@
 package com.jdjt.mangrove.login;
 
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,13 +19,19 @@ import com.jdjt.mangrovetreelibray.ioc.validator.VaPassword;
 import com.jdjt.mangrovetreelibray.ioc.validator.Validator;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static com.jdjt.mangrovetreelibray.ioc.ioc.IocFragmentHandler.handler;
 
 /**
  * Created by huyanan on 2017/3/9.
  */
-@InLayer( R.layout.register)
+@InLayer(R.layout.register)
 public class RegisterPhoneFragment extends Fragment {
 
+    private int time = 60;//初始秒
+    Timer timer = new Timer();
 
     @InVa(value = VaMobile.class, empty = false, msg = "请输入正确的手机号", index = 1)
     @InView(value = R.id.register_account)
@@ -45,7 +52,7 @@ public class RegisterPhoneFragment extends Fragment {
     @InView(value = R.id.read_agreement)
     CheckBox read_agreement;//同意条款
     @InView(value = R.id.register_button)
-            Button register_button;
+    Button register_button;
     Boolean agree_flag = true;
     //验证
     Validator validator;
@@ -62,5 +69,30 @@ public class RegisterPhoneFragment extends Fragment {
     @Init
     public void init() {
         Ioc.getIoc().getLogger().e("初始化注册页面");
+//        timer.schedule(task, 1000, 1000);
     }
+
+//    final Handler handler = new Handler(){    
+//        @Override    
+//        public void handleMessage(Message msg){    
+//            switch (msg.what) {    
+//            case 1:    
+//                txtView.setText(""+recLen);    
+//                if(recLen < 0){    
+//                    timer.cancel();    
+//                    txtView.setVisibility(View.GONE);    
+//                }    
+//            }    
+//        }    
+//    };  
+//    TimerTask task = new TimerTask() {
+//        @Override
+//        public void run() {
+//            time--;
+//            Message message = new Message();
+//            message.what = 1;
+//            handler.sendMessage(message);
+//        }
+//    };
+
 }
