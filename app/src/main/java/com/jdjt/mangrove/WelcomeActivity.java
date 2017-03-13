@@ -1,9 +1,11 @@
 package com.jdjt.mangrove;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.data.FMDataManager;
+import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.login.LonginAndRegisterFragmentActivity;
@@ -54,6 +59,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     };
 
+    @TargetApi(Build.VERSION_CODES.M)
     protected void init() throws InterruptedException {
         PackageManager pm = getPackageManager();
         try {
@@ -66,7 +72,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 this.requestPermissions(PERMISSIONS, REQUEST_CODE); // 请求权限
             } else {
 
-//            copyMap();
+            copyMap();
                 startActivity();
                 return;
             }
@@ -91,7 +97,7 @@ public class WelcomeActivity extends AppCompatActivity {
         //通过权限校验 并且赋予权限后触发跳转到 主页面
         if (requestCode == REQUEST_CODE) {
 //
-//            copyMap();//跳转页面
+            copyMap();//跳转页面
             startActivity();
             return;
         }
@@ -125,17 +131,17 @@ public class WelcomeActivity extends AppCompatActivity {
      */
     private  void startActivity(){
         Ioc.getIoc().init(MangrovetreeApplication.instance);
-        startActivity(new Intent(WelcomeActivity.this, LonginAndRegisterFragmentActivity.class));
-        finish();
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Bundle b = new Bundle();
-//                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
-//                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-//                FMAPI.instance().gotoActivity(WelcomeActivity.this, LonginAndRegisterFragmentActivity.class, b);
-//                WelcomeActivity.this.finish();
-//            }
-//        }, 500);
+//        startActivity(new Intent(WelcomeActivity.this, LonginAndRegisterFragmentActivity.class));
+//        finish();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Bundle b = new Bundle();
+                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
+                FMAPI.instance().gotoActivity(WelcomeActivity.this, OutdoorMapActivity.class, b);
+                WelcomeActivity.this.finish();
+            }
+        }, 500);
     }
 }

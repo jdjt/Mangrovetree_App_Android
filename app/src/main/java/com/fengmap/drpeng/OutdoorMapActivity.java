@@ -196,6 +196,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
     // 更新Ui的Handler
     private  Handler UiHandler;
+
     @Override
     protected int initPageLayoutID() {
         return R.layout.content_mangrove_main;
@@ -1256,7 +1257,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 }
 
                 mMapView.setHighlight(mCurrentModel, true);
-                Log.d("TAGTAGTAG","打印坐标："+mCurrentModel.getName()+": "+mCurrentModel.getCenterMapCoord());
+                Log.d("TAGTAGTAG","打印坐标："+mMap.currentMapId()+" 坐标 : "+mCurrentModel.getCenterMapCoord()+"mCurrentModel.getGroupId()= "+mCurrentModel.getGroupId());
                 mLastModel = mCurrentModel;
 
                 mMap.updateMap();
@@ -1335,7 +1336,9 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
 
         mProgressDialog.dismiss();
 
-//        needLocate(false);
+        FMMapSDK.setLocateServiceState(true);
+//        FMMapSDK.setCallServiceState(true);
+        needLocate(false);
 
 //        new Thread(new Runnable() {
 //            int index = 0;
@@ -1370,6 +1373,15 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
     @Override
     public void onMapInitFailure(String mapPath, int code) {
 
+    }
+
+
+    private FMTotalMapCoord getdefaultcoord(){
+        //默认位置坐标点
+        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7,2071275.90186538,0.0);
+        defaultPosition.setGroupId(1);
+        defaultPosition.setMapId("79980");
+        return  defaultPosition;
     }
 
     @Override
@@ -1661,7 +1673,6 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         mProgressDialog.setInfoViewContext("定位中...");
         mProgressDialog.show();
         FMLocationService.instance().start();
-
         FMTotalMapCoord locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
         if (locatePosition == null) {
             waitLocate(isArrive);
@@ -1686,7 +1697,8 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
                 FMTotalMapCoord locatePosition = null;
 
                 while (isRun) {
-                    locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
+//                    locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
+                    locatePosition = getdefaultcoord();
                     if (locatePosition != null) {
                         isRun = false;
                     }
@@ -1935,7 +1947,7 @@ public class OutdoorMapActivity extends SysBaseAppCompatActivity implements View
         @Override
         public void onReceiveLocation(int type, FMTotalMapCoord lastLocation, FMTotalMapCoord currentLocation, final float angle) {
             String logC = "type: " + type+" ,"+ currentLocation.toString();
-
+            Log.e("TAGTAGTAG","定位回调返回 "+"type: " + type+" ,"+ currentLocation.toString());
             if (!isMapLoadCompleted) {
                 return;
             }
