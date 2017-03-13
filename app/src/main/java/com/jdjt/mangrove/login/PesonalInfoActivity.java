@@ -1,11 +1,11 @@
 package com.jdjt.mangrove.login;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
@@ -16,7 +16,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
  */
 
 @InLayer(value = R.layout.mem_pesonal_info,parent = R.id.center_common,isTitle = true)
-public class PesonalInfoActivity extends AppCompatActivity {
+public class PesonalInfoActivity extends CommonActivity {
     //标题栏
     Toolbar toolbar_actionbar;
 

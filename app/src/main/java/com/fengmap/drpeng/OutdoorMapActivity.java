@@ -688,44 +688,44 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (mProgressDialog.isShowing()) {
-            return;
-        }
-
-        if (tryCloseAllWindow()) {
-            return;
-        }
-
-        if (mSceneAnimator != null) {
-            mSceneAnimator.cancel();
-        }
-
-
-        clearWalkedTemporaryValue();
-        clearCalculatedPathResults();
-        clearCalculateRouteLineMarker();
-        clearStartAndEndMarker();
-        clearMeLocationMarker();
-
-        if (SearchFragment.class.getName().equals(mFromWhere)) {
-            Bundle b = new Bundle();
-            b.putString(FMAPI.TARGET_FRAGMENT, SearchFragment.class.getName());
-            b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_HISTORY, mSearchElement);
-            FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
-            mFromWhere = null;
-        } else if (SearchResultFragment.class.getName().equals(mFromWhere)) {
-            Bundle b = new Bundle();
-            b.putString(FMAPI.TARGET_FRAGMENT, SearchResultFragment.class.getName());
-            b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_RESULT, mMapElement);
-            FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
-            mFromWhere = null;
-        }  else {
-            super.onBackPressed();
-        }
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (mProgressDialog.isShowing()) {
+//            return;
+//        }
+//
+//        if (tryCloseAllWindow()) {
+//            return;
+//        }
+//
+//        if (mSceneAnimator != null) {
+//            mSceneAnimator.cancel();
+//        }
+//
+//
+//        clearWalkedTemporaryValue();
+//        clearCalculatedPathResults();
+//        clearCalculateRouteLineMarker();
+//        clearStartAndEndMarker();
+//        clearMeLocationMarker();
+//
+//        if (SearchFragment.class.getName().equals(mFromWhere)) {
+//            Bundle b = new Bundle();
+//            b.putString(FMAPI.TARGET_FRAGMENT, SearchFragment.class.getName());
+//            b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_HISTORY, mSearchElement);
+//            FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
+//            mFromWhere = null;
+//        } else if (SearchResultFragment.class.getName().equals(mFromWhere)) {
+//            Bundle b = new Bundle();
+//            b.putString(FMAPI.TARGET_FRAGMENT, SearchResultFragment.class.getName());
+//            b.putSerializable(FMAPI.ACTIVITY_OBJ_SEARCH_RESULT, mMapElement);
+//            FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
+//            mFromWhere = null;
+//        }  else {
+//            super.onBackPressed();
+//        }
+//
+//    }
 
     private boolean tryCloseAllWindow() {
         if (mOpenNaviProcessWindow !=null && mOpenNaviProcessWindow.isShowing()) {

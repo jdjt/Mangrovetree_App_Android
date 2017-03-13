@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.fengmap.android.data.FMDataManager;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -114,6 +115,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
      * @param ex
      */
     private void existApp(Thread thread, Throwable ex) {
+        Ioc.getIoc().getLogger().e("existApp Throwable.getLocalizedMessage"+ex.getLocalizedMessage()+" \nThrowable msg"+ex.getMessage());
         mDefaultHandler.uncaughtException(thread, ex);
 
     }
@@ -151,9 +153,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
             writer.close();
 
             write("stack: " + rtn + "\n");
+            Ioc.getIoc().getLogger().e("Throwable "+rtn);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         //        final File fileDir = new File(ERROR_REPORT_DIR);

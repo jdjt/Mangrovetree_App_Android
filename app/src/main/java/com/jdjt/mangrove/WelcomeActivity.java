@@ -1,20 +1,16 @@
 package com.jdjt.mangrove;
 
 import android.Manifest;
-import android.content.pm.PackageInfo;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.data.FMDataManager;
-import com.fengmap.android.wrapmv.Tools;
-import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.login.LoginAndRegisterFragmentActivity;
@@ -28,10 +24,10 @@ import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 public class WelcomeActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 919; // 请求码
 
-    private Handler mHandler = new Handler();
+
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         try {
@@ -57,25 +53,21 @@ public class WelcomeActivity extends AppCompatActivity {
 
     protected void init() throws InterruptedException {
         PackageManager pm = getPackageManager();
-        try {
-            Log.d(WelcomeActivity.this.getLocalClassName(), "this.getPackageName() ：" + this.getPackageName());
-            PackageInfo pi = pm.getPackageInfo(this.getPackageName(), 0);
-            TextView versionNumber = (TextView) findViewById(R.id.versionNumber);
-            versionNumber.setText("Version " + pi.versionName);
+//            PackageInfo pi = pm.getPackageInfo(this.getPackageName(), 0);
+//            TextView versionNumber = (TextView) findViewById(R.id.versionNumber);
+//            versionNumber.setText("Version " + pi.versionName);
             PermissionsChecker mChecker = new PermissionsChecker(this);
             if (mChecker.lacksPermissions(PERMISSIONS)) {
                 this.requestPermissions(PERMISSIONS, REQUEST_CODE); // 请求权限
+
             } else {
-
+                Log.d(WelcomeActivity.this.getLocalClassName(), "权限认证完毕" );
+//                Ioc.getIoc().getLogger().e("权限认证完毕");
 //            copyMap();
+
                 startActivity();
-                return;
+
             }
-
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -124,25 +116,23 @@ public class WelcomeActivity extends AppCompatActivity {
                 FMDataManager.getFMMapResourceDirectory() + mapId + "/", dstFileName, srcFileName);
     }
 
-
+    private Handler mHandler = new Handler();
     /**
      * 跳转到主页面
      */
     private  void startActivity() throws InterruptedException {
         Ioc.getIoc().init(MangrovetreeApplication.instance);
-        copyMap();
-//        Thread.sleep(3000);
-//        startActivity(new Intent(WelcomeActivity.this, OutdoorMapActivity.class));
-//        finish();
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Bundle b = new Bundle();
-                b.putString(FMAPI.ACTIVITY_WHERE, WelcomeActivity.class.getName());
-                b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-                FMAPI.instance().gotoActivity(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class, b);
+                copyMap();
+                startActivity(new Intent(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class));
                 WelcomeActivity.this.finish();
             }
-        }, 500);
+        },2000);
+
+
+
     }
 }

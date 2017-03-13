@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
@@ -14,7 +15,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
  * 忘记密码（验证手机号）
  */
 @InLayer(value = R.layout.mem_find_password,parent = R.id.center_common,isTitle = true)
-public class FindPasswordActivity extends AppCompatActivity {
+public class FindPasswordActivity extends CommonActivity {
 //    @InView(value = R.id.toolbar_actionbar);
         Toolbar toolbar_actionbar;
 

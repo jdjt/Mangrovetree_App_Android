@@ -50,6 +50,7 @@ public interface HttpInterFace {
 	//异步
 	@InPost(Constant.HttpUrl.LOGIN)
 	public void login(@InParam() String json);
+
 //	@InPost(Constant.HttpUrl.LOGIN)
 //	public void loginPost(@InParam LinkedHashMap<String, Object> params);
 //
