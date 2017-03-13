@@ -1,11 +1,18 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
@@ -16,11 +23,13 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_TextStyle;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
+import com.jdjt.mangrovetreelibray.ioc.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.verification.Rule;
 import com.jdjt.mangrovetreelibray.ioc.verification.Validator;
 import com.jdjt.mangrovetreelibray.ioc.verification.Validator.ValidationListener;
@@ -28,6 +37,7 @@ import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Password;
 import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Telphone;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by huyanan on 2017/3/9.
@@ -37,18 +47,26 @@ public class LoginFragment extends Fragment implements ValidationListener {
     //    @InAll
 //    Views v;
     @Telphone(empty = false, message = "请输入正确的手机号", order = 1)
-    @InView()
+    @InView
     EditText login_account;//账号
+
     @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 2)
     @InView
     EditText login_password;//密码
 
-    @InView(binder =  @InBinder(listener = OnClick.class, method = "click"))
+    @InView(value = R.id.password_visible)
+    CheckBox password_visible;//密码显示隐藏的checkbox
+
+    @InView(binder = @InBinder(listener = OnClick.class, method = "click"))
     Button login_button;//登录按钮
 
-    @InView(binder = @InBinder(listener = OnClick.class, method = "click") )
-    Button login_findpwd_button;//忘记密码
+    @InView(binder = @InBinder(listener = OnClick.class, method = "click"))
+    TextView login_findpwd_button;//忘记密码
     Validator validator;
+
+
+    Map<String, String> loginMap;
+
     /**
      * 当点击登陆按钮，会自动获取输入框内的用户名和密码，对其进行验证
      */
@@ -64,6 +82,27 @@ public class LoginFragment extends Fragment implements ValidationListener {
     public void init() {
 
         Ioc.getIoc().getLogger().e("初始化登录页面");
+        String account = Handler_SharedPreferences.getValueByName("user", "account", 0);
+        String password = Handler_SharedPreferences.getValueByName("user", "password", 0);
+        System.out.print("huyanan" + account);
+        System.out.print("huyanan" + password);
+
+//        login_account.setText(account);
+//        login_password.setText(password);
+        password_visible.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (password_visible.isChecked()) {
+                    //密码显示
+                    login_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    //密码隐藏
+                    login_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
+
+
 //        AccountEntity datas = getSave();
 //        //是否保存用户名密码
 //        System.out.println("是否已经保存了用户名密码："+datas.isSave());
@@ -103,11 +142,17 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @Override
     public void onValidationSucceeded() {
-        Toast.makeText(getContext(), "验证成功"+login_password.getText(), Toast.LENGTH_SHORT).show();
-        JsonObject jsonObject=new JsonObject();
-        jsonObject.addProperty("account",login_account.getText().toString());
-        jsonObject.addProperty("password",login_password.getText().toString());
+        Toast.makeText(getContext(), "验证成功" + login_password.getText(), Toast.LENGTH_SHORT).show();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("account", login_account.getText().toString());
+        jsonObject.addProperty("password", login_password.getText().toString());
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
+
+        //存储用户名密码到本地
+        Handler_SharedPreferences.WriteSharedPreferences("user", "account", login_account.getText().toString());
+        Handler_SharedPreferences.WriteSharedPreferences("user", "password", login_password.getText().toString());
+
+
     }
 
     @Override
