@@ -7,7 +7,6 @@ import com.fengmap.drpeng.CrashHandler;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.http.HttpInterFace;
-import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.net.IocHttpListener;
 import com.jdjt.mangrovetreelibray.ioc.net.IocListener;
 import com.jdjt.mangrovetreelibray.ioc.net.NetConfig;
@@ -38,7 +37,7 @@ public class MangrovetreeApplication extends Application {
     @Override
     public void onCreate() {
         instance = this;
-        Ioc.getIoc().init(this);
+
         plugLoad();
 
         FMMapSDK.init(this, ResourcesUtils.getSDPath() + "/fm_drpeng");
@@ -76,7 +75,7 @@ public class MangrovetreeApplication extends Application {
                     reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
                     break;
                 case POST:
-                    reslut = FastHttp.post(config.getUrl(), config.getParams(), netConfig);
+                    reslut = FastHttp.postString(config.getUrl(), config.getParam(), netConfig);
                     break;
                 case FORM:
                     reslut = FastHttp.form(config.getUrl(), config.getParams(), new HashMap<String, File>(), netConfig);

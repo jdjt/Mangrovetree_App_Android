@@ -14,6 +14,7 @@ public class ResponseEntity implements Serializable {
 	private Map<String, Object> headers;
 	private Map<String, String> cookies;
 	private Map<String, Object> params;
+	private String jsonParams;
 	private int key;
 	private InternetConfig config;
 
@@ -35,6 +36,14 @@ public class ResponseEntity implements Serializable {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public String getJsonParams() {
+		return jsonParams;
+	}
+
+	public void setJsonParams(String jsonParams) {
+		this.jsonParams = jsonParams;
 	}
 
 	public ResponseEntity setUrl(String url) {
@@ -104,7 +113,7 @@ public class ResponseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ResponseEntity [status=" + status + ", url=" + url + ", content=" + content + ", cookies=" + cookies + ", headers=" + headers +", params=" + params + ", key=" + key + "]";
+		return "ResponseEntity [status=" + status + ", url=" + url + ", content=" + content + ", cookies=" + cookies + ", headers=" + headers +", params=" + params + ",jsonParams="+jsonParams+", key=" + key + "]";
 	}
 
 	public int getKey() {

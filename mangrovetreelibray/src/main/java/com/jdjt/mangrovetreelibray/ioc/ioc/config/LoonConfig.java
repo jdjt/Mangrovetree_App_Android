@@ -5,7 +5,6 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InUI;
 import com.jdjt.mangrovetreelibray.ioc.core.IocAnalysis;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_File;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Properties;
-import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.interfaces.Bean;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.util.LoonConstant;
@@ -81,7 +80,7 @@ public class LoonConfig implements Serializable {
 		if (properties != null && properties.containsKey("standard_h")) {
 			this.h = Integer.valueOf(properties.get("standard_h").toString());
 		}
-		Ioc.getIoc().getLogger().d("屏幕分辨率为:" + Handler_System.getDisplayMetrics() + " 配置文件设置的分辨率为 standard_w:" + getW() + " standard_h:" + getH());
+//		Ioc.getIoc().getLogger().d("屏幕分辨率为:" + Handler_System.getDisplayMetrics() + " 配置文件设置的分辨率为 standard_w:" + getW() + " standard_h:" + getH());
 		// 读取允许解析和不允许解析的包名
 		HashSet<String> permitSet = new HashSet<String>();
 		permitSet.add(packageName);
