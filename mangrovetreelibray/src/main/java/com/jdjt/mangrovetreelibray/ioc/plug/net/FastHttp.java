@@ -225,8 +225,7 @@ public class FastHttp {
 		responseEntity.setUrl(url);
 		responseEntity.setParams(params);
 		responseEntity.setKey(config.getKey());
-		responseEntity.setConfig(config);
-		responseEntity.setHeaders(config.getHead());
+
 		// 判断是否需要离线
 		if (config.isSave()) {
 			if (!Handler_Network.isNetworkAvailable(Ioc.getIoc().getApplication())) {
@@ -242,6 +241,8 @@ public class FastHttp {
 
 		try {
 			HttpURLConnection conn = getDefaultHttpClient(url, config);
+			//不使用缓存
+			conn.setUseCaches(false);
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.connect();
@@ -300,13 +301,12 @@ public class FastHttp {
 
 		String msg = resHeaders.get(HeaderConst.MYMHOTEL_MESSAGE) == null ? ""
 				: resHeaders.get(HeaderConst.MYMHOTEL_MESSAGE).get(0);
-		Ioc.getIoc().getLogger().i("mssage转换之前:"+msg);
 //		String androidVersion=Handler_System.getAndroidDisplayVersion(Ioc.getIoc().getApplication());
 //		if(!androidVersion.contains("HUAWEI"))
 		msg = new String(msg.getBytes("ISO8859-1"), "UTF-8");
 		map.put(HeaderConst.MYMHOTEL_MESSAGE, msg);
 		// 设置输出头部参数信息
-		Ioc.getIoc().getLogger().i("mssage转换之前:"+msg);
+		Ioc.getIoc().getLogger().i("mssage转换后:"+msg);
 		return map;
 	}
 	public static ResponseEntity postString(String url, String params, InternetConfig config) {

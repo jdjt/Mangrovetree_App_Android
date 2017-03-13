@@ -104,7 +104,7 @@ public class ResponseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ResponseEntity [status=" + status + ", url=" + url + ", content=" + content + ", cookies=" + cookies + ", heard	=" + headers +", params=" + params + ", key=" + key + "]";
+		return "ResponseEntity [status=" + status + ", url=" + url + ", content=" + content + ", cookies=" + cookies + ", headers=" + headers +", params=" + params + ", key=" + key + "]";
 	}
 
 	public int getKey() {

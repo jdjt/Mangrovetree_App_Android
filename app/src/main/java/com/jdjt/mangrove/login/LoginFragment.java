@@ -87,6 +87,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
         }
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+
         int status = Integer.valueOf(data.get("status").toString());
         if (status == 0) {
             Toast.makeText(getContext(), data.get("data").toString(), Toast.LENGTH_SHORT).show();
