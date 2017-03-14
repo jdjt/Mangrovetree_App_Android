@@ -2,11 +2,17 @@ package com.jdjt.mangrove.login;
 
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrovetreelibray.ioc.verification.Rule;
+import com.jdjt.mangrovetreelibray.ioc.verification.Validator.ValidationListener;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InVa;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
@@ -28,7 +34,7 @@ import static com.jdjt.mangrovetreelibray.ioc.ioc.IocFragmentHandler.handler;
  * Created by huyanan on 2017/3/9.
  */
 @InLayer(R.layout.register)
-public class RegisterPhoneFragment extends Fragment {
+public class RegisterPhoneFragment extends Fragment implements ValidationListener {
 
     private int time = 60;//初始秒
     Timer timer = new Timer();
@@ -52,7 +58,7 @@ public class RegisterPhoneFragment extends Fragment {
     @InView(value = R.id.read_agreement)
     CheckBox read_agreement;//同意条款
     @InView(value = R.id.register_button)
-    Button register_button;
+    Button register_button;  //注册按钮
     Boolean agree_flag = true;
     //验证
     Validator validator;
@@ -70,6 +76,33 @@ public class RegisterPhoneFragment extends Fragment {
     public void init() {
         Ioc.getIoc().getLogger().e("初始化注册页面");
 //        timer.schedule(task, 1000, 1000);
+
+        read_agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (read_agreement.isChecked()) {
+                    //选中可注册
+                    register_button.setEnabled(true);
+                    register_button.setBackgroundResource(R.drawable.setbtn_bg);
+                } else {
+                    //未选中不可注册
+                    register_button.setEnabled(false);
+                    register_button.setBackgroundResource(R.color.unPresentMonth_FontColor);
+
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+
+    }
+
+    @Override
+    public void onValidationFailed(View failedView, Rule<?> failedRule) {
+
     }
 
 //    final Handler handler = new Handler(){    

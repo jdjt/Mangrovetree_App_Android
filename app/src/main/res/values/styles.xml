@@ -34,7 +34,17 @@
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
-
+    <style name="RegisterStyle">
+        <item name="android:layout_height">53dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <!-- <item name="android:textStyle">bold</item> -->
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:background">@color/unPresentMonth_FontColor</item>
+        <item name="android:textColor">@drawable/text_state_whitetogreen</item>
+        <item name="android:textSize">@dimen/textsize_32</item>
+    </style>
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 

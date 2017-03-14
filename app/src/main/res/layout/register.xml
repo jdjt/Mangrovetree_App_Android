@@ -161,7 +161,7 @@
 
     <Button
         android:id="@+id/register_button"
-        style="@style/AppBtn"
+        style="@style/RegisterStyle"
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
         android:text="注  册" />
