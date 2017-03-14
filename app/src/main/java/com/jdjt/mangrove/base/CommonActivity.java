@@ -122,7 +122,7 @@ public class CommonActivity extends AppCompatActivity {
         if (getActionBarToolbar() == null) {
             return;
         }
-        mActionBarToolbar.setNavigationIcon(R.mipmap.fm_back);
+        mActionBarToolbar.setNavigationIcon(R.mipmap.icon_back);
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

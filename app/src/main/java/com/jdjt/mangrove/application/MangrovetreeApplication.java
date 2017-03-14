@@ -3,7 +3,6 @@ package com.jdjt.mangrove.application;
 import android.app.Application;
 
 import com.fengmap.android.FMMapSDK;
-import com.fengmap.drpeng.CrashHandler;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.http.HttpInterFace;
@@ -41,9 +40,6 @@ public class MangrovetreeApplication extends Application {
         plugLoad();
 
         FMMapSDK.init(this, ResourcesUtils.getSDPath() + "/fm_drpeng");
-        Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getAppExceptionHandler(this));
-//        CrashHandler crashHandler = CrashHandler.getInstance();
-//        crashHandler.init(getApplicationContext());
         super.onCreate();
     }
 
@@ -69,7 +65,7 @@ public class MangrovetreeApplication extends Application {
 //            config.setHead(HeaderConst.inHeaders());
             InternetConfig netConfig = InternetConfig.defaultConfig();
             netConfig.setHead(HeaderConst.inHeaders());
-
+            netConfig.setKey(config.getCode());
 //
             ResponseEntity reslut = null;
             switch (config.getType()) {

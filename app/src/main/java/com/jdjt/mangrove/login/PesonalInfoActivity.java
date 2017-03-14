@@ -1,5 +1,7 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Intent;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,11 +14,13 @@ import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
+import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 
@@ -53,6 +57,21 @@ public class PesonalInfoActivity extends CommonActivity {
         tv_personal_telphone.setText(callPhone);
         //同时更新网络数据，如果有变更 更新到本地
 
+    }
+
+    @InListener(ids = {R.id.ll_personal_layout,R.id.ll_account_tel_layout,R.id.ll_account_password_layout},listeners = OnClick.class)
+    private void click(View view){
+        switch (view.getId()){
+            case R.id.ll_personal_layout:
+                startActivity(new Intent(PesonalInfoActivity.this,ChangeNameActivity.class));
+                break;
+            case R.id.ll_account_tel_layout:
+                startActivity(new Intent(PesonalInfoActivity.this,ChangePhoneActivity.class));
+                break;
+            case R.id.ll_account_password_layout:
+                startActivity(new Intent(PesonalInfoActivity.this,UpdatePasswordActiviy.class));
+                break;
+        }
     }
 
     /**

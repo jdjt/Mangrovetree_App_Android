@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.data.FMDataManager;
 import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.CrashHandler;
 import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.common.ResourcesUtils;
@@ -132,6 +133,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void login() {
         Ioc.getIoc().init(MangrovetreeApplication.instance);
+        Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getAppExceptionHandler(this));
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
         String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
         if (Handler_String.isBlank(account)) {

@@ -1,10 +1,13 @@
 package com.jdjt.mangrove.login;
 
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.base.CommonActivity;
+import com.jdjt.mangrove.view.ClearEditText;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
 /**
@@ -14,8 +17,12 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 @InLayer(value = R.layout.change_name,parent = R.id.center_common,isTitle = true)
 public class ChangeNameActivity extends CommonActivity {
 
+
+    @InView
+    private ClearEditText edit_person_name;
+    private Drawable dRight;
+    private Rect rBounds;
     @Init
     public void init(){
-
     }
 }

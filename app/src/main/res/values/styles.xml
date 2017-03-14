@@ -100,7 +100,9 @@
         <item name="android:textColorPrimary">@android:color/darker_gray</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/white</item>
-        <item name="toolbarNavigationButtonStyle">@style/myToolbarNavigationButtonStyle</item>
+        <item name="android:colorForeground">@color/foreground_material_dark</item>
+        <item name="android:colorForegroundInverse">@color/foreground_material_dark</item>
+        <item name="android:colorBackground">@color/foreground_material_dark</item>
     </style>
 
     <style name="myToolbarNavigationButtonStyle" parent="@style/ThemeOverlay.AppCompat.Light">

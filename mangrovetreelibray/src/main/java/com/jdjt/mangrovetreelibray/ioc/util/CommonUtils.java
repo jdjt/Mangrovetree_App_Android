@@ -122,7 +122,6 @@ public class CommonUtils {
 			failedView.requestFocus();
 			Handler_TextStyle handler_TextStyle = new Handler_TextStyle();
 			handler_TextStyle.setString(failureMessage);
-//			handler_TextStyle.setBackgroundColor(Color.RED, 0, failureMessage.length());
 			((EditText) failedView).setError(handler_TextStyle.getSpannableString());
 		} else {
 			Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show();

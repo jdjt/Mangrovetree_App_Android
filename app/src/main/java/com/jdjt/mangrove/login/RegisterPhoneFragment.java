@@ -1,34 +1,52 @@
 package com.jdjt.mangrove.login;
 
-import android.os.Message;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
+import com.fengmap.drpeng.OutdoorMapActivity;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
-import com.jdjt.mangrovetreelibray.ioc.verification.Rule;
-import com.jdjt.mangrovetreelibray.ioc.verification.Validator.ValidationListener;
+import com.jdjt.mangrove.application.MangrovetreeApplication;
+import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrove.common.HeaderConst;
+import com.jdjt.mangrove.util.MapVo;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
-import com.jdjt.mangrovetreelibray.ioc.annotation.InVa;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
-import com.jdjt.mangrovetreelibray.ioc.plug.net.InternetConfig;
+import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
+import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
 import com.jdjt.mangrovetreelibray.ioc.util.CountTimer;
-import com.jdjt.mangrovetreelibray.ioc.validator.VaMobile;
-import com.jdjt.mangrovetreelibray.ioc.validator.VaPassword;
-import com.jdjt.mangrovetreelibray.ioc.validator.Validator;
+import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
+import com.jdjt.mangrovetreelibray.ioc.verification.Rule;
+import com.jdjt.mangrovetreelibray.ioc.verification.Rules;
+import com.jdjt.mangrovetreelibray.ioc.verification.Validator;
+import com.jdjt.mangrovetreelibray.ioc.verification.Validator.ValidationListener;
+import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Password;
+import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Telphone;
+import com.jdjt.mangrovetreelibray.ioc.verification.annotation.TextRule;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import static com.jdjt.mangrovetreelibray.ioc.ioc.IocFragmentHandler.handler;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by huyanan on 2017/3/9.
@@ -39,43 +57,45 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     private int time = 60;//初始秒
     Timer timer = new Timer();
 
-    @InVa(value = VaMobile.class, empty = false, msg = "请输入正确的手机号", index = 1)
+    @Telphone(empty = false, message = "请输入正确的手机号", order = 1)
     @InView(value = R.id.register_account)
-    EditText register_account;//账号
+    private EditText register_account;//账号
 
-    @InVa(value = VaPassword.class, maxLength = 18, minLength = 6, msg = "请输入长度6-18位由字母数字_和-组成的密码", index = 3)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 3)
     @InView(value = R.id.register_password)
-    EditText register_password;//密码
+    private EditText register_password;//密码
 
-    @InVa(maxLength = 6, minLength = 1, msg = "输入验证码", index = 2)
+    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.register_security_code)
-    EditText register_security_code;//验证码
+    private EditText register_security_code;//验证码
 
     @InView(value = R.id.register_valitation)
-    Button register_valitation;//验证码按钮
-    //	@InView(value=R.id.register_email_btn)
-//    Button register_email_btn;//邮箱注册
+    private Button register_valitation;//验证码按钮
     @InView(value = R.id.read_agreement)
-    CheckBox read_agreement;//同意条款
+    private CheckBox read_agreement;//同意条款
     @InView(value = R.id.register_button)
-    Button register_button;  //注册按钮
-    Boolean agree_flag = true;
+    private Button register_button;  //注册按钮
     //验证
     Validator validator;
 
     //计时
     CountTimer mc;
-
-    Map<String, String> regMap;
-
-    InternetConfig inConfig;
-
     String uuid;
+    String account;
+
+    @InResume
+    private void resume() {
+        //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
+        if (MapVo.get("register_valitation") != null) {
+            uuid = MapVo.get("register_valitation").toString();
+        } else {
+            uuid = Uuid.getUuid();//给初始值
+        }
+    }
 
     @Init
     public void init() {
         Ioc.getIoc().getLogger().e("初始化注册页面");
-//        timer.schedule(task, 1000, 1000);
 
         read_agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,37 +115,160 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
 
     }
 
+    @InListener(ids = {R.id.register_button, R.id.register_valitation}, listeners = OnClick.class)
+    private void click(View view) {
+        account = register_account.getText().toString();
+        Ioc.getIoc().getLogger().e("当前注册手机号：" + account);
+        //验证账号 邮箱,手机
+        if (!account.matches(Rules.REGEX_TELPHONE)) {
+            CommonUtils.onErrorToast(register_account, "请输入正确的手机号", getActivity());
+            return;
+        }
+        //验证手机是否联网
+        if (!Handler_Network.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "手机未联网", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        switch (view.getId()) {
+            case R.id.register_button:
+                //验证
+                validator = new Validator(this);
+                validator.setValidationListener(this);
+                validator.validate();
+                break;
+            case R.id.register_valitation:
+                uuid = Uuid.getUuid();//用于参数的uuid
+                MapVo.set("register_valitation", uuid);
+                checkAccount();
+                break;
+        }
+    }
+
+
+    /**
+     * 验证手机是否重复
+     */
+    private void checkAccount() {
+        JsonObject json = new JsonObject();
+        String account = register_account.getText() + "";
+        json.addProperty("account", account);
+        MangrovetreeApplication.instance.http.u(this).checkAccount(json.toString());
+    }
+
+    /**
+     * 获取手机验证码
+     */
+    private void getCode() {
+        JsonObject json = new JsonObject();
+        String account = register_account.getText() + "";
+        json.addProperty("account", account);
+        json.addProperty("logicFlag", "1");
+        json.addProperty("uuid", uuid);
+        MangrovetreeApplication.instance.http.u(this).getCode(json.toString());
+    }
+
+    private void register(){
+        JsonObject json = new JsonObject();
+        String account = register_account.getText().toString() ;
+        json.addProperty("account", account);
+        json.addProperty("code", register_security_code.getText().toString());
+        json.addProperty("password", register_password.getText().toString());
+        json.addProperty("uuid", uuid);
+        MangrovetreeApplication.instance.http.u(this).register(json.toString());
+    }
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY,Constant.HttpUrl.REGISTER_KEY,Constant.HttpUrl.LOGIN_KEY})
+    public void result(ResponseEntity entity) {
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (entity.getContentAsString() == null || entity.getContentAsString().length() == 0) {
+            Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        Ioc.getIoc().getLogger().e(entity.getContentAsString());
+        //------------------------------------------------------------
+        //判断当前请求返回是否 有错误，OK 和 ERR
+        Map<String, Object> heads = entity.getHeaders();
+        if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+            switch (entity.getKey()) {
+                case Constant.HttpUrl.GETCODE_KEY:
+                    //不重复
+                    //调用后台接口，往手机上发送验证码
+                    mc = new CountTimer(60000, 1000, register_valitation, "register_valitation");
+                    mc.start();
+                    break;
+                case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
+                    String result = data.get("result") + "";
+                    Ioc.getIoc().getLogger().e(result);
+                    //账号重复
+                    if (result.equals("1")) {
+                        Ioc.getIoc().getLogger().e( "该手机号已注册");
+                        CommonUtils.onErrorToast(register_account, "该账号已注册，请直接登录", getActivity());
+                        return;
+                    }
+                    getCode();
+                case Constant.HttpUrl.REGISTER_KEY:
+                    login();
+
+                    break;
+                case Constant.HttpUrl.LOGIN_KEY:
+                    startActivity();
+                    break;
+            }
+        }
+        //------------------------------------------------------------
+    }
+
+    /**
+     * 登录方法
+     */
+    private void login(){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("account", register_account.getText().toString());
+        jsonObject.addProperty("password", register_password.getText().toString());
+        MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
+    }
+    /**
+     * 跳转到首页
+     */
+    private void startActivity(){
+        Bundle b = new Bundle();
+        b.putString(FMAPI.ACTIVITY_WHERE, getActivity().getClass().getName());
+        b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
+        FMAPI.instance().gotoActivity(getActivity(), OutdoorMapActivity.class, b);
+        getActivity().finish();
+        return;
+    }
+
     @Override
     public void onValidationSucceeded() {
-
+        showLoading();
+        register();
     }
 
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
-
+        CommonUtils.onErrorToast(failedView, failedRule.getFailureMessage(), getActivity());
+    }
+    SweetAlertDialog pDialog=null;
+    public void showLoading(){
+        if(pDialog==null)
+            pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("加载中...");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
-//    final Handler handler = new Handler(){    
-//        @Override    
-//        public void handleMessage(Message msg){    
-//            switch (msg.what) {    
-//            case 1:    
-//                txtView.setText(""+recLen);    
-//                if(recLen < 0){    
-//                    timer.cancel();    
-//                    txtView.setVisibility(View.GONE);    
-//                }    
-//            }    
-//        }    
-//    };  
-//    TimerTask task = new TimerTask() {
-//        @Override
-//        public void run() {
-//            time--;
-//            Message message = new Message();
-//            message.what = 1;
-//            handler.sendMessage(message);
-//        }
-//    };
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(pDialog!=null){
+            pDialog.dismiss();
+            pDialog=null;
+        }
+    }
 }
