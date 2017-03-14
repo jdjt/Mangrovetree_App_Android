@@ -1289,30 +1289,30 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
                 mMap.updateMap();
                 
-//                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
-//                String name = mCurrentModel.getName()+"   地图ID："+mCurrentModel.getFid();
-//                if ("".equals(name) || name == null) {
-//                    name = "暂无名称";
-//                }
-//                view.setTitle(name);
-//                // 查询
-//                List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-//                String               typeName = "";
-//                String               address  = "";
-//                if (!elements.isEmpty()) {
-//                    typeName = elements.get(0).getTypename();
-//                    address = elements.get(0).getAddress();
-//                }
-//                elements.clear();
-//                elements = null;
-//                String viewAddress = "";
-//                if (typeName==null || typeName.equals("")) {
-//                    viewAddress = address;
-//                } else {
-//                    viewAddress = String.format("%s・%s", typeName, address);
-//                }
+                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+                String name = mCurrentModel.getName();
+                if ("".equals(name) || name == null) {
+                    name = "暂无名称";
+                }
+                view.setTitle(name);
+                // 查询
+                List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
+                String               typeName = "";
+                String               address  = "";
+                if (!elements.isEmpty()) {
+                    typeName = elements.get(0).getTypename();
+                    address = elements.get(0).getAddress();
+                }
+                elements.clear();
+                elements = null;
+                String viewAddress = "";
+                if (typeName==null || typeName.equals("")) {
+                    viewAddress = address;
+                } else {
+                    viewAddress = String.format("%s・%s", typeName, address);
+                }
 //                view.setAddress(viewAddress);
-//                view.setEnterMapIdByModelFid(mCurrentModel.getFid());
+                view.setEnterMapIdByModelFid(mCurrentModel.getFid());
                 main_bottom_bar.measure(0,0);
                 mOpenModelInfoWindow.getConvertView().measure(0,0);
                 mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
