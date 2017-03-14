@@ -78,7 +78,8 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp" />
 
-        <include layout="@layout/main_bottom_bar"/>
+            <include
+                layout="@layout/main_bottom_bar"/>
     </com.fengmap.android.wrapmv.FMMangroveMapView>
 </RelativeLayout>
 
