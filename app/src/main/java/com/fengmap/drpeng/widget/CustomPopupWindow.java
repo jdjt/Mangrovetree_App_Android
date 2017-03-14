@@ -75,7 +75,7 @@ public class CustomPopupWindow {
     public void measureWindow() {
         mWindow.getContentView().measure(0, 0);
         int height = mWindow.getContentView().getMeasuredHeight();
-        float maxHeight = 0.5f * FMDevice.getDeviceHeight();
+        float maxHeight =  FMDevice.getDeviceHeight();
         int fixHeight = height > maxHeight ? (int)maxHeight : height;
         mWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mWindow.setHeight(fixHeight);

@@ -79,6 +79,7 @@ import com.fengmap.drpeng.widget.DrawableCenterTextView;
 import com.fengmap.drpeng.widget.ModelView;
 import com.fengmap.drpeng.widget.NaviProcessingView;
 import com.fengmap.drpeng.widget.NaviView;
+import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
@@ -194,6 +195,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LinearLayout call_service_btn;
     private TextView call_button,search_button,globle_plateform_button;//呼叫按钮
     private TextView call_button_text,search_button_text,globle_plateform_button_text;
+    private LinearLayout main_bottom_bar;
     //    导航菜单
     private  SlidingMenu menu=null;
 
@@ -204,9 +206,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     protected void initView() {
         initSlidingMenu();
         mInstance = this;
-//        UiHandler = new Handler(getMainLooper());
+        UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
+        main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
 
         mButtonGroup = (ButtonGroup) findViewById(R.id.fm_btgroup);
         mButtonGroup.setOnButtonGroupListener(this);
@@ -408,7 +411,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     // 初始化窗口
     private void initWindow() {
         ///////////////////////点击模型弹窗//////////////////
-        initModelViewWindow();
+//        initModelViewWindow();
+
+        initNewModelWindow();
 
         ////////////////////点击模型弹窗的去这里按钮后的弹窗///////////////////////
         initNaviViewWindow();
@@ -416,6 +421,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         ///////////////////////点击开始导航, 显示导航处理窗口////////////////
         initNaviProcessingViewWindow();
 
+    }
+
+    /**
+    * @method 新建模型点击弹出界面
+    */
+    private void initNewModelWindow() {
+        NewModelView modelView = new NewModelView(this);
+        mOpenModelInfoWindow = new CustomPopupWindow(this, modelView);
+        mOpenModelInfoWindow.setOutsideTouchable(true);
+        mOpenModelInfoWindow.setAnimationStyle(R.style.PopupPullFromBottomAnimation);
+        mOpenModelInfoWindow.openSwipeDownGesture();  //开启下滑关闭手势
     }
 
     private void initRoutViewWindow() {
@@ -1259,33 +1275,33 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
                 mMap.updateMap();
 
-                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
-                String name = mCurrentModel.getName()+"   地图ID："+mCurrentModel.getFid();
-                if ("".equals(name) || name == null) {
-                    name = "暂无名称";
-                }
-                view.setTitle(name);
-                // 查询
-                List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-                String               typeName = "";
-                String               address  = "";
-                if (!elements.isEmpty()) {
-                    typeName = elements.get(0).getTypename();
-                    address = elements.get(0).getAddress();
-                }
-                elements.clear();
-                elements = null;
-                String viewAddress = "";
-                if (typeName==null || typeName.equals("")) {
-                    viewAddress = address;
-                } else {
-                    viewAddress = String.format("%s・%s", typeName, address);
-                }
-                view.setAddress(viewAddress);
-                view.setEnterMapIdByModelFid(mCurrentModel.getFid());
+//                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
+//                String name = mCurrentModel.getName()+"   地图ID："+mCurrentModel.getFid();
+//                if ("".equals(name) || name == null) {
+//                    name = "暂无名称";
+//                }
+//                view.setTitle(name);
+//                // 查询
+//                List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
+//                String               typeName = "";
+//                String               address  = "";
+//                if (!elements.isEmpty()) {
+//                    typeName = elements.get(0).getTypename();
+//                    address = elements.get(0).getAddress();
+//                }
+//                elements.clear();
+//                elements = null;
+//                String viewAddress = "";
+//                if (typeName==null || typeName.equals("")) {
+//                    viewAddress = address;
+//                } else {
+//                    viewAddress = String.format("%s・%s", typeName, address);
+//                }
+//                view.setAddress(viewAddress);
+//                view.setEnterMapIdByModelFid(mCurrentModel.getFid());
+                main_bottom_bar.measure(0,0);
                 mOpenModelInfoWindow.getConvertView().measure(0,0);
-                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
-
+                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
                 mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                         .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                         .setDurationTime(800)
@@ -1372,7 +1388,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     }
 
-
+    /**
+    * @method 设置默认位置坐标点为主大堂
+    */
     private FMTotalMapCoord getdefaultcoord(){
         //默认位置坐标点
         FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7,2071275.90186538,0.0);
