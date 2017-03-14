@@ -20,13 +20,15 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InPost;
 public interface HttpInterFace {
     /**
      * 登陆接口
+     *
      * @param json
      */
-	@InPost(Constant.HttpUrl.LOGIN)
-	public void login(@InParam String json);
+    @InPost(Constant.HttpUrl.LOGIN)
+    public void login(@InParam String json);
 
     /**
      * 获取会员信息
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.GETUSERINFO)
@@ -40,6 +42,7 @@ public interface HttpInterFace {
 
     /**
      * 用户注册
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.REGISTER)
@@ -47,6 +50,7 @@ public interface HttpInterFace {
 
     /**
      * 用户账号重复验证
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.CHECKACCOUNT)
@@ -54,6 +58,7 @@ public interface HttpInterFace {
 
     /**
      * 验证码验证
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.CHECKCAPTCHA)
@@ -61,6 +66,7 @@ public interface HttpInterFace {
 
     /**
      * 修改账户信息
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.MODIFYMEMBER)
@@ -68,6 +74,7 @@ public interface HttpInterFace {
 
     /**
      * 找回密码
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.RESETPASSWORD)
@@ -75,6 +82,7 @@ public interface HttpInterFace {
 
     /**
      * 获取验证码
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.GETCODE)
@@ -82,11 +90,17 @@ public interface HttpInterFace {
 
     /**
      * 修改密码
+     *
      * @param json
      */
     @InPost(Constant.HttpUrl.MODIFYPASSWORD)
     public void modifyPassword(@InParam String json);
 
-
+    /**
+     * 重新绑定账号
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.REBINDINGPHONE)
+    public void reBindingPhone(@InParam String json);
 
 }

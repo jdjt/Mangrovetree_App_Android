@@ -2144,5 +2144,4 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
-
 }

@@ -2,6 +2,7 @@ package com.fengmap.drpeng;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import com.fengmap.android.data.FMDataManager;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
@@ -153,7 +154,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             writer.close();
 
             write("stack: " + rtn + "\n");
-            Ioc.getIoc().getLogger().e("Throwable "+rtn);
+            Log.e("Throwable ",rtn);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception ex) {

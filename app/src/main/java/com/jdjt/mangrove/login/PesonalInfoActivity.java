@@ -12,6 +12,7 @@ import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.common.HeaderConst;
+import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
@@ -59,11 +60,11 @@ public class PesonalInfoActivity extends CommonActivity {
 
     }
 
-    @InListener(ids = {R.id.ll_personal_layout,R.id.ll_account_tel_layout,R.id.ll_account_password_layout},listeners = OnClick.class)
+    @InListener(ids = {R.id.ll_personal_layout,R.id.ll_account_tel_layout,R.id.ll_account_password_layout,R.id.account_logout},listeners = OnClick.class)
     private void click(View view){
         switch (view.getId()){
             case R.id.ll_personal_layout:
-                startActivity(new Intent(PesonalInfoActivity.this,ChangeNameActivity.class));
+                startActivity(new Intent(PesonalInfoActivity.this,ChangeNameActivity.class).putExtra("name",tv_personal_name.getText()));
                 break;
             case R.id.ll_account_tel_layout:
                 startActivity(new Intent(PesonalInfoActivity.this,ChangePhoneActivity.class));
@@ -71,9 +72,15 @@ public class PesonalInfoActivity extends CommonActivity {
             case R.id.ll_account_password_layout:
                 startActivity(new Intent(PesonalInfoActivity.this,UpdatePasswordActiviy.class));
                 break;
+            case R.id.account_logout:
+                logout();
+                break;
         }
     }
 
+    private  void logout(){
+        MangrovetreeApplication.instance.http.u(this).logout();
+    }
     /**
      * 每次启动的时候更新一次数据
      */
@@ -83,7 +90,22 @@ public class PesonalInfoActivity extends CommonActivity {
         json.addProperty("proceedsPhone","");
         MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
     }
-    @InHttp(Constant.HttpUrl.GETUSERINFO_KEY)
+    @InHttp(Constant.HttpUrl.LOGOUT_KEY)
+    public void result1(ResponseEntity entity) {
+        //判断当前请求返回是否 有错误，OK 和 ERR
+        Map<String, Object> heads = entity.getHeaders();
+        if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+            //退出成功
+            Handler_SharedPreferences.removeSharedPreferences(Constant.HttpUrl.DATA_USER, "password");
+            MapVo.map = null;
+            Intent it = new Intent(this, LoginAndRegisterFragmentActivity.class);
+            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(it);
+            finish();
+        }
+
+    }
+    @InHttp({Constant.HttpUrl.GETUSERINFO_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();

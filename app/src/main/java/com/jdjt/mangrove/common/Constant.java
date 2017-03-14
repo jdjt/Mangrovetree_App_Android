@@ -36,6 +36,12 @@ public class Constant {
         //修改用户密码
         public static final String MODIFYPASSWORD = BASE + "uum/mem/account/modify_password.json";
 
+        /**
+         * 重新绑定
+         */
+        public static final String REBINDINGPHONE = BASE + "uum/mem/account/binding.json";
+
+
         public static final int LOGIN_KEY = 0;
         public static final int LOGOUT_KEY = 1;
         public static final int REGISTER_KEY = 2;
@@ -46,6 +52,8 @@ public class Constant {
         public static final int RESETPASSWORD_KEY = 7;
         public static final int MODIFYPASSWORD_KEY = 8;
         public static final int GETUSERINFO_KEY = 11;
+        public static final int REBINDINGPHONE_KEY = 12;
+
 
     }
 }

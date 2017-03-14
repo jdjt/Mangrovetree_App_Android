@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -131,9 +130,10 @@ public class CommonActivity extends AppCompatActivity {
         });
         String title = getIntent().getStringExtra(EXTRA_TITLE);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-         TextView textView= (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
-        if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
-            textView.setText(title);
+
+        if (mActionBarToolbar != null) {
+            TextView textView= (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
+            textView.setText(getTitle());
         }
     }
 

@@ -15,6 +15,8 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnRadioChecked;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by huyanan on 2017/3/9.
  */
@@ -26,6 +28,7 @@ public class LoginAndRegisterFragmentActivity extends CommonActivity {
     private RegisterPhoneFragment registerPhoneFragment;
     @InView
     RadioGroup radioGroup;
+
     @InAfter
     protected void initView() {
         startFragmentAdd(loginFragment);
@@ -33,8 +36,20 @@ public class LoginAndRegisterFragmentActivity extends CommonActivity {
 //
 
 
+    @Override
+    public void onBackPressed() {
+        showConfirm("是否确定退出？", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                sweetAlertDialog.dismiss();
+                System.exit(0);
 
-    @InListener(ids={R.id.radioGroup},listeners={OnRadioChecked.class})
+            }
+        });
+    }
+
+    @InListener(ids = {R.id.radioGroup}, listeners = {OnRadioChecked.class})
     public void checkedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rd_login_button:

@@ -1,5 +1,6 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,10 +76,18 @@ public class LoginFragment extends Fragment implements ValidationListener {
      * 当点击登陆按钮，会自动获取输入框内的用户名和密码，对其进行验证
      */
     private void click(View view) {
-        //验证
-        validator = new Validator(this);
-        validator.setValidationListener(this);
-        validator.validate();
+
+        switch (view.getId()){
+            case R.id.login_findpwd_button:
+                startActivity(new Intent(getActivity(),FindPasswordActivity.class));
+                break;
+            case R.id.login_button:
+                //验证
+                validator = new Validator(this);
+                validator.setValidationListener(this);
+                validator.validate();
+                break;
+        }
     }
 
 
@@ -108,14 +117,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @InHttp(Constant.HttpUrl.LOGIN_KEY)
     public void result(ResponseEntity entity) {
-//        pDialog.setCancelable(false);
-//        pDialog.setTitleText("加载完成!")
-//            .setConfirmClickListener(null)
-//
-
-        pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("加载完成");
 
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -136,6 +137,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
+           pDialog.dismiss();
            startActivity();
        }
         //------------------------------------------------------------
@@ -161,7 +163,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @Override
     public void onValidationSucceeded() {
-        Toast.makeText(getContext(), "验证成功" + login_password.getText(), Toast.LENGTH_SHORT).show();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("account", login_account.getText().toString());
         jsonObject.addProperty("password", login_password.getText().toString());
