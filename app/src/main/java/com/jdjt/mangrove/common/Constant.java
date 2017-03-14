@@ -1,11 +1,8 @@
 package com.jdjt.mangrove.common;
 
 /*
- * Author: Administrator Email:gdpancheng@gmail.com
- * Created Date:2014年12月9日
- * Copyright @ 2014 BU
- * Description: 类描述
- *
+ * Author: wmy
+ * Description:
  * History:
  */
 public class Constant {
@@ -18,7 +15,17 @@ public class Constant {
         public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
 //		public static final String BASE = "http://rc-ws.mymhotel.com/";
 		public static final String LOGIN = BASE+ "uum/mem/sso/login.json";
+		/**
+		 * 获取会员信息
+		 */
+		public static final String GETUSERINFO = BASE + "uum/mem/account/member_info.json";
+		/**
+		 * 用户退出
+		 */
+		public static final String METHOD_LOGOUT = BASE + "uum/mem/sso/logout.json";
+
 		public static final int LOGIN_KEY = 0;
+		public static final int GETUSERINFO_KEY=11;
 
 	}
 }

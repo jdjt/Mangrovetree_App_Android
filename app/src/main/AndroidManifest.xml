@@ -70,20 +70,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.LoginAndRegisterFragmentActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+          />
         <activity
             android:name=".login.PesonalInfoActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_person_activity"
+          />
         <activity
             android:name=".login.FindPasswordActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".login.LoginAndRegisterFragmentActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_find_password_activity"
+           />
 
     </application>
 

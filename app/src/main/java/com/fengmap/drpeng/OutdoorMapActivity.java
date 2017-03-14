@@ -2101,8 +2101,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     private void initSlidingMenu(){
         // configure the SlidingMenu
-        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(toolbar);
+        Toolbar toolbar= getActionBarToolbar();
 
          menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);

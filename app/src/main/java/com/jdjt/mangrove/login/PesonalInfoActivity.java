@@ -1,14 +1,27 @@
 package com.jdjt.mangrove.login;
 
-import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
+import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrove.common.HeaderConst;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
+import com.jdjt.mangrovetreelibray.ioc.net.NetConfig;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by huyanan on 2017/3/13.
@@ -17,8 +30,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
 @InLayer(value = R.layout.mem_pesonal_info,parent = R.id.center_common,isTitle = true)
 public class PesonalInfoActivity extends CommonActivity {
-    //标题栏
-    Toolbar toolbar_actionbar;
+
 
     @InView(value = R.id.tv_personal_name)
     TextView tv_personal_name;   //姓名
@@ -34,5 +46,41 @@ public class PesonalInfoActivity extends CommonActivity {
 
     @Init
     public void init() {
+        JsonObject json=new JsonObject();
+        json.addProperty("proceedsPhone","");
+        NetConfig config=new NetConfig();
+
+        MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
+    }
+    @InHttp(Constant.HttpUrl.GETUSERINFO_KEY)
+    public void result(ResponseEntity entity) {
+//        pDialog.setCancelable(false);
+//        pDialog.setTitleText("加载完成!")
+//            .setConfirmClickListener(null)
+//
+
+
+        Toast.makeText(this, "请求成功", Toast.LENGTH_SHORT).show();
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (entity.getContentAsString() == null || entity.getContentAsString().length() == 0) {
+            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        //------------------------------------------------------------
+        //判断当前请求返回是否 有错误，OK 和 ERR
+        Map<String, Object> heads = entity.getHeaders();
+        if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+            //存储用户名密码到本地
+            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "nickname", data.get("nickname"));
+            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "callPhone",data.get("callPhone"));
+            tv_personal_name.setText(data.get("nickname")+"");
+            tv_personal_telphone.setText(data.get("callPhone")+"");
+        }
+        //------------------------------------------------------------
     }
 }

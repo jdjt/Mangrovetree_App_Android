@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
@@ -35,88 +36,6 @@ public class CommonActivity extends AppCompatActivity {
     protected ProgressDialog dialog = null;
 
     public static final String EXTRA_TITLE = "title";
-//
-//    /**
-//     * 显示进度条
-//     *
-//     * @param title 标题
-//     * @param msg   内容
-//     */
-//    protected void showProgress(String title, String msg) {
-//        if (dialog == null) {
-//            doCreateProgress();
-//        }
-//
-//        dialog.setTitle(title);
-//        dialog.setMessage(msg);
-//
-//        if (!dialog.isShowing()) {
-//            dialog.show();
-//        }
-//    }
-//
-//    /**
-//     * 单独开启线程显示 dialog
-//     *
-//     * @param handler 创建线程
-//     * @param title   标题
-//     * @param msg     内容
-//     */
-//    protected void showProgress(Handler handler, String title, String msg) {
-//        if (dialog == null) {
-//            doCreateProgress();
-//        }
-//
-//        dialog.setTitle(title);
-//        dialog.setMessage(msg);
-//
-//        if (!dialog.isShowing()) {
-//            handler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    dialog.show();
-//                }
-//            });
-//        }
-//    }
-//
-//    /**
-//     * 初始化dialog
-//     */
-//    private void doCreateProgress() {
-//        dialog = new ProgressDialog(this);
-//        dialog.setProgressStyle(dialog.STYLE_SPINNER);
-//        dialog.setCanceledOnTouchOutside(false);
-//        dialog.setIndeterminate(false);
-//        dialog.setCancelable(true);
-//    }
-//
-//    /**
-//     * 关闭进度条
-//     */
-//    protected void closeProgress() {
-//        if (dialog != null && dialog.isShowing()) {
-//            dialog.dismiss();
-//        }
-//        dialog = null;
-//    }
-//
-//    /**
-//     * 关闭进度条
-//     *
-//     * @param handler
-//     */
-//    protected void closeProgress(Handler handler) {
-//        if (dialog != null && dialog.isShowing()) {
-//            handler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    dialog.dismiss();
-//                }
-//            });
-//        }
-//        dialog = null;
-//    }
 
     SweetAlertDialog pDialog=null;
     public void showLoading(){
@@ -199,28 +118,28 @@ public class CommonActivity extends AppCompatActivity {
     /**
      * 初始化标题栏
      */
-    protected void initActionBar(int laoutId) {
-        if (getActionBarToolbar(laoutId) == null) {
+    protected void initActionBar() {
+        if (getActionBarToolbar() == null) {
             return;
         }
-//        mActionBarToolbar.setNavigationIcon(R.drawable.ic_menu_manage);
+        mActionBarToolbar.setNavigationIcon(R.mipmap.fm_back);
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        mActionBarToolbar.setTitle("");
         String title = getIntent().getStringExtra(EXTRA_TITLE);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+         TextView textView= (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
         if (mActionBarToolbar != null && !TextUtils.isEmpty(title) && getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-
+            textView.setText(title);
         }
     }
 
-    protected Toolbar getActionBarToolbar(int viewId) {
+    protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
-            mActionBarToolbar = (Toolbar) findViewById(viewId);
+            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
             if (mActionBarToolbar != null) {
                 setSupportActionBar(mActionBarToolbar);
             }
@@ -251,7 +170,7 @@ public class CommonActivity extends AppCompatActivity {
 
     @Init
     private void initActivity(){
-        initActionBar(R.id.toolbar_actionbar);
+        initActionBar();
         setStatusBar();
     }
 }
