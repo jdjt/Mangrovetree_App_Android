@@ -6,5 +6,5 @@
     </item>
    <item android:state_pressed="true" android:color="@color/white" />
     <item android:state_selected="true"  android:color="@color/white" ></item>
-    <item android:color="@color/text_gray_lable"  />
+    <item android:color="@color/text_gray_value"  />
 </selector>

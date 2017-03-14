@@ -107,34 +107,35 @@ import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
 
 /**
  * 室外地图。注意: 退出整个应用前,需要把查询数据库给关了FMDatabaseHelper.getDatabaseHelper().close();
+ *
  * @author yangbin
  */
-@InLayer(value = R.layout.content_mangrove_main,parent = R.id.center_common)
+@InLayer(value = R.layout.content_mangrove_main, parent = R.id.center_common)
 public class OutdoorMapActivity extends CommonActivity implements View.OnClickListener,
-                                                                            View.OnTouchListener,
-                                                            ButtonGroup.OnButtonGroupListener,
-                                                            OnFMMapInitListener,
-                                                            OnFMMapClickListener,
-                                                            CustomPopupWindow.OnWindowCloseListener, OnFMReceivePositionInCallServiceListener {
+        View.OnTouchListener,
+        ButtonGroup.OnButtonGroupListener,
+        OnFMMapInitListener,
+        OnFMMapClickListener,
+        CustomPopupWindow.OnWindowCloseListener, OnFMReceivePositionInCallServiceListener {
     public static OutdoorMapActivity mInstance = null;
 
     private FMMangroveMapView mMapView;
-    private FMMap             mMap;
-    private FMMapInfo         mMapInfo;
-    private FMLayerProxy      mLayerProxy;
+    private FMMap mMap;
+    private FMMapInfo mMapInfo;
+    private FMLayerProxy mLayerProxy;
 
     // 路径规划
     private FMNaviAnalyser mNaviAnalyser;
-    private boolean        mNeedLoadCalculatedRoute;                        //地图初始化时是否需要加载规划的路径
-    private FMImageLayer   mStartMarkerLayer, mEndMarkerLayer;      //起点图层
+    private boolean mNeedLoadCalculatedRoute;                        //地图初始化时是否需要加载规划的路径
+    private FMImageLayer mStartMarkerLayer, mEndMarkerLayer;      //起点图层
     private FMImageMarker mStartMarker, mEndMarker;                //起点标注物
-    private FMLineLayer  mLineLayer;             //线图层
+    private FMLineLayer mLineLayer;             //线图层
     private FMLineMarker mCalculateLineMarker;   // 路径规划的线marker
 
     private ArrayList<FMNaviResult> mPathResults = new ArrayList<>();
 
     // 定位
-    private FMLocationLayer  mLocationLayer;            //定位图层
+    private FMLocationLayer mLocationLayer;            //定位图层
     private FMLocationMarker mMeLocationMarker;         //我的位置Marker
 
     private FMSceneAnimator mSceneAnimator;       //负责点击模型移动到地图屏幕中央的动画对象
@@ -143,7 +144,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private FMExternalModel mLastModel;
 
     // 标注
-    private FMImageLayer  mSpecialWorkImageLayer;
+    private FMImageLayer mSpecialWorkImageLayer;
     private FMImageMarker mSpecialWorkMarker;
 
     // 业态线路
@@ -163,13 +164,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private FMActivityGroup mShopActGroup;
 
     // UI
-    private TopBarView    mTopBarView;
-    private ButtonGroup   mButtonGroup;
+    private TopBarView mTopBarView;
+    private ButtonGroup mButtonGroup;
 
     private ImageView mLocationView;
 
     private DrawableCenterTextView mShowRouteView;
-    private boolean                isShowRoute;
+    private boolean isShowRoute;
 
     private CustomProgressDialog mProgressDialog;
     //other
@@ -178,14 +179,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     // call service
     private DrawableCenterTextView mCallView;
-    private FMImageMarker          mMyMarkerInCall, mWaiterMarkerInCall;
+    private FMImageMarker mMyMarkerInCall, mWaiterMarkerInCall;
 
     // 室外API
     private FMDBMapElementDAO mMapElementDAO;
-    private FMTotalMapCoord   mInitLocatePosition;
+    private FMTotalMapCoord mInitLocatePosition;
     private FMDBSearchElement mSearchElement;
-    private FMDBMapElement    mMapElement;
-    private String            mFromWhere;
+    private FMDBMapElement mMapElement;
+    private String mFromWhere;
 
     private boolean isLocateSuccess = false;
 
@@ -194,13 +195,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LinearLayout search_dest_btn;
     private LinearLayout globle_plateform_btn;
     private LinearLayout call_service_btn;
-    private TextView call_button,search_button,globle_plateform_button;//呼叫按钮
-    private TextView call_button_text,search_button_text,globle_plateform_button_text;
+    private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
+    private TextView call_button_text, search_button_text, globle_plateform_button_text;
     //    导航菜单
-    private  SlidingMenu menu=null;
+    private SlidingMenu menu = null;
 
     @InBean
-    private  LeftFragment leftFragment;
+    private LeftFragment leftFragment;
+
     @Init
     protected void initView() {
         initSlidingMenu();
@@ -281,7 +283,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     protected void onNewIntent(Intent intent) {
         FMLog.le("OutdoorMapActivity", "OutdoorMapActivity#onNewIntent");
-        Log.d("TAGTAGTAG"," onNewIntent() 被执行");
+        Log.d("TAGTAGTAG", " onNewIntent() 被执行");
         isMapLoadCompleted = false;
         dealOnNewIntent(intent);
         isMapLoadCompleted = true;
@@ -312,7 +314,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
 
     private void dealOnNewIntent(Intent intent) {
-        Log.d("TAGTAGTAG"," dealOnNewIntent() 被执行");
+        Log.d("TAGTAGTAG", " dealOnNewIntent() 被执行");
         Bundle b = intent.getExtras();
         mFromWhere = b.getString(FMAPI.ACTIVITY_WHERE);
 
@@ -345,37 +347,37 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             mMapElement = (FMDBMapElement) pB.getSerializable(SearchResultFragment.class.getName());
 
             mSpecialWorkMarker = FMAPI.instance().buildImageMarker(mMapElement.getGroupId(),
-                                                                   new FMMapCoord(mMapElement.getX(), mMapElement.getY()),
-                                                                   "fmr/water_marker.png",
-                                                                   40,
-                                                                   FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
-                                                                   mMapElement.getZ());
+                    new FMMapCoord(mMapElement.getX(), mMapElement.getY()),
+                    "fmr/water_marker.png",
+                    40,
+                    FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
+                    mMapElement.getZ());
         } else if (SearchFragment.class.getName().equals(pWhere)) {
             // 从搜索界面而来
             mSearchElement = (FMDBSearchElement) pB.getSerializable(SearchFragment.class.getName());
-            String  target = pB.getString(FMAPI.ACTIVITY_TARGET);
+            String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
                 // 创建标注
                 mSpecialWorkMarker = FMAPI.instance().buildImageMarker(mSearchElement.getGroupId(),
-                                                                       new FMMapCoord(mSearchElement.getX(), mSearchElement.getY()),
-                                                                       "fmr/water_marker.png",
-                                                                       40,
-                                                                       FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
-                                                                       mSearchElement.getZ());
-            } else if (TARGET_CALCULATE_ROUTE.equals(target)){
+                        new FMMapCoord(mSearchElement.getX(), mSearchElement.getY()),
+                        "fmr/water_marker.png",
+                        40,
+                        FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
+                        mSearchElement.getZ());
+            } else if (TARGET_CALCULATE_ROUTE.equals(target)) {
                 FMTotalMapCoord myPos = FMLocationService.instance().getFirstMyLocatePosition();
                 if (myPos == null) {
                     CustomToast.show(this, "定位失败...");
                     mNeedLoadCalculatedRoute = false;
                 }
                 FMNaviAnalysisHelper.instance().setStartNaviMultiPoint(myPos.getGroupId(),
-                                                                       Tools.getFMNaviAnalyserByMapId(myPos.getMapId()),
-                                                                       myPos.getMapCoord());
+                        Tools.getFMNaviAnalyserByMapId(myPos.getMapId()),
+                        myPos.getMapCoord());
 
                 // 路径规划
                 FMNaviAnalysisHelper.instance().setEndNaviMultiPoint(mSearchElement.getGroupId(),
-                                                                     Tools.getFMNaviAnalyserByMapId(mSearchElement.getMapId()),
-                                                                     new FMMapCoord(mSearchElement.getX(), mSearchElement.getY()));
+                        Tools.getFMNaviAnalyserByMapId(mSearchElement.getMapId()),
+                        new FMMapCoord(mSearchElement.getX(), mSearchElement.getY()));
                 mNeedLoadCalculatedRoute = true;
 
             } else if (TARGET_SELECT_POINT.equals(target)) {
@@ -425,8 +427,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         // 业态内容视图
         RouteView routeView = new RouteView(this);
         routeView.setManager(FMAPI.instance().mRouteManager, FMAPI.instance().mActivityManager);
-        FMRoute   route  = FMAPI.instance().mRouteManager.createRoute("data/route1.json");
-        FMRoute[] routes = {route };
+        FMRoute route = FMAPI.instance().mRouteManager.createRoute("data/route1.json");
+        FMRoute[] routes = {route};
         routeView.setData(routes);
 
         // 业态弹窗
@@ -441,7 +443,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         la.setOnLineItemSelectedListener(new LineAdapter.OnLineItemSelectedListener() {
             @Override
             public void onItemSelected(int position) {
-                if (mLastSelectedRouteIndex>=0) {
+                if (mLastSelectedRouteIndex >= 0) {
                     FMRoute lastRoute = la.getRoute(mLastSelectedRouteIndex);
                     mMapView.hiddenRouteOnMap(lastRoute);
                 }
@@ -455,13 +457,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         wa.setOnWorkerItemSelectedListener(new WorkAdapter.OnWorkerItemSelectedListener() {
             @Override
             public void onWorkerItemSelected(int routePosition, int workerPosition) {
-                FMRoute               route  = la.getRoute(routePosition);
+                FMRoute route = la.getRoute(routePosition);
                 FMLineWithImageMarker marker = FMAPI.instance().mRouteManager.getMarker(route.getRouteCode());
                 if (marker == null) {
                     return;
                 }
 
-                if (mLastSelectedWorkMarkerIndex >=0) {
+                if (mLastSelectedWorkMarkerIndex >= 0) {
                     marker.getImageMarkers()[mLastSelectedWorkMarkerIndex].updateSize(30, 30);
                 }
 
@@ -517,13 +519,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
 
-                int        startGroupId  = mStartMarker.getGroupId();
+                int startGroupId = mStartMarker.getGroupId();
                 FMMapCoord startPosition = mStartMarker.getPosition();
-                String     startStr      = startPosition.getDescription();
+                String startStr = startPosition.getDescription();
 
-                int        endGroupId  = mEndMarker.getGroupId();
+                int endGroupId = mEndMarker.getGroupId();
                 FMMapCoord endPosition = mEndMarker.getPosition();
-                String     endStr      = endPosition.getDescription();
+                String endStr = endPosition.getDescription();
 
                 clearStartAndEndMarker();
                 clearCalculateRouteLineMarker();
@@ -556,8 +558,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
                     // 添加定位图片   只能是起点
                     dealAddLocateMarker(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId(),
-                                        FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
-                                        mLocationLayer);
+                            FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                            mLocationLayer);
 
 
                     dealViewChangedWhenOpenNavigationMode();
@@ -586,7 +588,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         ModelView modelView = new ModelView(this) {
             @Override
             public void closeDialog() {
-                if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
+                if (mOpenModelInfoWindow != null && mOpenModelInfoWindow.isShowing()) {
                     mOpenModelInfoWindow.close();
                 }
             }
@@ -598,7 +600,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.setOnWindowCloseListener(new CustomPopupWindow.OnWindowCloseListener() {
             @Override
             public void onClose(boolean isGestureClose, View v) {
-                if(mLastModel!=null){
+                if (mLastModel != null) {
                     mMapView.setHighlight(mLastModel, false);
                     mMap.updateMap();
                 }
@@ -615,7 +617,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                  * 如果未开启定位, 则开启定位, 弹出进度条;
                  */
                 needLocate(true);
-                if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
+                if (mOpenModelInfoWindow != null && mOpenModelInfoWindow.isShowing()) {
                     mOpenModelInfoWindow.close();
                 }
 
@@ -624,6 +626,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     ArrayList<FMMapCoord> GeoMapCoords = new ArrayList<>();
+
     // 初始化数据
     private void initJsonData() {
         FMAPI.instance().mActivityManager.setDataResources("data/acts.json", false);
@@ -636,11 +639,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void prepareTestData() {
         byte[] buffer = FMMapSDK.getFMResourceManager().readAssetsFile("data/geo.json");
         if (buffer != null) {
-            String          content = new String(buffer);
-            CoordCollection array   = new Gson().fromJson(content, CoordCollection.class);
-            for (int i=0; i<array.coordinates.length; i++) {
+            String content = new String(buffer);
+            CoordCollection array = new Gson().fromJson(content, CoordCollection.class);
+            for (int i = 0; i < array.coordinates.length; i++) {
                 double[] temp = FMCoordinateConvert.wgs2WebMercator(array.coordinates[i][0],
-                                                                    array.coordinates[i][1]);
+                        array.coordinates[i][1]);
                 GeoMapCoords.add(new FMMapCoord(temp[0], temp[1]));
 
             }
@@ -662,10 +665,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         new Thread(new Runnable() {
             int index = 0;
+
             @Override
             public void run() {
                 while (true) {
-                    if (index>=GeoMapCoords.size()-1) {
+                    if (index >= GeoMapCoords.size() - 1) {
                         index = 0;
                     }
                     FMMapCoord mc = GeoMapCoords.get(index);
@@ -673,7 +677,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     temp.setMapCoord(mc);
                     temp.setGroupId(1);
                     FMCallService.instance().uploadPosition("",
-                                                            temp);
+                            temp);
                     index++;
 
                     try {
@@ -728,15 +732,15 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //    }
 
     private boolean tryCloseAllWindow() {
-        if (mOpenNaviProcessWindow !=null && mOpenNaviProcessWindow.isShowing()) {
+        if (mOpenNaviProcessWindow != null && mOpenNaviProcessWindow.isShowing()) {
             CustomToast.show(this, "请结束导航模式");
             return true;
         }
-        if (mOpenModelInfoWindow!=null && mOpenModelInfoWindow.isShowing()) {
+        if (mOpenModelInfoWindow != null && mOpenModelInfoWindow.isShowing()) {
             mOpenModelInfoWindow.close();
             return true;
         }
-        if (mOpenNaviWindow !=null && mOpenNaviWindow.isShowing()) {
+        if (mOpenNaviWindow != null && mOpenNaviWindow.isShowing()) {
             mOpenNaviWindow.close();
             return true;
         }
@@ -749,13 +753,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     // 关闭所有窗口
     private void closeAllWindow() {
-        if (mOpenNaviProcessWindow!=null && mOpenNaviProcessWindow.isShowing()) {
+        if (mOpenNaviProcessWindow != null && mOpenNaviProcessWindow.isShowing()) {
             mOpenNaviProcessWindow.close();
         }
-        if (mOpenModelInfoWindow!=null &&mOpenModelInfoWindow.isShowing()) {
+        if (mOpenModelInfoWindow != null && mOpenModelInfoWindow.isShowing()) {
             mOpenModelInfoWindow.close();
         }
-        if (mOpenNaviWindow!=null && mOpenNaviWindow.isShowing()) {
+        if (mOpenNaviWindow != null && mOpenNaviWindow.isShowing()) {
             mOpenNaviWindow.close();
         }
         if (mOpenRouteWindow != null && mOpenRouteWindow.isShowing()) {
@@ -773,7 +777,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        if (!checkIpThread.isAlive()) {
 //            checkIpThread.start();
 //        }
-        Log.d("TAGTAGTAG"," onResume() 被执行");
+        Log.d("TAGTAGTAG", " onResume() 被执行");
         super.onResume();
     }
 
@@ -806,7 +810,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     return;
                 }
 
-                LineAdapter a =((LineAdapter)((RouteView)mOpenRouteWindow.getConvertView()).getLineView().getAdapter());
+                LineAdapter a = ((LineAdapter) ((RouteView) mOpenRouteWindow.getConvertView()).getLineView().getAdapter());
                 FMRoute defaultRoute = a.getRoute(a.getSelectedPosition());
 
                 if (isShowRoute) {  //close
@@ -874,10 +878,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
-                Toast.makeText(this,"全球度假",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.call_service_btn:
-                Toast.makeText(this,"呼叫服务",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "呼叫服务", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -887,68 +891,70 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     // 按钮触摸事件
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        switch (v.getId()){
+        switch (v.getId()) {
             //搜索
             case R.id.search_dest_btn:
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     search_button_text.setTextColor(Color.parseColor("#eeee5505"));
                     search_button.setBackgroundResource(R.mipmap.search_destination_press);
                 }
 
-                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     search_button_text.setTextColor(Color.parseColor("#eeee5505"));
                     search_button.setBackgroundResource(R.mipmap.search_destination_press);
                 }
 
-                if(event.getAction()==MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     search_button_text.setTextColor(Color.parseColor("#565656"));
                     search_button.setBackgroundResource(R.mipmap.search_destination_normal);
                 }
-            break;
+                break;
             //全球
             case R.id.globle_plateform_btn:
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
                     globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
                 }
 
-                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
                     globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
                 }
 
-                if(event.getAction()==MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     globle_plateform_button_text.setTextColor(Color.parseColor("#565656"));
                     globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_normal);
                 }
                 break;
             //呼叫
             case R.id.call_service_btn:
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     call_button_text.setTextColor(Color.parseColor("#eeee5505"));
                     call_button.setBackgroundResource(R.mipmap.call_center_press);
                 }
 
-                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     call_button_text.setTextColor(Color.parseColor("#eeee5505"));
                     call_button.setBackgroundResource(R.mipmap.call_center_press);
                 }
 
-                if(event.getAction()==MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     call_button_text.setTextColor(Color.parseColor("#565656"));
                     call_button.setBackgroundResource(R.mipmap.call_center_normal);
                 }
                 break;
             default:
-            break;
+                break;
         }
         return false;
     }
 
     public static String WaiterMacAddress = "1C:77:F6:64:49:0C";
+
     private void addWaiterLocateInCall() {
         mWaiterMarkerInCall = mMap.addLocMarkerOnMap(new FMMarkerBuilderInfo(WaiterMacAddress, "fmr/fm_active_red.png"));
     }
+
     private void addMyLocateInCall() {
         FMMacService.instance().getMacAddress(this, new OnFMMacAddressListener() {
             @Override
@@ -967,26 +973,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mStartMarkerLayer = mMap.getFMLayerProxy().createFMImageLayer(groupId); //创建图层
         mMap.addLayer(mStartMarkerLayer);              //将图层添加到地图
         mStartMarker = FMAPI.instance().addImageMarker(mStartMarkerLayer,
-                                                       position,
-                                                       "fmr/icon_start.png");
+                position,
+                "fmr/icon_start.png");
         if (needSetCalculateStartPoint) {
             FMNaviAnalysisHelper.instance().setStartNaviMultiPoint(groupId,
-                                                                   Tools.getFMNaviAnalyserByMapId(mMap.currentMapId()),
-                                                                   position);
+                    Tools.getFMNaviAnalyserByMapId(mMap.currentMapId()),
+                    position);
         }
 
         mMap.updateMap();
     }
+
     private void addEndMarker(int groupId, FMMapCoord position, boolean needSetCalculateEndPoint) {
         mEndMarkerLayer = mMap.getFMLayerProxy().createFMImageLayer(groupId); //创建图层
         mMap.addLayer(mEndMarkerLayer);         //将图层添加到地图
         mEndMarker = FMAPI.instance().addImageMarker(mEndMarkerLayer,
-                                                     position,
-                                                     "fmr/icon_end.png");
+                position,
+                "fmr/icon_end.png");
         if (needSetCalculateEndPoint) {
             FMNaviAnalysisHelper.instance().setEndNaviMultiPoint(groupId,
-                                                                 Tools.getFMNaviAnalyserByMapId(mMap.currentMapId()),
-                                                                 position);
+                    Tools.getFMNaviAnalyserByMapId(mMap.currentMapId()),
+                    position);
         }
 
         mMap.updateMap();
@@ -1004,11 +1011,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             if (resultCode[1] == FMNaviAnalyser.FMRouteCalcuResult.ROUTE_SUCCESS) { //成功
                 // 添加起点终点
                 addStartMarker(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId(),
-                               FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
-                               false);
+                        FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                        false);
                 addEndMarker(FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getGroupId(),
-                             FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getPosition(),
-                             false);
+                        FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getPosition(),
+                        false);
                 // 结果
                 mPathResults = FMNaviAnalysisHelper.instance().getNaviPathResults(FMNaviAnalysisHelper.instance().getEndNaviMultiPoint());
             } else {
@@ -1025,14 +1032,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     // 判断起点还是终点
                     if (FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId().equals(mMap.currentMapId())) {
                         addStartMarker(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId(),
-                                       FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
-                                       false);
+                                FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                                false);
 
                         mPathResults = FMNaviAnalysisHelper.instance().getNaviPathResults(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint());
                     } else {
                         addEndMarker(FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getGroupId(),
-                                     FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getPosition(),
-                                     false);
+                                FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getPosition(),
+                                false);
 
                         mPathResults = FMNaviAnalysisHelper.instance().getNaviPathResults(FMNaviAnalysisHelper.instance().getEndNaviMultiPoint());
                     }
@@ -1047,11 +1054,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         // 设置导航模式下窗口的内容
         setStartOpenNavigationView(resultCode);
 
-        mCalculateLineMarker = FMAPI.instance().drawFloorLine( mLineLayer,
-                                                               4.0f,
-                                                               "fmr/full_arrow.png",
-                                                               Color.BLUE,
-                                                               mPathResults.get(0) );
+        mCalculateLineMarker = FMAPI.instance().drawFloorLine(mLineLayer,
+                4.0f,
+                "fmr/full_arrow.png",
+                Color.BLUE,
+                mPathResults.get(0));
 
         mMap.updateMap();
         return true;
@@ -1097,11 +1104,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         // 设置导航模式下窗口的内容
         setStartOpenNavigationView(resultCode);
 
-        mCalculateLineMarker = FMAPI.instance().drawFloorLine( mLineLayer,
-                                                               2.0f,
-                                                               "fmr/full_arrow.png",
-                                                               Color.BLUE,
-                                                               mPathResults.get(0) );
+        mCalculateLineMarker = FMAPI.instance().drawFloorLine(mLineLayer,
+                2.0f,
+                "fmr/full_arrow.png",
+                Color.BLUE,
+                mPathResults.get(0));
 
 
         mMap.updateMap();
@@ -1197,7 +1204,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             mMapView.hiddenActivityGroupOnMap(mShopActGroup);
 
             mMapView.showActivityGroupOnMap(mFoodActGroup);
-        } else if (type == ButtonGroup.ButtonType.FOOD){
+        } else if (type == ButtonGroup.ButtonType.FOOD) {
             mMapView.hiddenActivityGroupOnMap(mFacilityActGroup);
             mMapView.hiddenActivityGroupOnMap(mFoodActGroup);
 
@@ -1209,7 +1216,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     /**
-     *  地图加载成功
+     * 地图加载成功
+     *
      * @param mapId
      */
     @Override
@@ -1227,7 +1235,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mLayerProxy = mMap.getFMLayerProxy();
 
         FMModelLayer modelLayer = mLayerProxy.getFMModelLayer(mMap.getDisplayGroupIds()[0]);
-        if ( modelLayer!= null ) {
+        if (modelLayer != null) {
             modelLayer.setVisible(false);
         }
 
@@ -1241,11 +1249,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     return false;
                 }
 
-                mCurrentModel = (FMExternalModel)pFMNode;
+                mCurrentModel = (FMExternalModel) pFMNode;
 
-                if (mCurrentModel.getDataType()==100000 ||
-                    mCurrentModel.getFid().equals("999800171") ||
-                    mCurrentModel.getFid().equals("999800170")) {
+                if (mCurrentModel.getDataType() == 100000 ||
+                        mCurrentModel.getFid().equals("999800171") ||
+                        mCurrentModel.getFid().equals("999800170")) {
                     return false;
                 }
 
@@ -1260,15 +1268,15 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 mMap.updateMap();
 
                 ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
-                String name = mCurrentModel.getName()+"   地图ID："+mCurrentModel.getFid();
+                String name = mCurrentModel.getName() + "   地图ID：" + mCurrentModel.getFid();
                 if ("".equals(name) || name == null) {
                     name = "暂无名称";
                 }
                 view.setTitle(name);
                 // 查询
                 List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-                String               typeName = "";
-                String               address  = "";
+                String typeName = "";
+                String address = "";
                 if (!elements.isEmpty()) {
                     typeName = elements.get(0).getTypename();
                     address = elements.get(0).getAddress();
@@ -1276,14 +1284,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 elements.clear();
                 elements = null;
                 String viewAddress = "";
-                if (typeName==null || typeName.equals("")) {
+                if (typeName == null || typeName.equals("")) {
                     viewAddress = address;
                 } else {
                     viewAddress = String.format("%s・%s", typeName, address);
                 }
                 view.setAddress(viewAddress);
                 view.setEnterMapIdByModelFid(mCurrentModel.getFid());
-                mOpenModelInfoWindow.getConvertView().measure(0,0);
+                mOpenModelInfoWindow.getConvertView().measure(0, 0);
                 mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
 
                 mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
@@ -1327,7 +1335,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         initRoutViewWindow();
 
         FMLabelLayer labelLayer = mMap.getFMLayerProxy().getFMLabelLayer(1);
-        ArrayList    arrayList  = labelLayer.getAll();
+        ArrayList arrayList = labelLayer.getAll();
 
         isMapLoadCompleted = true;
 
@@ -1394,14 +1402,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             mMap.addLayer(mSpecialWorkImageLayer);
 
             mSceneAnimator.animateMoveToScreenCenter(mSpecialWorkMarker.getPosition())
-                          .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                          .setDurationTime(1000)
-                          .start();
+                    .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
+                    .setDurationTime(1000)
+                    .start();
         }
 
         if (mNeedLoadCalculatedRoute) {
             if (calculateAndDrawRouteAndAddStartEndMarker()) {
-                mOpenNaviWindow.getConvertView().measure(0,0);
+                mOpenNaviWindow.getConvertView().measure(0, 0);
                 mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
             }
             mNeedLoadCalculatedRoute = false;
@@ -1412,7 +1420,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 mLocationLayer.addMarker(mMeLocationMarker);
             } else {
                 mMeLocationMarker.updatePosition(mInitLocatePosition.getGroupId(),
-                                                 mInitLocatePosition.getMapCoord());
+                        mInitLocatePosition.getMapCoord());
             }
         }
 
@@ -1444,17 +1452,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             // 没有起点终点
             mPathResults = FMNaviAnalysisHelper.instance().getNaviPathResults(FMNaviAnalysisHelper.instance().getOutsideNaviMultiPoint());
 
-        } else if (FMNaviAnalysisHelper.instance().getCalculatorRouteType() == FMNaviAnalysisHelper.FM_CALCULATE_ROUTE_IN_OUT_MAP){
+        } else if (FMNaviAnalysisHelper.instance().getCalculatorRouteType() == FMNaviAnalysisHelper.FM_CALCULATE_ROUTE_IN_OUT_MAP) {
             if (FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId().equals(mMap.currentMapId())) {
                 addStartMarker(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId(),
-                               FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
-                               false);
+                        FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                        false);
                 mPathResults = FMNaviAnalysisHelper.instance().getNaviPathResults(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint());
             } else {
                 // 终点
                 addEndMarker(FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getGroupId(),
-                             FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getPosition(),
-                             false);
+                        FMNaviAnalysisHelper.instance().getEndNaviMultiPoint().getPosition(),
+                        false);
                 mPathResults = FMNaviAnalysisHelper.instance().getNaviPathResults(FMNaviAnalysisHelper.instance().getEndNaviMultiPoint());
             }
 
@@ -1467,10 +1475,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         // 画路线
         mCalculateLineMarker = FMAPI.instance().drawFloorLine(mLineLayer,
-                                                              2.0f,
-                                                              "fmr/full_arrow.png",
-                                                              Color.BLUE,
-                                                              mPathResults.get(0));
+                2.0f,
+                "fmr/full_arrow.png",
+                Color.BLUE,
+                mPathResults.get(0));
 
         animateCenterWithZoom(mMap.getFocusGroupId(), startCoord);
         mMap.updateMap();
@@ -1599,7 +1607,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         npv.setRemainingTime(nvd.getRemainedTimeDesc());
 
         // 完成导航
-        if (nvd.getRemainedDistance() <= 0 || nvd.getRemainedTime() <=0) {
+        if (nvd.getRemainedDistance() <= 0 || nvd.getRemainedTime() <= 0) {
             FMLocationService.instance().setInNavigationMode(false);
             npv.getStopNaviButton().setText("导航完成");
         }
@@ -1613,7 +1621,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         float currIndexDis = (float) FMMapCoord.length(points.get(index), currentTotalMapCoord.getMapCoord());
         float len = 0;
         if (index > 0) {
-            for (int i=1; i< index; ++i) {
+            for (int i = 1; i < index; ++i) {
                 len += (float) FMMapCoord.length(points.get(i - 1), points.get(i));
             }
         }
@@ -1621,18 +1629,19 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         FMAPI.instance().mWalkedDistance = len + currIndexDis;
 
 
-        CustomToast.show(this, "index: " +index+" , walkDis: "+ FMAPI.instance().mWalkedDistance);
+        CustomToast.show(this, "index: " + index + " , walkDis: " + FMAPI.instance().mWalkedDistance);
         return FMAPI.instance().mWalkedDistance;
     }
 
     // calculate angle
     private float mLastLineAngle = -1;
+
     private void calculateMapRotatedAngle(int pIndex, FMMapCoord pCurrCoord) {
         // pIndex < point size - 1
         ArrayList<FMMapCoord> points = mPathResults.get(0).getPointList();
         if (pIndex <= points.size() - 2) {
             float currLineAngle = (float) FMAPI.calcuAngle(pCurrCoord, points.get(pIndex + 1));
-            if (mLastLineAngle != -1 && Math.abs(currLineAngle - mLastLineAngle)>0 ) {
+            if (mLastLineAngle != -1 && Math.abs(currLineAngle - mLastLineAngle) > 0) {
                 mMap.setRotate(-(float) FMMath.degreeToRad(currLineAngle));
                 mMap.updateMap();
             }
@@ -1643,10 +1652,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     ///////////////////////////定位/////////////////////////////
     private FMMapCoord randomMapCoord() {
-        int    randX = (int) (mMapInfo.getMaxX() - mMapInfo.getMinX());
-        int    randY = (int) (mMapInfo.getMaxY() - mMapInfo.getMinY());
-        double x     = mRandom.nextInt(randX) + mMapInfo.getMinX();
-        double y     = mRandom.nextInt(randY) + mMapInfo.getMinY();
+        int randX = (int) (mMapInfo.getMaxX() - mMapInfo.getMinX());
+        int randY = (int) (mMapInfo.getMaxY() - mMapInfo.getMinY());
+        double x = mRandom.nextInt(randX) + mMapInfo.getMinX();
+        double y = mRandom.nextInt(randY) + mMapInfo.getMinY();
 
         return new FMMapCoord(x, y, 0.0);
     }
@@ -1679,8 +1688,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean         isRun          = true;
-                long            time           = System.currentTimeMillis();
+                boolean isRun = true;
+                long time = System.currentTimeMillis();
                 FMTotalMapCoord locatePosition = null;
 
                 while (isRun) {
@@ -1727,7 +1736,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     isLocateSuccess = true;
                     FMTotalMapCoord meLocatePosition = (FMTotalMapCoord) msg.obj;
                     dealLocateWhenSuccess(meLocatePosition, true);
-                }   break;
+                }
+                break;
 
                 case FMAPI.LOCATE_SUCCESS_TO_LOCATE: {  // 定位
                     mProgressDialog.dismiss();
@@ -1735,7 +1745,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     isLocateSuccess = true;
                     FMTotalMapCoord meLocatePosition = (FMTotalMapCoord) msg.obj;
                     dealLocateWhenSuccess(meLocatePosition, false);
-                }   break;
+                }
+                break;
 
                 case FMAPI.LOCATE_FAILURE:   // 1
                     mProgressDialog.dismiss();
@@ -1785,7 +1796,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
                 naviView.setStartText("我的位置");
                 naviView.setEndText(mCurrentModel.getName());
-                mOpenNaviWindow.getConvertView().measure(0,0);
+                mOpenNaviWindow.getConvertView().measure(0, 0);
                 mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
             }
         } else {
@@ -1800,6 +1811,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     /**
      * 设置切换地图的状态。
+     *
      * @param locatePosition
      */
     private void dealLocateInOtherMap(FMTotalMapCoord locatePosition, boolean isArrive) {
@@ -1816,8 +1828,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             FMMapCoord startPoint = locatePosition.getMapCoord();
             startPoint.setDescription("我的位置");
             FMNaviAnalysisHelper.instance().setStartNaviMultiPoint(locatePosition.getGroupId(),
-                                                                   Tools.getFMNaviAnalyserByMapId(locatePosition.getMapId()),
-                                                                   startPoint);
+                    Tools.getFMNaviAnalyserByMapId(locatePosition.getMapId()),
+                    startPoint);
 
             // 路径规划
             if (calculateAndDrawRoute()) {
@@ -1826,7 +1838,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 naviView.setEndText(mCurrentModel.getName());
 
                 // 打开窗口
-                mOpenNaviWindow.getConvertView().measure(0,0);
+                mOpenNaviWindow.getConvertView().measure(0, 0);
                 mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
             }
 
@@ -1932,7 +1944,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private OnFMReceiveLocationListener mLocationListener = new OnFMReceiveLocationListener() {
         @Override
         public void onReceiveLocation(int type, FMTotalMapCoord lastLocation, FMTotalMapCoord currentLocation, final float angle) {
-            String logC = "type: " + type+" ,"+ currentLocation.toString();
+            String logC = "type: " + type + " ," + currentLocation.toString();
 
             if (!isMapLoadCompleted) {
                 return;
@@ -1944,10 +1956,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
             if (mMeLocationMarker == null) {
                 mMeLocationMarker = FMAPI.instance().addLocationMarker(mLocationLayer,
-                                                                       currentLocation.getGroupId(),
-                                                                       currentLocation.getMapCoord());
+                        currentLocation.getGroupId(),
+                        currentLocation.getMapCoord());
                 mMap.updateMap();
-            } else if (mMeLocationMarker.getHandle() == 0){
+            } else if (mMeLocationMarker.getHandle() == 0) {
                 return;
             }
 
@@ -1979,8 +1991,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 mMeLocationMarker.setVisible(true);
             }
             mMeLocationMarker.updateAngleAndPosition(currentLocation.getGroupId(),
-                                                     angle,
-                                                     currentLocation.getMapCoord());
+                    angle,
+                    currentLocation.getMapCoord());
 
             mMap.updateMap();
         }
@@ -1995,16 +2007,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         String mapId = currentLocation.getMapId();
 
         if (!mapId.equals(mMap.currentMapId()) &&
-            FMNaviAnalysisHelper.instance().getMayPassedMapIdsInNavigation().contains(mapId)) {
+                FMNaviAnalysisHelper.instance().getMayPassedMapIdsInNavigation().contains(mapId)) {
             enterInsideWhenInNavigation(mapId);
             return;
         }
 
         // [0] distance      [1] index
         float[] naviResults = Tools.getFMNaviAnalyserByMapId(Tools.OUTSIDE_MAP_ID).naviConstraint(mPathResults.get(0).getPointList(),
-                                                           currentLocation.getGroupId(),
-                                                           lastLocation.getMapCoord(),
-                                                           currentLocation.getMapCoord());
+                currentLocation.getGroupId(),
+                lastLocation.getMapCoord(),
+                currentLocation.getMapCoord());
 
         if (FMAPI.mNeedMapFollowInNavigation) {  // update map rotation way that is different with before
             dealMapFollow(currentLocation, (int) naviResults[1]);
@@ -2016,23 +2028,24 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             mMeLocationMarker.setVisible(true);
         }
         mMeLocationMarker.updateAngleAndPosition(currentLocation.getGroupId(),
-                                                 angle,
-                                                 currentLocation.getMapCoord());
+                angle,
+                currentLocation.getMapCoord());
 
         mMap.updateMap();
     }
 
     AlertDialog mDialog = null;
     private boolean mNeedWarningToJumpMap = true;
+
     public AlertDialog getAlertDialog(final FMTotalMapCoord myPosition) {
 
         String warnText = String.format("您现在在 %s，是否需要跳转？" +
-                                        "若选择 不再提示 将不会在再提示，" +
-                                        "需要跳转，则请点击 回到我的位置", Tools.getInsideMapName(myPosition.getMapId()));
+                "若选择 不再提示 将不会在再提示，" +
+                "需要跳转，则请点击 回到我的位置", Tools.getInsideMapName(myPosition.getMapId()));
 
         if (mDialog == null) {
             mDialog = new AlertDialog.Builder(this).setTitle("提示")
-                    .setNegativeButton("不再提示", new DialogInterface.OnClickListener(){
+                    .setNegativeButton("不再提示", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -2040,7 +2053,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                             dialog.dismiss();
                         }
 
-                    }).setPositiveButton("跳转", new DialogInterface.OnClickListener(){
+                    }).setPositiveButton("跳转", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -2060,16 +2073,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
      * @method 查询网络状态
      */
     public void ping(final String ip, final TextView tv) {
-        String  result = " ";
+        String result = " ";
         String command = "ping -c " + 1 + " " + ip;
         try {
             //            String ip = "www.baidu.com";// 除非百度挂了，否则用这个应该没问题~
             Process p = Runtime.getRuntime().exec(command);// ping 1次
             // 读取ping的内容，可不加。
-            InputStream    input        = p.getInputStream();
-            BufferedReader in           = new BufferedReader(new InputStreamReader(input));
-            StringBuffer   stringBuffer = new StringBuffer();
-            String         content      = "";
+            InputStream input = p.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer stringBuffer = new StringBuffer();
+            String content = "";
             while ((content = in.readLine()) != null) {
                 stringBuffer.append(content);
             }
@@ -2093,17 +2106,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                tv.setText(ip+"："+msg);
+                tv.setText(ip + "：" + msg);
             }
         });
     }
 
 
-    private void initSlidingMenu(){
+    private void initSlidingMenu() {
         // configure the SlidingMenu
-        Toolbar toolbar= getActionBarToolbar();
+        Toolbar toolbar = getActionBarToolbar();
 
-         menu = new SlidingMenu(this);
+        menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -2120,7 +2133,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         //为侧滑菜单设置布局
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.menu_frame,leftFragment).commit();
+                .replace(R.id.menu_frame, leftFragment).commit();
         menu.setMenu(R.layout.leftmenu_layout);//设置menu的布局文件
         toolbar.setNavigationIcon(R.mipmap.ic_person);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -2130,4 +2143,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
+
+
 }

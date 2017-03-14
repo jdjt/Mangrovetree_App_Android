@@ -12,11 +12,11 @@ import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
-import com.jdjt.mangrovetreelibray.ioc.net.NetConfig;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 
@@ -46,21 +46,26 @@ public class PesonalInfoActivity extends CommonActivity {
 
     @Init
     public void init() {
+        //获取本地数据
+        String nickname = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "nickname", 0);
+        String callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
+        tv_personal_name.setText(nickname);
+        tv_personal_telphone.setText(callPhone);
+        //同时更新网络数据，如果有变更 更新到本地
+
+    }
+
+    /**
+     * 每次启动的时候更新一次数据
+     */
+    @InResume
+    private void getUser(){
         JsonObject json=new JsonObject();
         json.addProperty("proceedsPhone","");
-        NetConfig config=new NetConfig();
-
         MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
     }
     @InHttp(Constant.HttpUrl.GETUSERINFO_KEY)
     public void result(ResponseEntity entity) {
-//        pDialog.setCancelable(false);
-//        pDialog.setTitleText("加载完成!")
-//            .setConfirmClickListener(null)
-//
-
-
-        Toast.makeText(this, "请求成功", Toast.LENGTH_SHORT).show();
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;

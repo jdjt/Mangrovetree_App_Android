@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
    <!--     定义当button获得focus时的形态-->
-    <item  android:state_focused="true" android:drawable="@color/title_bg" >
+    <item  android:state_focused="true" android:drawable="@color/text_gray_value" >
     </item>
-    <item android:state_pressed="true"  android:drawable="@color/title_bg"/>
-    <item android:state_selected="true"  android:drawable="@color/title_bg"></item>
-    <item android:drawable="@color/white"  />
+    <item android:state_pressed="true"  android:drawable="@color/text_gray_value"/>
+    <item android:state_selected="true"  android:drawable="@color/text_gray_value"></item>
+    <item android:drawable="@drawable/layout_border_line"  />
 </selector>
