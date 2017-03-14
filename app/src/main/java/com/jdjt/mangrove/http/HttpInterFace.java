@@ -5,6 +5,7 @@ import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InNet;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InParam;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPost;
+import com.jdjt.mangrovetreelibray.ioc.net.NetConfig;
 
 /**
  * 网络接口范例 <br>
@@ -49,17 +50,9 @@ public interface HttpInterFace {
 //	public void login(@InParam("account") String name, @InParam("password") String password);
 	//异步
 	@InPost(Constant.HttpUrl.LOGIN)
-	public void login(@InParam() String json);
+	public void login(@InParam String json);
+    @InPost(Constant.HttpUrl.GETUSERINFO)
+    public void getUserInfo(@InParam String json);
 
-//	@InPost(Constant.HttpUrl.LOGIN)
-//	public void loginPost(@InParam LinkedHashMap<String, Object> params);
-//
-//	@InPost
-//	public void login(@InParam String json);
-//
-//	@InWeb
-//	public void LoginWeb(String json);
-//
-//	@InForm
-//	public void LoginForm(String name, String password);
+
 }

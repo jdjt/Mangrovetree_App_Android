@@ -16,5 +16,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main1">Main1Activity</string>
     <string name="str_setting">设置</string>
+    <string name="app_person_activity">个人中心</string>
+    <string name="app_find_password_activity">找回密码</string>
 
 </resources>

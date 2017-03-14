@@ -10,11 +10,9 @@ import android.widget.Toast;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.login.PesonalInfoActivity;
 import com.jdjt.mangrove.login.SettingActivity;
-import com.jdjt.mangrovetreelibray.ioc.annotation.InBinder;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
-import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 
 /**
  * @author wmy
@@ -45,7 +43,9 @@ public class LeftFragment extends Fragment {
 //                //跳转到用户中心
                 case R.id.account_islogin:
                     Toast.makeText(getContext(), "好的", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), PesonalInfoActivity.class));
+                    Intent intent=  new Intent(getActivity(), PesonalInfoActivity.class);
+                    intent.putExtra("title","个人中心");
+                    startActivity(intent);
                     break;
                 //跳转到设置
                 case R.id.ll_account_setting_layout:
