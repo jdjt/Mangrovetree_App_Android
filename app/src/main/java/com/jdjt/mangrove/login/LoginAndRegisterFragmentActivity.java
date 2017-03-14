@@ -18,8 +18,8 @@ import com.jdjt.mangrovetreelibray.ioc.listener.OnRadioChecked;
 /**
  * Created by huyanan on 2017/3/9.
  */
-@InLayer(value = R.layout.activity_longin_and_register_fragment,parent = R.id.center_common, isTitle = true)
-public class LonginAndRegisterFragmentActivity extends CommonActivity {
+@InLayer(value = R.layout.activity_longin_and_register_fragment)
+public class LoginAndRegisterFragmentActivity extends CommonActivity {
     @InBean
     private LoginFragment loginFragment;
     @InBean
@@ -28,7 +28,6 @@ public class LonginAndRegisterFragmentActivity extends CommonActivity {
     RadioGroup radioGroup;
     @InAfter
     protected void initView() {
-        getSupportActionBar().setTitle("");
         startFragmentAdd(loginFragment);
     }
 //

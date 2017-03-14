@@ -14,51 +14,79 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InPost;
  * .\..(.....(.....)....... <br>
  * ..\_)..... )../........ <br>
  * .......... (_/.......... <br>
- * 微信 gdpancheng <br>
  * -----------------------------------------------
- *
- * @author gdpancheng@gmail.com 2015年1月7日 下午2:16:21
- * @param <T>
  */
 @InNet(Constant.HttpUrl.class)
 public interface HttpInterFace {
-
-//	//---------------------------------------------------------------------------------------
-//	//同步
-//	@InForm(Constant.HttpUrl.FILES)
-//	public <T> T login(@InParam("id") String id, LinkedHashMap<String, File> params);
-//
-//	@InGet
-//	public <T> T login(LinkedHashMap<String, Object> params);
-//
-//	@InPost
-//	public <T> T asyncLoginPost(String name, String password);
-//
-//	@InPost(Constant.HttpUrl.LOGIN)
-//	public <T> T postStr(@InParam String json);
-//
-//	@InWeb(method="getRegionCountry",space="http://WebXml.com.cn/")
-//	public <T> T asyncWeb();
-//
-//	@InWeb
-//	public <T> T asyncLoginWeb(@InParam("theRegionCode") String theRegionCode, NetConfig config);
-//
-	//---------------------------------------------------------------------------------------
-//	//异步
-//	@InPost(Constant.HttpUrl.LOGIN)
-//	public void login(@InParam("account") String name, @InParam("password") String password);
-	//异步
+    /**
+     * 登陆接口
+     * @param json
+     */
 	@InPost(Constant.HttpUrl.LOGIN)
-	public void login(@InParam() String json);
-//	@InPost(Constant.HttpUrl.LOGIN)
-//	public void loginPost(@InParam LinkedHashMap<String, Object> params);
-//
-//	@InPost
-//	public void login(@InParam String json);
-//
-//	@InWeb
-//	public void LoginWeb(String json);
-//
-//	@InForm
-//	public void LoginForm(String name, String password);
+	public void login(@InParam String json);
+
+    /**
+     * 获取会员信息
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.GETUSERINFO)
+    public void getUserInfo(@InParam String json);
+
+    /**
+     * 用户登出
+     */
+    @InPost(Constant.HttpUrl.LOGOUT)
+    public void logout();
+
+    /**
+     * 用户注册
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.REGISTER)
+    public void register(@InParam String json);
+
+    /**
+     * 用户账号重复验证
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.CHECKACCOUNT)
+    public void checkAccount(@InParam String json);
+
+    /**
+     * 验证码验证
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.CHECKCAPTCHA)
+    public void checkCaptcha(@InParam String json);
+
+    /**
+     * 修改账户信息
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.MODIFYMEMBER)
+    public void modifyMember(@InParam String json);
+
+    /**
+     * 找回密码
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.RESETPASSWORD)
+    public void resetPassword(@InParam String json);
+
+    /**
+     * 获取验证码
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.GETCODE)
+    public void getCode(@InParam String json);
+
+    /**
+     * 修改密码
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.MODIFYPASSWORD)
+    public void modifyPassword(@InParam String json);
+
+
+
 }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     package="com.jdjt.mangrove">
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -39,7 +41,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
-       >
+        tools:replace="android:icon">
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
             android:value="586474d3190f48f1974777a7a847b063" />
@@ -66,10 +68,25 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity android:name=".login.LoginAndRegisterFragmentActivity" />
         <activity
-            android:name=".login.LonginAndRegisterFragmentActivity"
-            android:label="@string/title_activity_mangrove_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".login.PesonalInfoActivity"
+            android:label="@string/app_person_activity" />
+        <activity
+            android:name=".login.FindPasswordActivity"
+            android:label="@string/app_find_password_activity" />
+        <activity
+            android:name=".login.SettingActivity"
+            android:label="@string/title_activity_mangrove_main" />
+               <activity
+            android:name=".login.UpdatePasswordActiviy"
+            android:label="@string/app_change_pwd" />
+        <activity
+            android:name=".login.ChangePhoneActivity"
+            android:label="@string/app_change_phone" />
+        <activity
+            android:name=".login.ChangeNameActivity"
+            android:label="@string/app_change_name" />
 
     </application>
 

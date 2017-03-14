@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- +++++++设置+++++++++++++++++++++++++++++++++++++++ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/personal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                android:text="推送通知"
+                android:textColor="@color/text_gray_lable"
+                android:textSize="@dimen/textsize_30" />
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="18dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+
+            <!--<com.jdjt.mangrove.view.SlipButton-->
+                <!--android:id="@+id/setting_slipbtn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="18dp" />-->
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="18dp"
+            android:background="@color/line_color_in" />
+
+        <LinearLayout
+            android:id="@+id/setting_version_layout"
+            style="@style/member_order_click"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="18dp"
+                android:layout_weight="1"
+                android:text="新版本检测"
+                android:textColor="@drawable/text_mem_content_selector"
+                android:textSize="@dimen/textsize_30" />
+
+            <TextView
+                android:id="@+id/setting_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginRight="32dp"
+                android:text="新1.1"
+                android:textColor="@color/text_color_green"
+                android:textSize="@dimen/textsize_30" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="18dp"
+            android:background="@color/line_color_in" />
+
+        <LinearLayout
+            android:id="@+id/account_clear_cache_layout"
+            style="@style/member_order_click"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="18dp"
+                android:layout_weight="1"
+                android:text="清除缓存数据"
+                android:textColor="@drawable/text_mem_content_selector"
+                android:textSize="@dimen/textsize_30" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="18dp"
+            android:background="@color/line_color_in" />
+
+        <LinearLayout
+            android:id="@+id/account_manager_msg"
+            style="@style/member_order_click"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="18dp"
+                android:text="关于红树林管家"
+                android:textColor="@drawable/text_mem_content_selector"
+                android:textSize="@dimen/textsize_30" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color_out" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

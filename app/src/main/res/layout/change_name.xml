@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/find_login_password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:text="姓名"
+            android:textColor="@color/text_gray_lable"
+            android:textSize="@dimen/textsize_30" />
+
+        <com.jdjt.mangrove.view.ClearEditText
+            android:id="@+id/edit_person_name"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入姓名"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/text_gray_lable"
+            android:textColorHint="@color/line_color_out"
+
+            android:textSize="@dimen/textsize_30">
+
+        </com.jdjt.mangrove.view.ClearEditText>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/account_logout"
+        style="@style/AppBtn"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="85dp"
+        android:layout_marginTop="50dp"
+        android:text="保  存"
+        android:visibility="visible" />
+</LinearLayout>

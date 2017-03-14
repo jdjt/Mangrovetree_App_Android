@@ -16,6 +16,12 @@
         <item name="android:textSize">@dimen/textsize_32</item>
 
     </style>
+
+
+    <style name="member_order_click">
+        <item name="android:textColor">@drawable/text_mem_content_selector</item>
+        <item name="android:background">@drawable/mem_order_press_backgroud</item>
+    </style>
     <!--登录注册按钮样式 -->
     <style name="AppBtn">
         <item name="android:layout_height">53dp</item>
@@ -28,7 +34,17 @@
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
-
+    <style name="RegisterStyle">
+        <item name="android:layout_height">53dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <!-- <item name="android:textStyle">bold</item> -->
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:background">@color/unPresentMonth_FontColor</item>
+        <item name="android:textColor">@drawable/text_state_whitetogreen</item>
+        <item name="android:textSize">@dimen/textsize_32</item>
+    </style>
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
@@ -84,7 +100,9 @@
         <item name="android:textColorPrimary">@android:color/darker_gray</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/white</item>
-        <item name="toolbarNavigationButtonStyle">@style/myToolbarNavigationButtonStyle</item>
+        <item name="android:colorForeground">@color/foreground_material_dark</item>
+        <item name="android:colorForegroundInverse">@color/foreground_material_dark</item>
+        <item name="android:colorBackground">@color/foreground_material_dark</item>
     </style>
 
     <style name="myToolbarNavigationButtonStyle" parent="@style/ThemeOverlay.AppCompat.Light">

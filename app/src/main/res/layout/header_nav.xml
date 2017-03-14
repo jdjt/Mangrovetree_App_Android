@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    >
+    android:gravity="center">
 
     <LinearLayout
         android:id="@+id/account_islogin"
         android:layout_width="match_parent"
         android:layout_height="84dp"
-        android:orientation="horizontal"
         android:background="@drawable/layout_border_line"
+        android:orientation="horizontal"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/account_item_image"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="18dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
             android:background="@mipmap/person_log" />
 
         <RelativeLayout
@@ -28,36 +26,65 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="24dp"
-            android:layout_weight="1" >
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/account_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
-                android:textSize="@dimen/textsize_28"
+                android:text="未登录"
                 android:textColor="@color/text_color_green"
-                android:text="未登录" />
+                android:textSize="@dimen/textsize_28" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_22"
                 android:layout_below="@+id/account_item_name"
+                android:text="红树林会员"
                 android:textColor="@color/text_gray_value"
-                android:text="红树林会员" />
+                android:textSize="@dimen/textsize_22" />
 
         </RelativeLayout>
 
         <ImageView
-            android:gravity="right"
             android:id="@+id/account_personal_turn"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="4dp"
             android:background="@mipmap/arrow_right_grey"
-            android:layout_marginRight="4dp"/>
+            android:gravity="right" />
 
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_account_setting_layout"
+        style="@style/member_order_click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="13dp"
+            android:layout_margin="10dp"
+            android:background="@mipmap/icon_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="11dp"
+            android:layout_weight="1"
+            android:text="设置"
+            android:textColor="@drawable/text_mem_content_selector"
+            android:textSize="@dimen/textsize_32" />
+
+    </LinearLayout>
+
+</RelativeLayout>

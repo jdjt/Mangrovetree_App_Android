@@ -1,6 +1,7 @@
 package com.jdjt.mangrove.login;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -12,11 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.OutdoorMapActivity;
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBinder;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
@@ -29,7 +33,6 @@ import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
-import com.jdjt.mangrovetreelibray.ioc.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.verification.Rule;
 import com.jdjt.mangrovetreelibray.ioc.verification.Validator;
 import com.jdjt.mangrovetreelibray.ioc.verification.Validator.ValidationListener;
@@ -38,6 +41,8 @@ import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Telphone;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by huyanan on 2017/3/9.
@@ -65,7 +70,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
     Validator validator;
 
 
-    Map<String, String> loginMap;
 
     /**
      * 当点击登陆按钮，会自动获取输入框内的用户名和密码，对其进行验证
@@ -80,15 +84,12 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @Init
     public void init() {
+        Ioc.getIoc().getLogger().i("初始化登录页面");
+        String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
+        String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
 
-        Ioc.getIoc().getLogger().e("初始化登录页面");
-        String account = Handler_SharedPreferences.getValueByName("user", "account", 0);
-        String password = Handler_SharedPreferences.getValueByName("user", "password", 0);
-        System.out.print("huyanan" + account);
-        System.out.print("huyanan" + password);
-
-//        login_account.setText(account);
-//        login_password.setText(password);
+        login_account.setText(account);
+        login_password.setText(password);
         password_visible.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -102,21 +103,20 @@ public class LoginFragment extends Fragment implements ValidationListener {
             }
         });
 
-
-//        AccountEntity datas = getSave();
-//        //是否保存用户名密码
-//        System.out.println("是否已经保存了用户名密码："+datas.isSave());
-//        //所有存储的用户名密码
-//        System.out.println("所有存储的用户名密码："+datas.getAccountLists());
-//        //存储的最新的一条用户名密码
-//        if (datas.getLastAccount()!=null) {
-//            System.out.println("存储的最新的一条账户是 "+datas.getLastAccount()+" 用户名是 "+datas.getLastAccount().get(AccountEntity.NAME));
-//        }
     }
 
 
     @InHttp(Constant.HttpUrl.LOGIN_KEY)
     public void result(ResponseEntity entity) {
+//        pDialog.setCancelable(false);
+//        pDialog.setTitleText("加载完成!")
+//            .setConfirmClickListener(null)
+//
+
+        pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("加载完成");
+
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
@@ -127,18 +127,37 @@ public class LoginFragment extends Fragment implements ValidationListener {
         }
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
-
-        int status = Integer.valueOf(data.get("status").toString());
-        if (status == 0) {
-            Toast.makeText(getContext(), data.get("data").toString(), Toast.LENGTH_SHORT).show();
-            return;
-        }
         //------------------------------------------------------------
-        //清除保存的数据
-//		clear("bbb");清除账号bbb的缓存
-//		clear();清除所有缓存
+        //判断当前请求返回是否 有错误，OK 和 ERR
+        Map<String, Object> heads = entity.getHeaders();
+        Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
+       if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+           //存储用户名密码到本地
+           Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
+           Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
+           Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
+           startActivity();
+       }
+        //------------------------------------------------------------
     }
 
+    private void startActivity(){
+        Bundle b = new Bundle();
+        b.putString(FMAPI.ACTIVITY_WHERE, getActivity().getClass().getName());
+        b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
+        FMAPI.instance().gotoActivity(getActivity(), OutdoorMapActivity.class, b);
+        getActivity().finish();
+        return;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(pDialog!=null){
+            pDialog.dismiss();
+            pDialog=null;
+        }
+    }
 
     @Override
     public void onValidationSucceeded() {
@@ -147,12 +166,15 @@ public class LoginFragment extends Fragment implements ValidationListener {
         jsonObject.addProperty("account", login_account.getText().toString());
         jsonObject.addProperty("password", login_password.getText().toString());
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
-
-        //存储用户名密码到本地
-        Handler_SharedPreferences.WriteSharedPreferences("user", "account", login_account.getText().toString());
-        Handler_SharedPreferences.WriteSharedPreferences("user", "password", login_password.getText().toString());
-
-
+        showLoading();
+    }
+    SweetAlertDialog   pDialog;
+    public void showLoading(){
+           pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("加载中...");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     @Override
