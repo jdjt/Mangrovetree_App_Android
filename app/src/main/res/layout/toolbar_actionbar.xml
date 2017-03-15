@@ -3,15 +3,29 @@
     android:id="@+id/toolbar_actionbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/title_bg"
+    android:background="?attr/colorPrimary"
+    app:contentInsetLeft="0dp"
     android:minHeight="?attr/actionBarSize"
     android:fitsSystemWindows="true"
     app:layout_collapseMode="pin"
     app:layout_scrollFlags="scroll|enterAlways"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
+    app:theme="@style/AppTheme.AppBarOverlay"
     app:titleTextAppearance="@style/ActionBar.TitleText">
 
+
+    <!--android:background="@drawable/shape_search"-->
+
+    <!--<SearchView-->
+        <!--android:id="@+id/searchView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:iconifiedByDefault="true"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:inputType="textCapWords"-->
+        <!--android:imeOptions="actionSearch"-->
+        <!--android:queryHint="请输入您要查找的内容"-->
+    <!--/>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,8 +34,5 @@
         android:id="@+id/toolbar_title"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-
         android:textSize="20sp" />
-
-
 </android.support.v7.widget.Toolbar>

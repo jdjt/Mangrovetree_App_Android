@@ -7,14 +7,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,7 +32,7 @@ import java.util.HashMap;
  * @Package com.fengmap.drpeng.widget
  * @Date 2017/3/13 16:22
  */
-public class NewModelView extends RelativeLayout {
+public class NewInsideModelView extends RelativeLayout {
     public  Context    mContext;
     private ExpandableListView mExpandableListView;
     private View view;
@@ -48,14 +43,14 @@ public class NewModelView extends RelativeLayout {
     private Handler mHanler;
     TextView combo_name, group_open_icon, combo_details;
     TextView fm_navi_need_distance, fm_navi_start, fm_navi_end;
-    TextView fm_open_navi_small,fm_enter_inside,fm_open_navi_big;
+    TextView fm_open_navi_big;
 
     private String mEnterMapId;
 
     private HashMap<String,String> group = new HashMap<>();
     private HashMap<String,String> child = new HashMap<>();
 
-    public NewModelView(Context context) {
+    public NewInsideModelView(Context context) {
         super(context);
         this.mContext = context;
         isExpand = true;
@@ -64,7 +59,7 @@ public class NewModelView extends RelativeLayout {
         initView();
     }
 
-    public NewModelView(Context context, AttributeSet attrs) {
+    public NewInsideModelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext= context;
         initData();
@@ -72,35 +67,14 @@ public class NewModelView extends RelativeLayout {
     }
 
     private void initView() {
-        view = View.inflate(mContext, R.layout.new_view_model_info,this);
+        view = View.inflate(mContext, R.layout.new_inside_view_model_info,this);
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
         group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
-        fm_enter_inside = (TextView) findViewById(R.id.fm_enter_inside);
-        fm_open_navi_small = (TextView) findViewById(R.id.fm_open_navi_small);
         fm_open_navi_big = (TextView) findViewById(R.id.fm_open_navi_big);
         fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
         fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
-        // 进入室内点击逻辑
-        fm_enter_inside.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 进入室内界面
-                if (mEnterMapId==null || mEnterMapId.equals("")) {
-                    CustomToast.show(mContext, "没有室内地图");
-                    return;
-                }
-                Activity a = (Activity)mContext;
-                Bundle b = new Bundle();
-                if (a instanceof OutdoorMapActivity) {
-                    b.putString(FMAPI.ACTIVITY_WHERE, OutdoorMapActivity.class.getName());
-                    b.putString(FMAPI.ACTIVITY_MAP_ID, mEnterMapId);
-                    b.putString(FMAPI.ACTIVITY_HOTEL_NAME, Tools.getInsideMapName(mEnterMapId));
-                    Log.d("TAGTAGTAG","Tools.getInsideMapName(mEnterMapId) = "+Tools.getInsideMapName(mEnterMapId)+" mEnterMapId="+mEnterMapId);
-                }
-                FMAPI.instance().gotoActivity(a, IndoorMapActivity.class, b);
-            }
-        });
+
         panel = (RelativeLayout) view.findViewById(R.id.panel);
         content = (LinearLayout) view.findViewById(R.id.content);
         panel.setOnClickListener(new OnClickListener() {
@@ -164,37 +138,13 @@ public class NewModelView extends RelativeLayout {
 
     /**
      * 通过点击到的模型的id, 查询进入室内地图的ID
-     * @param pModelFid
      */
-    public void setEnterMapIdByModelFid(String pModelFid) {
-        FMExternalModelRelation emr= FMMapSDK.getExternalModelRelations().get(pModelFid);
-        if (emr == null) {   // 没有室内
-            setEnterViewVisible(false);
-            return;
-        } else {
-            setEnterViewVisible(true);
-        }
+    public void setDetailOpen() {
         isExpand = true;
         content.setVisibility(View.VISIBLE);
         group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
-        mEnterMapId = emr.getMapId();
     }
 
-    /**
-     * 设置是否进入室内外的View
-     *
-     */
-    public void setEnterViewVisible(boolean pVisible) {
-        if (pVisible) {
-            fm_open_navi_big.setVisibility(GONE);
-            fm_enter_inside.setVisibility(VISIBLE);
-            fm_open_navi_small.setVisibility(VISIBLE);
-        } else {
-            fm_enter_inside.setVisibility(GONE);
-            fm_open_navi_small.setVisibility(GONE);
-            fm_open_navi_big.setVisibility(VISIBLE);
-        }
-    }
     /**
     * @method 设置导航起始点
     */
@@ -216,11 +166,8 @@ public class NewModelView extends RelativeLayout {
     /**
     * @method 开始导航按钮
     */
-    public TextView getSmallArriveButton() {
-        return fm_open_navi_small;
-    }
 
-    public TextView getBigArriveButton() {
+    public TextView getStartNaviButton() {
         return fm_open_navi_big;
     }
 

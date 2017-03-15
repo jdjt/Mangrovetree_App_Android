@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     package="com.jdjt.mangrove">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -33,7 +32,8 @@
     <uses-permission android:name="android.permission.HARDWARE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <!--tools:ignore="HardcodedDebugMode"-->
+
+    <!-- tools:ignore="HardcodedDebugMode" -->
     <application
         android:name=".application.MangrovetreeApplication"
         android:allowBackup="true"
@@ -78,7 +78,7 @@
         <activity
             android:name=".login.SettingActivity"
             android:label="@string/setting" />
-               <activity
+        <activity
             android:name=".login.UpdatePasswordActiviy"
             android:label="@string/app_change_pwd" />
         <activity
@@ -93,7 +93,10 @@
         <activity
             android:name=".login.FindPasswordResetActivity"
             android:label="@string/app_find_password_activity" />
-
+        <activity
+            android:name=".activity.MapSearchAcitivity"
+            android:label="@string/title_activity_map_search_acitivity"
+            android:theme="@style/AppTheme.Base" />
     </application>
 
 </manifest>

@@ -10,9 +10,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.analysis.navi.FMConstraintRoad;
@@ -68,9 +71,13 @@ import com.fengmap.drpeng.widget.DrawableCenterTextView;
 import com.fengmap.drpeng.widget.InsideModelView;
 import com.fengmap.drpeng.widget.NaviProcessingView;
 import com.fengmap.drpeng.widget.NaviView;
+import com.fengmap.drpeng.widget.NewInsideModelView;
 import com.fengmap.drpeng.widget.SwitchFloorView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -91,8 +98,10 @@ import static com.fengmap.drpeng.OutdoorMapActivity.WaiterMacAddress;
  * 室内地图。
  * Created by yangbin on 16/6/29.
  */
-public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
+@InLayer(value = R.layout.activity_fengmap_indoor, parent = R.id.center_common)
+public class IndoorMapActivity extends CommonActivity implements OnFMMapInitListener,
                                                            View.OnClickListener,
+                                                            View.OnTouchListener,
                                                            OnFMMapClickListener, CustomPopupWindow.OnWindowCloseListener, OnFMReceivePositionInCallServiceListener {
     public static IndoorMapActivity mInstance;
 
@@ -154,19 +163,22 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
     private int wifiDelayTime = 0;
     private String logText = "";
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mInstance = this;
-        setContentView(R.layout.activity_fengmap_indoor);
-        init();
-    }
+    // 底部栏按钮
+    private LinearLayout search_dest_btn;
+    private LinearLayout globle_plateform_btn;
+    private LinearLayout call_service_btn;
+
+    private LinearLayout main_bottom_bar;
+    private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
+    private TextView call_button_text, search_button_text, globle_plateform_button_text;
 
     public FMMap getMap() {
         return mMap;
     }
 
-    private void init() {
+    @Init
+    protected void initView() {
+        mInstance = this;
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mSwitchFloorView = (SwitchFloorView) findViewById(R.id.indoor_switch_floor);
         mSwitchFloorView.setCallBackFloor(new SwitchFloorView.OnCallBackFloor() {
@@ -183,6 +195,30 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
 
         mMapView = (FMMapView) findViewById(R.id.indoor_mapview);
         mMap = mMapView.getFMMap();
+
+        main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
+
+
+        //底部栏
+        search_dest_btn = (LinearLayout) findViewById(R.id.search_dest_btn);
+        search_dest_btn.setOnClickListener(this);
+        search_dest_btn.setOnTouchListener(this);
+
+        call_service_btn = (LinearLayout) findViewById(R.id.call_service_btn);
+        call_service_btn.setOnClickListener(this);
+        call_service_btn.setOnTouchListener(this);
+
+        globle_plateform_btn = (LinearLayout) findViewById(R.id.globle_plateform_btn);
+        globle_plateform_btn.setOnClickListener(this);
+        globle_plateform_btn.setOnTouchListener(this);
+
+        call_button = (TextView) findViewById(R.id.call_button);
+        search_button = (TextView) findViewById(R.id.search_button);
+        globle_plateform_button = (TextView) findViewById(R.id.globle_plateform_button);
+
+        call_button_text = (TextView) findViewById(R.id.call_button_text);
+        search_button_text = (TextView) findViewById(R.id.search_button_text);
+        globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
 
         // 搜索
         mMapElementDAO = new FMDBMapElementDAO();
@@ -420,7 +456,7 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
 
                     mCurrentModel.setSelected(true);
 
-                    InsideModelView view = (InsideModelView) mOpenModelInfoWindow.getConvertView();
+                    NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
                     String          name = mCurrentModel.getName()+"   地图ID："+mCurrentModel.getFid();
                     if (name.equals("") || name == null) {
                         name = "暂无名称";
@@ -444,9 +480,11 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
                         viewAddress = String.format("%s・%s", typeName, address);
                     }
 
-                    view.setAddress(viewAddress);
+//                    view.setAddress(viewAddress);
+                    view.setDetailOpen();
+                    main_bottom_bar.measure(0,0);
                     mOpenModelInfoWindow.getConvertView().measure(0,0);
-                    mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
+                    mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight());
 
                     mLastModel = mCurrentModel;
 
@@ -456,6 +494,13 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
                             .start();
 
                     mMap.updateMap();
+                    //导航规划路径
+                    clearCalculateRouteLineMarker();
+                    clearStartAndEndMarker();
+                    mProgressDialog.setInfoViewContext("加载中...");
+                    mProgressDialog.show();
+                    needLocate(true);
+
                     return true;
                 }
 
@@ -711,6 +756,26 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
                     // add my marker
                     addMyLocateInCall();
                 }
+                break;
+
+            case R.id.search_dest_btn:
+                Bundle b = new Bundle();
+                OutdoorMapActivity.mInstance.clearSpecialMarker();
+                OutdoorMapActivity.mInstance.clearCalculateRouteLineMarker();
+                OutdoorMapActivity.mInstance.clearStartAndEndMarker();
+                OutdoorMapActivity.mInstance.clearMeLocationMarker();
+
+                b.putString(FMAPI.ACTIVITY_WHERE, OutdoorMapActivity.class.getName());
+                b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
+                b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, OutdoorMapActivity.mInstance.getMap().getFocusGroupId());
+
+                FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
+                break;
+            case R.id.globle_plateform_btn:
+                Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.call_service_btn:
+                Toast.makeText(this, "呼叫服务", Toast.LENGTH_SHORT).show();
                 break;
 
             default:
@@ -1174,43 +1239,63 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
 
     // 模型信息的窗口
     private void initModelInfoWindow() {
-        InsideModelView modelView = new InsideModelView(this) {
-            @Override
-            public void closeDialog() {
-                mOpenModelInfoWindow.close();
-            }
-        };
+        NewInsideModelView modelView = new NewInsideModelView(this);
         mOpenModelInfoWindow = new CustomPopupWindow(this, modelView);
-//        mOpenModelInfoWindow.setOutsideTouchable(true);
+        mOpenModelInfoWindow.setOutsideTouchable(true);
         mOpenModelInfoWindow.openSwipeDownGesture();
         mOpenModelInfoWindow.setOnWindowCloseListener(this);
         mOpenModelInfoWindow.setAnimationStyle(R.style.PopupPullFromBottomAnimation);
-        mOpenModelInfoWindow.setOnWindowCloseListener(new CustomPopupWindow.OnWindowCloseListener() {
-            @Override
-            public void onClose(boolean isGestureClose, View v) {
-                if(mCurrentModel!=null){
-                    mCurrentModel.setSelected(false);
-                    mMap.updateMap();
-                }
-            }
+
+        //开始导航逻辑
+        modelView.getStartNaviButton().setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+//                  mOpenNaviWindow.close();
+
+                  // 判断起点是否在当前地图
+                  String startPointMapId = FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId();
+                  if (startPointMapId.equals(mMap.currentMapId())) {
+                      // 切换楼层
+                      int groupId = FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId();
+                      if (groupId != mMap.getFocusGroupId()) {
+                          needSwitchFloor(groupId, true, true);
+                      }
+
+                      NaviProcessingView processingView    = (NaviProcessingView) mOpenNaviProcessWindow.getConvertView();
+                      String             remainingDistance = StringUtils.fixedRemainingDistance(FMAPI.instance().mInitNeedDistance);
+                      String             remainingTime     = StringUtils.fixedInitTime(FMAPI.instance().mInitNeedTime);
+
+                      processingView.setRemainingDistance(remainingDistance);
+                      processingView.setRemainingTime(remainingTime);
+
+                      // 添加定位图片  只能是起点
+                      dealAddLocateMarker(groupId,
+                              FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                              mLocationLayer);
+
+                      mOpenNaviProcessWindow.showAsDropDown(mTopBarView, 0, mTopBarView.getHeight());
+
+                  } else {
+                      // 切地图
+                      if (startPointMapId.equals(Tools.OUTSIDE_MAP_ID)) { // 室外  in->out
+                          // 跳转->路径规划
+                          Bundle b = new Bundle();
+                          b.putString(FMAPI.ACTIVITY_WHERE, IndoorMapActivity.class.getName());
+                          b.putString(FMAPI.ACTIVITY_MAP_ID, FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId());
+                          b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId());   // groupId
+                          FMAPI.instance().gotoActivity(IndoorMapActivity.this, OutdoorMapActivity.class, b);
+                          mInstance.finish();
+                      } else {  // in->in
+                          isLoadMapCompleted = false;
+                          needSwitchMap(startPointMapId, true);
+                      }
+
+                  }
+                  // 这里开始导航
+                  FMLocationService.instance().setInNavigationMode(true);
+              }
         });
-        modelView.getArriveButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearCalculateRouteLineMarker();
-                clearStartAndEndMarker();
 
-                mProgressDialog.setInfoViewContext("加载中...");
-                mProgressDialog.show();
-
-                // 到这去
-                /**
-                 * 如果未开启定位, 则开启定位, 弹出进度条;
-                 */
-                needLocate(true);
-
-            }
-        });
     }
 
     // clear
@@ -1534,7 +1619,7 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
         }
 
         // 关闭窗口
-        mOpenModelInfoWindow.close();
+//        mOpenModelInfoWindow.close();
 
         if (isArrive) {
             // 起点
@@ -1548,11 +1633,14 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
 
             // 画线
             if (calculateAndDrawRoute()) {
-                NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
-                naviView.setStartText("我的位置");
-                naviView.setEndText(mCurrentModel.getName());
-                mOpenNaviWindow.getConvertView().measure(0,0);
-                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
+//                NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
+//                naviView.setStartText("我的位置");
+//                naviView.setEndText(mCurrentModel.getName());
+//                mOpenNaviWindow.getConvertView().measure(0,0);
+//                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
+                NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
+                view.setStartText("我的位置");
+                view.setEndText(mCurrentModel.getName());
             }
         } else {
             dealAddLocateMarker(locateGroupId, locatePosition.getMapCoord(), mLocationLayer);
@@ -1568,7 +1656,7 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
      */
     private void dealLocateInOtherMap(FMTotalMapCoord locatePosition, boolean isArrive) {
         if (isArrive) {
-            mOpenModelInfoWindow.close();
+//            mOpenModelInfoWindow.close();
 
             // 设置终点并添加标注物
             FMMapCoord endPoint = mCurrentModel.getCenterMapCoord();
@@ -1583,11 +1671,14 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
                                                                    startPoint);
             // 路径规划
             if (calculateAndDrawRoute()) {
-                NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
-                naviView.setStartText("我的位置");
-                naviView.setEndText(mCurrentModel.getName());
-                mOpenNaviWindow.getConvertView().measure(0,0);
-                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
+//                NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
+//                naviView.setStartText("我的位置");
+//                naviView.setEndText(mCurrentModel.getName());
+//                mOpenNaviWindow.getConvertView().measure(0,0);
+//                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
+                NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
+                view.setStartText("我的位置");
+                view.setEndText(mCurrentModel.getName());
             }
 
         } else {   // 定位
@@ -1971,6 +2062,66 @@ public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
                 tv.setText(ip+"："+msg);
             }
         });
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (v.getId()) {
+            //搜索
+            case R.id.search_dest_btn:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    search_button_text.setTextColor(Color.parseColor("#565656"));
+                    search_button.setBackgroundResource(R.mipmap.search_destination_normal);
+                }
+                break;
+            //全球
+            case R.id.globle_plateform_btn:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    globle_plateform_button_text.setTextColor(Color.parseColor("#565656"));
+                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_normal);
+                }
+                break;
+            //呼叫
+            case R.id.call_service_btn:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_press);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_press);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    call_button_text.setTextColor(Color.parseColor("#565656"));
+                    call_button.setBackgroundResource(R.mipmap.call_center_normal);
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     // 网络状态查询线程

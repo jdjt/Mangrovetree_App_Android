@@ -12,7 +12,7 @@
 
     <TextView
         android:text="三亚"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:id="@+id/fm_topbar_title"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/fm_topbar_back"

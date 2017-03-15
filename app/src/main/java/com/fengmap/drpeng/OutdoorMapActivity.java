@@ -85,6 +85,7 @@ import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
+import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
@@ -217,7 +218,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
-        main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
 
         mButtonGroup = (ButtonGroup) findViewById(R.id.fm_btgroup);
         mButtonGroup.setOnButtonGroupListener(this);
@@ -231,6 +231,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mCallView = (DrawableCenterTextView) findViewById(R.id.fm_bt_call);
         mCallView.setOnClickListener(this);
 
+        mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
+        mMap = mMapView.getFMMap();
+
+        main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
+        //底部栏
         search_dest_btn = (LinearLayout) findViewById(R.id.search_dest_btn);
         search_dest_btn.setOnClickListener(this);
         search_dest_btn.setOnTouchListener(this);
@@ -250,9 +255,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         call_button_text = (TextView) findViewById(R.id.call_button_text);
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
-
-        mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
-        mMap = mMapView.getFMMap();
 
         // 初始化定位服务
         initFMLocationService();
@@ -296,7 +298,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         isMapLoadCompleted = false;
         dealOnNewIntent(intent);
         isMapLoadCompleted = true;
-
         super.onNewIntent(intent);
     }
 
@@ -440,6 +441,91 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.setOutsideTouchable(true);
         mOpenModelInfoWindow.setAnimationStyle(R.style.PopupPullFromBottomAnimation);
         mOpenModelInfoWindow.openSwipeDownGesture();  //开启下滑关闭手势
+        modelView.getSmallArriveButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOpenModelInfoWindow.close();
+                // 设置导航
+                FMLocationService.instance().setInNavigationMode(true);
+
+                // 判断起点是否在当前地图
+                if (FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId().equals(OUTSIDE_MAP_ID)) {
+                    NaviProcessingView processingView = (NaviProcessingView) mOpenNaviProcessWindow.getConvertView();
+
+                    String remainingDistance = StringUtils.fixedRemainingDistance(FMAPI.instance().mInitNeedDistance);
+                    String remainingTime = StringUtils.fixedInitTime(FMAPI.instance().mInitNeedTime);
+
+                    processingView.setRemainingDistance(remainingDistance);
+                    processingView.setRemainingTime(remainingTime);
+
+                    // 添加定位图片   只能是起点
+                    dealAddLocateMarker(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId(),
+                            FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                            mLocationLayer);
+
+
+                    dealViewChangedWhenOpenNavigationMode();
+                    mOpenNaviProcessWindow.showAsDropDown(mMapView, 0, -mMapView.getHeight());
+                } else {
+                    // 切地图
+                    Bundle b = new Bundle();
+                    String mapID = FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId();
+                    b.putString(FMAPI.ACTIVITY_WHERE, OutdoorMapActivity.class.getName());
+                    b.putString(FMAPI.ACTIVITY_MAP_ID, mapID);
+                    b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId());
+
+                    b.putString(FMAPI.ACTIVITY_HOTEL_NAME, Tools.getInsideMapName(mapID));
+
+                    // 关闭窗口
+                    mOpenNaviWindow.close();
+
+                    FMAPI.instance().gotoActivity(OutdoorMapActivity.this, IndoorMapActivity.class, b);
+                }
+            }
+        });
+
+        modelView.getBigArriveButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOpenModelInfoWindow.close();
+                // 设置导航
+                FMLocationService.instance().setInNavigationMode(true);
+
+                // 判断起点是否在当前地图
+                if (FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId().equals(OUTSIDE_MAP_ID)) {
+                    NaviProcessingView processingView = (NaviProcessingView) mOpenNaviProcessWindow.getConvertView();
+
+                    String remainingDistance = StringUtils.fixedRemainingDistance(FMAPI.instance().mInitNeedDistance);
+                    String remainingTime = StringUtils.fixedInitTime(FMAPI.instance().mInitNeedTime);
+
+                    processingView.setRemainingDistance(remainingDistance);
+                    processingView.setRemainingTime(remainingTime);
+
+                    // 添加定位图片   只能是起点
+                    dealAddLocateMarker(FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId(),
+                            FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getPosition(),
+                            mLocationLayer);
+
+
+                    dealViewChangedWhenOpenNavigationMode();
+                    mOpenNaviProcessWindow.showAsDropDown(mMapView, 0, -mMapView.getHeight());
+                } else {
+                    // 切地图
+                    Bundle b = new Bundle();
+                    String mapID = FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getNaviAnalyser().getMapId();
+                    b.putString(FMAPI.ACTIVITY_WHERE, OutdoorMapActivity.class.getName());
+                    b.putString(FMAPI.ACTIVITY_MAP_ID, mapID);
+                    b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, FMNaviAnalysisHelper.instance().getStartNaviMultiPoint().getGroupId());
+
+                    b.putString(FMAPI.ACTIVITY_HOTEL_NAME, Tools.getInsideMapName(mapID));
+
+                    // 关闭窗口
+                    mOpenNaviWindow.close();
+
+                    FMAPI.instance().gotoActivity(OutdoorMapActivity.this, IndoorMapActivity.class, b);
+                }
+            }
+        });
     }
 
     private void initRoutViewWindow() {
@@ -897,7 +983,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
                 b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, OutdoorMapActivity.mInstance.getMap().getFocusGroupId());
 
-                FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
+                FMAPI.instance().gotoActivity(this, MapSearchAcitivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
                 Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
@@ -1248,7 +1334,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mMap.setSceneZoomRange(1.0f, 20);
         mMap.zoom(1.3f);
         mMap.setRotate(0);
-        mMap.setTiltAngle((float) FMMath.degreeToRad(70));
+        mMap.setTiltAngle((float) FMMath.degreeToRad(85));
         //mMap.setMapCenter(new FMMapCoord(1.2188300E7, 2071220.0, 0.0));
         //初始化路径分析器
         mNaviAnalyser = FMNaviAnalyser.init(mMap);
@@ -1284,12 +1370,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
 
                 mMapView.setHighlight(mCurrentModel, true);
-                Log.d("TAGTAGTAG","打印坐标："+mMap.currentMapId()+" 坐标 : "+mCurrentModel.getCenterMapCoord()+"mCurrentModel.getGroupId()= "+mCurrentModel.getGroupId());
                 mLastModel = mCurrentModel;
 
                 mMap.updateMap();
-                
+
                 NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+//                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
                 String name = mCurrentModel.getName();
                 if ("".equals(name) || name == null) {
                     name = "暂无名称";
@@ -1312,6 +1398,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     viewAddress = String.format("%s・%s", typeName, address);
                 }
 //                view.setAddress(viewAddress);
+
                 view.setEnterMapIdByModelFid(mCurrentModel.getFid());
                 main_bottom_bar.measure(0,0);
                 mOpenModelInfoWindow.getConvertView().measure(0,0);
@@ -1320,6 +1407,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                         .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                         .setDurationTime(800)
                         .start();
+                //导航线绘制逻辑
+                clearCalculateRouteLineMarker();
+                clearStartAndEndMarker();
+                needLocate(true);
 
                 return true;
             }
@@ -1603,13 +1694,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void dealViewChangedWhenOpenNavigationMode() {
         mButtonGroup.setVisibility(View.INVISIBLE);        // 隐藏ButtonGroup
 //        mShowRouteView.setVisibility(View.INVISIBLE);    //
-        mLocationView.setVisibility(View.INVISIBLE);
+//        mLocationView.setVisibility(View.INVISIBLE);
     }
 
     private void dealViewChangedWhenOverNavigationMode() {
         mButtonGroup.setVisibility(View.VISIBLE);         // 显示ButtonGroup
 //        mShowRouteView.setVisibility(View.VISIBLE);       //
-        mLocationView.setVisibility(View.VISIBLE);
+//        mLocationView.setVisibility(View.VISIBLE);
     }
 
     private void dealMapFollow(FMTotalMapCoord currentTotalMapCoord, int index) {
@@ -1814,7 +1905,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     private void dealLocateInCurrentMap(FMTotalMapCoord locatePosition, boolean isArrive) {
         // 关闭窗口
-        mOpenModelInfoWindow.close();
+//        mOpenModelInfoWindow.close();
 
         if (isArrive) {
             // 起点
@@ -1831,8 +1922,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
                 naviView.setStartText("我的位置");
                 naviView.setEndText(mCurrentModel.getName());
-                mOpenNaviWindow.getConvertView().measure(0, 0);
-                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
+                NewModelView modelView = (NewModelView) mOpenModelInfoWindow.getConvertView();
+                modelView.setStartText("我的位置");
+                modelView.setEndText(mCurrentModel.getName());
+//                mOpenNaviWindow.getConvertView().measure(0, 0);
+//                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
             }
         } else {
             // 添加定位标注
@@ -2147,7 +2241,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
-
     private void initSlidingMenu() {
         // configure the SlidingMenu
         Toolbar toolbar = getActionBarToolbar();
@@ -2180,4 +2273,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
+    public void isShow(){
+        menu.toggle();
+    }
 }
