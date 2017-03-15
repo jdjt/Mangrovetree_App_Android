@@ -1288,7 +1288,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 mLastModel = mCurrentModel;
 
                 mMap.updateMap();
-                
+
                 NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 String name = mCurrentModel.getName();
                 if ("".equals(name) || name == null) {
@@ -2147,7 +2147,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
-
     private void initSlidingMenu() {
         // configure the SlidingMenu
         Toolbar toolbar = getActionBarToolbar();
@@ -2180,4 +2179,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
+    public void isShow(){
+        menu.toggle();
+    }
 }

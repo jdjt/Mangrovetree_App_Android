@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
@@ -47,6 +48,7 @@ public class LeftFragment extends Fragment {
     @InView
     private  TextView account_item_name;
     private void click(View view) {
+        ((OutdoorMapActivity) getActivity()).isShow();
         Intent intent=new Intent(getActivity(), PesonalInfoActivity.class);
         switch (view.getId()) {
 //                //跳转到用户中心
@@ -67,6 +69,7 @@ public class LeftFragment extends Fragment {
     @Init
     @InBack
     public void init() {
+        // get global application bus
         JsonObject json=new JsonObject();
         json.addProperty("proceedsPhone","");
         MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
@@ -94,4 +97,5 @@ public class LeftFragment extends Fragment {
         }
         //------------------------------------------------------------
     }
+
 }
