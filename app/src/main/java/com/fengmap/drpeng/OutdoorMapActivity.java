@@ -217,7 +217,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
-        main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
 
         mButtonGroup = (ButtonGroup) findViewById(R.id.fm_btgroup);
         mButtonGroup.setOnButtonGroupListener(this);
@@ -231,6 +230,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mCallView = (DrawableCenterTextView) findViewById(R.id.fm_bt_call);
         mCallView.setOnClickListener(this);
 
+        mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
+        mMap = mMapView.getFMMap();
+
+        main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
+        //底部栏
         search_dest_btn = (LinearLayout) findViewById(R.id.search_dest_btn);
         search_dest_btn.setOnClickListener(this);
         search_dest_btn.setOnTouchListener(this);
@@ -250,9 +254,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         call_button_text = (TextView) findViewById(R.id.call_button_text);
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
-
-        mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
-        mMap = mMapView.getFMMap();
 
         // 初始化定位服务
         initFMLocationService();
@@ -296,7 +297,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         isMapLoadCompleted = false;
         dealOnNewIntent(intent);
         isMapLoadCompleted = true;
-
         super.onNewIntent(intent);
     }
 
@@ -1333,7 +1333,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mMap.setSceneZoomRange(1.0f, 20);
         mMap.zoom(1.3f);
         mMap.setRotate(0);
-        mMap.setTiltAngle((float) FMMath.degreeToRad(70));
+        mMap.setTiltAngle((float) FMMath.degreeToRad(85));
         //mMap.setMapCenter(new FMMapCoord(1.2188300E7, 2071220.0, 0.0));
         //初始化路径分析器
         mNaviAnalyser = FMNaviAnalyser.init(mMap);
