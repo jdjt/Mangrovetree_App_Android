@@ -14,6 +14,7 @@
     <color name="app_theme_color">#eeee5505</color>
     <color name="app_bar_text_color">#565656</color>
     <color name="divider_view_color">#ADABA9</color>
+    <color name="text">#a9a9a9</color>
     <!---->
 
 
@@ -58,7 +59,7 @@
     <color name="transparent_bg">#a0000000</color>
     <color name="imagePage_bg">#cc000000</color>
     <!-- title背景色 咖色 -->
-    <color name="title_bg">#847678</color>
+    <color name="title_bg">#ee652c</color>
     <!-- 背景白色 -->
     <color name="title_world">#E0FFFFFF</color>
     <!-- 筛选页面背景色咖色 -->
@@ -196,6 +197,7 @@
     <color name="bg_after_text">#a2ce62</color>
     <color name="scan_red">#ee3e53</color>
     <color name="pink">#FA6E9F</color>
+    <!--<color name="orange_title">#ee652c</color>-->
 
     <!--特殊字体-->
     <color name="main_bg">#CAC9CF</color>

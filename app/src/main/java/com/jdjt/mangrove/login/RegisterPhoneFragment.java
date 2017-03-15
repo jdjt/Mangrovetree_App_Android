@@ -96,7 +96,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     @Init
     public void init() {
         Ioc.getIoc().getLogger().e("初始化注册页面");
-
+        register_button.setEnabled(false);
         read_agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -107,7 +107,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                 } else {
                     //未选中不可注册
                     register_button.setEnabled(false);
-                    register_button.setBackgroundResource(R.color.unPresentMonth_FontColor);
+                    register_button.setBackgroundResource(R.drawable.setbtn_bg_false);
 
                 }
             }

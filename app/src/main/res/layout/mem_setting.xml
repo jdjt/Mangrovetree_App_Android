@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/personal_layout"
             android:layout_width="match_parent"
             android:layout_height="52dp"
@@ -43,12 +44,14 @@
         </RelativeLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="18dp"
             android:background="@color/line_color_in" />
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/setting_version_layout"
             style="@style/member_order_click"
             android:layout_width="match_parent"
@@ -79,6 +82,7 @@
         </LinearLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="18dp"
@@ -132,6 +136,14 @@
             android:background="@color/line_color_out" />
 
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/login_button"
+        style="@style/AppBtn"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:text="登  录" />
 
 
 </LinearLayout>
