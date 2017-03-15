@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_marginTop="66dp"
+            android:layout_marginTop="56dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -61,7 +61,7 @@
             android:background="@color/line_color_in" />
 
         <LinearLayout
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -97,7 +97,7 @@
             android:background="@color/line_color_in" />
 
         <LinearLayout
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -135,7 +135,7 @@
         android:id="@+id/register_agree_text"
         android:layout_width="match_parent"
         android:layout_height="21dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="18dp"
         android:background="@null"
         android:gravity="left"
         android:layout_marginTop="8dp"
@@ -144,6 +144,7 @@
         android:textSize="@dimen/textsize_28" />
 
         <CheckBox
+            style="@style/read_checkbox"
             android:layout_marginTop="8dp"
             android:id="@+id/read_agreement"
             android:layout_width="match_parent"
@@ -151,8 +152,8 @@
             android:gravity="center_vertical"
             android:textColor="@color/text"
             android:textSize="@dimen/textsize_26"
-            android:text="已阅读用户协议并接受所有条款"
-            android:layout_marginLeft="8dp" />
+            android:text="  已阅读用户协议并接受所有条款"
+            android:layout_marginLeft="18dp" />
 
 
         <!--<com.android.mymhotel.view.SlipButton-->

@@ -51,8 +51,14 @@
     <style name="custom_checkbox"
         parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/check_style</item>
-        <item name="android:layout_height">24dp</item>
-        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+    <style name="read_checkbox"
+        parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/read_check_style</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">40dp</item>
     </style>
 
     <!--登录注册按钮样式 -->
