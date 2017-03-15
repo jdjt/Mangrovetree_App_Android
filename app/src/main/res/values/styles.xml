@@ -34,6 +34,7 @@
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
+
     <style name="RegisterStyle">
         <item name="android:layout_height">53dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -45,6 +46,7 @@
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
+
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
@@ -94,15 +96,13 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">#3fff</item>
         <!--选中状态icon的颜色和字体颜色-->
-        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimary">@color/title_bg</item>
         <item name="colorPrimaryDark">@color/half_full</item>
         <!--正常状态下字体颜色和icon颜色-->
-        <item name="android:textColorPrimary">@android:color/darker_gray</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/white</item>
-        <item name="android:colorForeground">@color/foreground_material_dark</item>
-        <item name="android:colorForegroundInverse">@color/foreground_material_dark</item>
-        <item name="android:colorBackground">@color/foreground_material_dark</item>
+
     </style>
 
     <style name="myToolbarNavigationButtonStyle" parent="@style/ThemeOverlay.AppCompat.Light">
@@ -114,5 +114,9 @@
     <style name="myToolbarStyle" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:paddingRight">10dp</item>
     </style>
+
+    <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

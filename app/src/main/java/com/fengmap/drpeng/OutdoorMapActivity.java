@@ -85,6 +85,7 @@ import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
+import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
@@ -982,7 +983,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
                 b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, OutdoorMapActivity.mInstance.getMap().getFocusGroupId());
 
-                FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
+                FMAPI.instance().gotoActivity(this, MapSearchAcitivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
                 Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
