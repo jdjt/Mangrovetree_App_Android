@@ -300,7 +300,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             FMDBMapElement e = (FMDBMapElement) pB.getSerializable(SearchResultFragment.class.getName());
             mapId = e.getMapId();
             Log.d("TAGTAGTAG","e.getFid() = "+e.getFid());
-            showSearchResult(e.getFid());
+//            showSearchResult(e.getFid());
             // 创建标注
             mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGroupId(),
                                                                    new FMMapCoord(e.getX(), e.getY()),
@@ -321,7 +321,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
             Log.d("TAGTAGTAG","e.getFid() = "+e.getFid());
-            showSearchResult(e.getFid());
+//            showSearchResult(e.getFid());
             // 目的
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
@@ -599,6 +599,14 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         isLoadMapCompleted = true;
 
         mProgressDialog.dismiss();
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showSearchResult("901450121");
+//            }
+//        },3000);
+
     }
 
     // 处理地图初始化后的任务
