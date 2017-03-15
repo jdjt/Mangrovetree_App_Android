@@ -293,9 +293,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
-            mOpenModelInfoWindow.close();
-        }
         FMLog.le("OutdoorMapActivity", "OutdoorMapActivity#onNewIntent");
         Log.d("TAGTAGTAG", " onNewIntent() 被执行");
         isMapLoadCompleted = false;
@@ -472,6 +469,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         main_bottom_bar.findViewById(R.id.main_bottom_bar);
         main_bottom_bar.measure(0,0);
         mOpenModelInfoWindow.getConvertView().measure(0,0);
+        Log.d("TAGTAGTAG","测量高度：main_bottom_bar.getMeasuredHeight()="+main_bottom_bar.getMeasuredHeight());
+        Log.d("TAGTAGTAG","测量高度：mOpenModelInfoWindow.getConvertView().getMeasuredHeight()="+mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
         mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
@@ -1049,7 +1048,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
                 b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, OutdoorMapActivity.mInstance.getMap().getFocusGroupId());
 
-                FMAPI.instance().gotoActivity(this, MapSearchAcitivity.class, b);
+                FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
                 Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
@@ -1069,52 +1068,73 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             //搜索
             case R.id.search_dest_btn:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
-                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
-                }
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            search_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                            search_button.setBackgroundResource(R.mipmap.search_destination_press);
+                        }
+                    });
 
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    search_button_text.setTextColor(Color.parseColor("#eeee5505"));
-                    search_button.setBackgroundResource(R.mipmap.search_destination_press);
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    search_button_text.setTextColor(Color.parseColor("#565656"));
-                    search_button.setBackgroundResource(R.mipmap.search_destination_normal);
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            search_button_text.setTextColor(Color.parseColor("#565656"));
+                            search_button.setBackgroundResource(R.mipmap.search_destination_normal);
+                        }
+                    });
+
                 }
                 break;
             //全球
             case R.id.globle_plateform_btn:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
-                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
-                }
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                            globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
+                        }
+                    });
 
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    globle_plateform_button_text.setTextColor(Color.parseColor("#eeee5505"));
-                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_press);
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    globle_plateform_button_text.setTextColor(Color.parseColor("#565656"));
-                    globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_normal);
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            globle_plateform_button_text.setTextColor(Color.parseColor("#565656"));
+                            globle_plateform_button.setBackgroundResource(R.mipmap.holiday_plateform_normal);
+                        }
+                    });
+
                 }
                 break;
             //呼叫
             case R.id.call_service_btn:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
-                    call_button.setBackgroundResource(R.mipmap.call_center_press);
-                }
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            call_button_text.setTextColor(Color.parseColor("#eeee5505"));
+                            call_button.setBackgroundResource(R.mipmap.call_center_press);
+                        }
+                    });
 
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    call_button_text.setTextColor(Color.parseColor("#eeee5505"));
-                    call_button.setBackgroundResource(R.mipmap.call_center_press);
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    call_button_text.setTextColor(Color.parseColor("#565656"));
-                    call_button.setBackgroundResource(R.mipmap.call_center_normal);
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            call_button_text.setTextColor(Color.parseColor("#565656"));
+                            call_button.setBackgroundResource(R.mipmap.call_center_normal);
+                        }
+                    });
+
                 }
                 break;
             default:
@@ -1468,6 +1488,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 view.setEnterMapIdByModelFid(mCurrentModel.getFid());
                 main_bottom_bar.measure(0,0);
                 mOpenModelInfoWindow.getConvertView().measure(0,0);
+                Log.d("TAGTAGTAG","测量高度：main_bottom_bar.getMeasuredHeight()="+main_bottom_bar.getMeasuredHeight());
+                Log.d("TAGTAGTAG","测量高度：mOpenModelInfoWindow.getConvertView().getMeasuredHeight()="+mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
                 mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
                 mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                         .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
