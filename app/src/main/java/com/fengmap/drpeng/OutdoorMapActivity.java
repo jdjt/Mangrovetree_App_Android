@@ -472,7 +472,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         main_bottom_bar.findViewById(R.id.main_bottom_bar);
         main_bottom_bar.measure(0,0);
         mOpenModelInfoWindow.getConvertView().measure(0,0);
-        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
+        mOpenModelInfoWindow.showAtLocation(main_bottom_bar,Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0, main_bottom_bar.getMeasuredHeight());
+//        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(800)
@@ -1468,7 +1469,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 view.setEnterMapIdByModelFid(mCurrentModel.getFid());
                 main_bottom_bar.measure(0,0);
                 mOpenModelInfoWindow.getConvertView().measure(0,0);
-                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
+                mOpenModelInfoWindow.showAtLocation(main_bottom_bar,Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0, main_bottom_bar.getMeasuredHeight());
+//                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
                 mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                         .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                         .setDurationTime(800)
