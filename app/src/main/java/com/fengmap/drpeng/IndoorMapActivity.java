@@ -71,6 +71,7 @@ import com.fengmap.drpeng.widget.NaviView;
 import com.fengmap.drpeng.widget.SwitchFloorView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -91,7 +92,7 @@ import static com.fengmap.drpeng.OutdoorMapActivity.WaiterMacAddress;
  * 室内地图。
  * Created by yangbin on 16/6/29.
  */
-public class IndoorMapActivity extends Activity implements OnFMMapInitListener,
+public class IndoorMapActivity extends CommonActivity implements OnFMMapInitListener,
                                                            View.OnClickListener,
                                                            OnFMMapClickListener, CustomPopupWindow.OnWindowCloseListener, OnFMReceivePositionInCallServiceListener {
     public static IndoorMapActivity mInstance;

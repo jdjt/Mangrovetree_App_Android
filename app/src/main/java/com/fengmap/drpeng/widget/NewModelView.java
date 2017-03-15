@@ -79,6 +79,8 @@ public class NewModelView extends RelativeLayout {
         fm_enter_inside = (TextView) findViewById(R.id.fm_enter_inside);
         fm_open_navi_small = (TextView) findViewById(R.id.fm_open_navi_small);
         fm_open_navi_big = (TextView) findViewById(R.id.fm_open_navi_big);
+        fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
+        fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
         // 进入室内点击逻辑
         fm_enter_inside.setOnClickListener(new OnClickListener() {
             @Override
@@ -173,19 +175,14 @@ public class NewModelView extends RelativeLayout {
             setEnterViewVisible(true);
         }
         isExpand = true;
-        mHanler.post(new Runnable() {
-            @Override
-            public void run() {
-                content.setVisibility(View.VISIBLE);
-                group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
-            }
-        });
+        content.setVisibility(View.VISIBLE);
+        group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
         mEnterMapId = emr.getMapId();
     }
 
     /**
      * 设置是否进入室内外的View
-     * @param pModelFid
+     *
      */
     public void setEnterViewVisible(boolean pVisible) {
         if (pVisible) {
@@ -197,6 +194,34 @@ public class NewModelView extends RelativeLayout {
             fm_open_navi_small.setVisibility(GONE);
             fm_open_navi_big.setVisibility(VISIBLE);
         }
+    }
+    /**
+    * @method 设置导航起始点
+    */
+    public void setStartText(String startName) {
+        fm_navi_start.setText(startName);
+        fm_navi_start.setTextSize(14);
+    }
+    /**
+     * @method 设置导航起终点
+     */
+    public void setEndText(String endName) {
+        if (endName.equals("") || endName == null) {
+            endName = "未知位置";
+        }
+        fm_navi_end.setText(endName);
+        fm_navi_end.setTextSize(14);
+    }
+
+    /**
+    * @method 开始导航按钮
+    */
+    public TextView getSmallArriveButton() {
+        return fm_open_navi_small;
+    }
+
+    public TextView getBigArriveButton() {
+        return fm_open_navi_big;
     }
 
 }
