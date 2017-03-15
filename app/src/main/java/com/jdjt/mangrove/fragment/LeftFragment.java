@@ -46,7 +46,6 @@ public class LeftFragment extends Fragment {
     private LinearLayout ll_account_setting_layout;//设置
     @InView
     private  TextView account_item_name;
-
     private void click(View view) {
         Intent intent=new Intent(getActivity(), PesonalInfoActivity.class);
         switch (view.getId()) {

@@ -165,6 +165,8 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         json.addProperty("logicFlag", "1");
         json.addProperty("uuid", uuid);
         MangrovetreeApplication.instance.http.u(this).getCode(json.toString());
+        mc = new CountTimer(60000, 1000, register_valitation, "register_valitation");
+        mc.start();
     }
 
     private void register(){
@@ -182,10 +184,10 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (entity.getContentAsString() == null || entity.getContentAsString().length() == 0) {
-            Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (entity.getContentAsString() == null || entity.getContentAsString().length() == 0) {
+//            Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
@@ -195,10 +197,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
             switch (entity.getKey()) {
                 case Constant.HttpUrl.GETCODE_KEY:
-                    //不重复
-                    //调用后台接口，往手机上发送验证码
-                    mc = new CountTimer(60000, 1000, register_valitation, "register_valitation");
-                    mc.start();
+
                     break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
                     String result = data.get("result") + "";

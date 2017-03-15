@@ -45,7 +45,7 @@
                 android:layout_marginRight="18dp"
                 android:background="@drawable/setbtn_bg"
                 android:clickable="true"
-                android:text="验 证"
+                android:text="@string/txt_send_check"
                 android:textColor="@drawable/text_state_whitetogreen"
                 android:textSize="13sp" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="18dp"
-                android:text="验  证  码"
+                android:text="@string/txt_code"
                 android:textColor="@color/text_gray_lable"
                 android:textSize="@dimen/textsize_30" />
 
@@ -79,7 +79,7 @@
                 android:layout_marginLeft="14dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="6位数字"
+                android:hint="@string/valid_6_number"
                 android:inputType="number"
                 android:singleLine="true"
                 android:textColor="@color/text_gray_lable"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="18dp"
-                android:text="登录密码"
+                android:text="@string/text_login_pwd"
                 android:textColor="@color/text_gray_lable"
                 android:textSize="@dimen/textsize_30" />
 
@@ -113,7 +113,7 @@
                 android:layout_height="58dp"
                 android:layout_marginLeft="14dp"
                 android:background="@null"
-                android:hint="6-18位数字或字母"
+                android:hint="@string/valid_6_to_18_number"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColor="@color/text_gray_lable"
@@ -135,7 +135,7 @@
         android:background="@null"
         android:gravity="left"
         android:layout_marginTop="8dp"
-        android:text="《红树林管家用户协议》"
+        android:text="@string/app_xy"
         android:textColor="@color/text_color_green"
         android:textSize="@dimen/textsize_28" />
 
@@ -164,18 +164,6 @@
         style="@style/RegisterStyle"
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
-        android:text="注  册" />
-
-    <!--<Button-->
-    <!--android:id="@+id/register_email_btn"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="30dp"-->
-    <!--android:layout_marginTop="30dp"-->
-    <!--android:layout_marginRight="18dp"-->
-    <!--android:textColor="@color/text_color_green"-->
-    <!--android:textSize="@dimen/textsize_26"-->
-    <!--android:gravity="right"-->
-    <!--android:background="@null"-->
-    <!--android:text="无法获得手机验证码?" />-->
+        android:text="@string/app_register" />
 
 </LinearLayout>

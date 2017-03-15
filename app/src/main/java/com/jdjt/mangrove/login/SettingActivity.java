@@ -14,6 +14,5 @@ public class SettingActivity extends CommonActivity {
 
     @Init
     public void init(){
-
     }
 }

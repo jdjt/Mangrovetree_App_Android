@@ -77,7 +77,7 @@
             android:label="@string/app_find_password_activity" />
         <activity
             android:name=".login.SettingActivity"
-            android:label="@string/title_activity_mangrove_main" />
+            android:label="@string/setting" />
                <activity
             android:name=".login.UpdatePasswordActiviy"
             android:label="@string/app_change_pwd" />
@@ -87,6 +87,12 @@
         <activity
             android:name=".login.ChangeNameActivity"
             android:label="@string/app_change_name" />
+        <activity
+            android:name=".login.AccountBandingResetActivity"
+            android:label="@string/app_change_phone" />
+        <activity
+            android:name=".login.FindPasswordResetActivity"
+            android:label="@string/app_find_password_activity" />
 
     </application>
 
