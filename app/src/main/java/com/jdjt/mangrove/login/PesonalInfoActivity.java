@@ -60,7 +60,7 @@ public class PesonalInfoActivity extends CommonActivity {
 
     }
 
-    @InListener(ids = {R.id.ll_personal_layout,R.id.ll_account_tel_layout,R.id.ll_account_password_layout,R.id.account_logout},listeners = OnClick.class)
+    @InListener(ids = {R.id.ll_personal_layout,R.id.ll_account_tel_layout,R.id.ll_account_password_layout},listeners = OnClick.class)
     private void click(View view){
         switch (view.getId()){
             case R.id.ll_personal_layout:
@@ -89,21 +89,6 @@ public class PesonalInfoActivity extends CommonActivity {
         JsonObject json=new JsonObject();
         json.addProperty("proceedsPhone","");
         MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
-    }
-    @InHttp(Constant.HttpUrl.LOGOUT_KEY)
-    public void result1(ResponseEntity entity) {
-        //判断当前请求返回是否 有错误，OK 和 ERR
-        Map<String, Object> heads = entity.getHeaders();
-        if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
-            //退出成功
-            Handler_SharedPreferences.removeSharedPreferences(Constant.HttpUrl.DATA_USER, "password");
-            MapVo.map = null;
-            Intent it = new Intent(this, LoginAndRegisterFragmentActivity.class);
-            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(it);
-            finish();
-        }
-
     }
     @InHttp({Constant.HttpUrl.GETUSERINFO_KEY})
     public void result(ResponseEntity entity) {

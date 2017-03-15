@@ -78,6 +78,8 @@
     <color name="text_gray_value">#8b8d9e</color>
     <!-- 标题字,主要内容字,输入框文字,内容类别标题信息 -->
     <color name="text_gray_lable">#484b59</color>
+    <!--用户信息文字颜色-->
+    <color name="text_label">#d0d0d0</color>
     <!-- 弹出框文字(餐饮拨打电话部分等) -->
     <color name="text_color_blue">#076fec</color>
     <!-- 浅灰色底的分割线 -->

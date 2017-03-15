@@ -20,7 +20,7 @@
 
     <style name="member_order_click">
         <item name="android:textColor">@drawable/text_mem_content_selector</item>
-        <item name="android:background">@drawable/mem_order_press_backgroud</item>
+        <!--<item name="android:background">@drawable/mem_order_press_backgroud</item>-->
     </style>
     <!--登录注册按钮样式 -->
     <style name="AppBtn">

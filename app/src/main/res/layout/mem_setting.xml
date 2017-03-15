@@ -12,11 +12,10 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/personal_layout"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            >
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -27,38 +26,39 @@
                 android:text="推送通知"
                 android:textColor="@color/text_gray_lable"
                 android:textSize="@dimen/textsize_30" />
+
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="18dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"/>
+                android:layout_marginRight="18dp" />
 
             <!--<com.jdjt.mangrove.view.SlipButton-->
-                <!--android:id="@+id/setting_slipbtn"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_marginRight="18dp" />-->
+            <!--android:id="@+id/setting_slipbtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="18dp" />-->
 
         </RelativeLayout>
 
         <View
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="18dp"
-            android:background="@color/line_color_in" />
+            android:background="@color/line_color_in"
+            android:visibility="gone" />
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/setting_version_layout"
             style="@style/member_order_click"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_gravity="right"
             android:gravity="right"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,7 +67,6 @@
                 android:layout_marginLeft="18dp"
                 android:layout_weight="1"
                 android:text="新版本检测"
-                android:textColor="@drawable/text_mem_content_selector"
                 android:textSize="@dimen/textsize_30" />
 
             <TextView
@@ -82,11 +81,11 @@
         </LinearLayout>
 
         <View
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="18dp"
-            android:background="@color/line_color_in" />
+            android:background="@color/line_color_in"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/account_clear_cache_layout"
@@ -102,7 +101,7 @@
                 android:layout_marginLeft="18dp"
                 android:layout_weight="1"
                 android:text="清除缓存数据"
-                android:textColor="@drawable/text_mem_content_selector"
+                android:textColor="@color/app_bar_text_color"
                 android:textSize="@dimen/textsize_30" />
 
         </LinearLayout>
@@ -126,7 +125,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="18dp"
                 android:text="关于红树林管家"
-                android:textColor="@drawable/text_mem_content_selector"
+                android:textColor="@color/app_bar_text_color"
                 android:textSize="@dimen/textsize_30" />
         </LinearLayout>
 
@@ -139,11 +138,13 @@
 
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/account_logout"
         style="@style/AppBtn"
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:text="登  录" />
+        android:layout_marginBottom="85dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/str_logout"
+        android:visibility="visible" />
 
 
 </LinearLayout>
