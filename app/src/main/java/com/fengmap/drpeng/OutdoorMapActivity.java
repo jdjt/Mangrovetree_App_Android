@@ -292,6 +292,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Override
     protected void onNewIntent(Intent intent) {
+        if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
+            mOpenModelInfoWindow.close();
+        }
         FMLog.le("OutdoorMapActivity", "OutdoorMapActivity#onNewIntent");
         Log.d("TAGTAGTAG", " onNewIntent() 被执行");
         isMapLoadCompleted = false;
@@ -361,9 +364,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     40,
                     FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
                     mMapElement.getZ());
+            showSearchResult(mMapElement.getFid());
         } else if (SearchFragment.class.getName().equals(pWhere)) {
             // 从搜索界面而来
             mSearchElement = (FMDBSearchElement) pB.getSerializable(SearchFragment.class.getName());
+            showSearchResult(mSearchElement.getFid());
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
                 // 创建标注
@@ -414,6 +419,67 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         }
 
+    }
+
+
+    /**
+    * @method 根据搜索结果调整地图
+    */
+    private void showSearchResult( String fid){
+        mCurrentModel = mLayerProxy.queryFMExternalModelByFid(fid);
+
+        if (mCurrentModel.getDataType() == 100000 ||
+                mCurrentModel.getFid().equals("999800171") ||
+                mCurrentModel.getFid().equals("999800170")) {
+        }
+
+        if (mLastModel != null) {
+            mMapView.setHighlight(mLastModel, false);
+        }
+
+        mMapView.setHighlight(mCurrentModel, true);
+        mLastModel = mCurrentModel;
+
+        mMap.updateMap();
+
+        NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+//                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
+        String name = mCurrentModel.getName();
+        if ("".equals(name) || name == null) {
+            name = "暂无名称";
+        }
+        view.setTitle(name);
+        // 查询
+        List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
+        String               typeName = "";
+        String               address  = "";
+        if (!elements.isEmpty()) {
+            typeName = elements.get(0).getTypename();
+            address = elements.get(0).getAddress();
+        }
+        elements.clear();
+        elements = null;
+        String viewAddress = "";
+        if (typeName==null || typeName.equals("")) {
+            viewAddress = address;
+        } else {
+            viewAddress = String.format("%s・%s", typeName, address);
+        }
+//                view.setAddress(viewAddress);
+
+        view.setEnterMapIdByModelFid(mCurrentModel.getFid());
+        main_bottom_bar.findViewById(R.id.main_bottom_bar);
+        main_bottom_bar.measure(0,0);
+        mOpenModelInfoWindow.getConvertView().measure(0,0);
+        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
+        mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
+                .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
+                .setDurationTime(800)
+                .start();
+        //导航线绘制逻辑
+        clearCalculateRouteLineMarker();
+        clearStartAndEndMarker();
+        needLocate(true);
     }
 
     // 初始化窗口
