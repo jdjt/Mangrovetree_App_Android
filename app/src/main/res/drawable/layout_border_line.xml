@@ -3,13 +3,13 @@
 <!-- 上下边框框颜色值 -->
 <item>   
       <shape>   
-            <solid android:color="@color/line_color_out" />   
+            <solid android:color="@color/title_bg" />
       </shape>   
 </item>   
 <!-- 主体背景颜色值 -->  
 <item android:bottom="0.5dp" android:top="0.5dp">   
      <shape>   
-           <solid android:color="@color/white" />  
+           <solid android:color="@color/title_bg" />
      </shape>       
 </item>  
 </layer-list> 

@@ -14,6 +14,7 @@
     <color name="app_theme_color">#eeee5505</color>
     <color name="app_bar_text_color">#565656</color>
     <color name="divider_view_color">#ADABA9</color>
+    <color name="text">#a9a9a9</color>
     <!---->
 
 
@@ -60,7 +61,7 @@
     <color name="transparent_bg">#a0000000</color>
     <color name="imagePage_bg">#cc000000</color>
     <!-- title背景色 咖色 -->
-    <color name="title_bg">#847678</color>
+    <color name="title_bg">#ee652c</color>
     <!-- 背景白色 -->
     <color name="title_world">#E0FFFFFF</color>
     <!-- 筛选页面背景色咖色 -->
@@ -79,6 +80,8 @@
     <color name="text_gray_value">#8b8d9e</color>
     <!-- 标题字,主要内容字,输入框文字,内容类别标题信息 -->
     <color name="text_gray_lable">#484b59</color>
+    <!--用户信息文字颜色-->
+    <color name="text_label">#d0d0d0</color>
     <!-- 弹出框文字(餐饮拨打电话部分等) -->
     <color name="text_color_blue">#076fec</color>
     <!-- 浅灰色底的分割线 -->
@@ -198,6 +201,7 @@
     <color name="bg_after_text">#a2ce62</color>
     <color name="scan_red">#ee3e53</color>
     <color name="pink">#FA6E9F</color>
+    <!--<color name="orange_title">#ee652c</color>-->
 
     <!--特殊字体-->
     <color name="main_bg">#CAC9CF</color>

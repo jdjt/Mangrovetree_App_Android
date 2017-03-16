@@ -1,5 +1,6 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,9 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     private CheckBox read_agreement;//同意条款
     @InView(value = R.id.register_button)
     private Button register_button;  //注册按钮
+
+    @InView(value = R.id.register_agree_text)
+    Button register_agree_text;
     //验证
     Validator validator;
 
@@ -96,7 +100,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     @Init
     public void init() {
         Ioc.getIoc().getLogger().e("初始化注册页面");
-
+        register_button.setEnabled(false);
         read_agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -107,9 +111,15 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                 } else {
                     //未选中不可注册
                     register_button.setEnabled(false);
-                    register_button.setBackgroundResource(R.color.unPresentMonth_FontColor);
+                    register_button.setBackgroundResource(R.drawable.setbtn_bg_false);
 
                 }
+            }
+        });
+        register_agree_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),UserAgreementWebActivity.class));
             }
         });
 

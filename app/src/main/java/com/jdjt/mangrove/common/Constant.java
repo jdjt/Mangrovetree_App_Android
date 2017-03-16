@@ -51,7 +51,7 @@ public class Constant {
         public static final int MODIFYMEMBER_KEY = 6;
         public static final int RESETPASSWORD_KEY = 7;
         public static final int MODIFYPASSWORD_KEY = 8;
-        public static final int GETUSERINFO_KEY = 11;
+        public static final int  GETUSERINFO_KEY = 11;
         public static final int REBINDINGPHONE_KEY = 12;
 
 

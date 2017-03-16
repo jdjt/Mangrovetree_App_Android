@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-   <!--     定义当button获得focus时的形态-->
-    <item  android:state_focused="true" android:color="@color/white"  >
-    </item>
-   <item android:state_pressed="true" android:color="@color/white" />
-    <item android:state_selected="true"  android:color="@color/white" ></item>
-    <item android:color="@color/text_gray_value"  />
+    <!--     定义当button获得focus时的形态-->
+    <item android:color="@color/white" android:state_focused="true"></item>
+    <item android:color="@color/white" android:state_pressed="true" />
+    <item android:color="@color/white" android:state_selected="true"></item>
+    <item android:color="@color/text_gray_value" />
 </selector>

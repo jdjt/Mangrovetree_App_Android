@@ -14,11 +14,11 @@
 
         <ImageView
             android:id="@+id/account_item_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="18dp"
-            android:background="@mipmap/person_log" />
+            android:background="@mipmap/person_logo" />
 
         <RelativeLayout
             android:id="@+id/account_personal_layout"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:text="未登录"
-                android:textColor="@color/text_color_green"
+                android:textColor="@color/white"
                 android:textSize="@dimen/textsize_28" />
 
             <TextView
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_item_name"
                 android:text="红树林会员"
-                android:textColor="@color/text_gray_value"
+                android:textColor="@color/white"
                 android:textSize="@dimen/textsize_22" />
 
         </RelativeLayout>
@@ -60,10 +60,8 @@
 
     <LinearLayout
         android:id="@+id/ll_account_setting_layout"
-        style="@style/member_order_click"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -73,7 +71,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="13dp"
             android:layout_margin="10dp"
-            android:background="@mipmap/icon_setting" />
+            android:background="@mipmap/setting" />
 
         <TextView
             android:layout_width="wrap_content"
