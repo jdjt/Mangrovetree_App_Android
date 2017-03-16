@@ -134,7 +134,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
-
            startActivity();
        }else {
            Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
