@@ -85,7 +85,7 @@ public class FlowLayout extends ViewGroup {
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                     //这些就是加加右和下margin，让view 不会粘一起，好看一点，
                     //可以做成一个自定义属性嘛，从xml里面读，这个就不讨论了，
-                    lp.setMargins(4, 4, 4, 4);
+//                    lp.setMargins(4, 4, 4, 4);
                     view.setLayoutParams(lp);
 
                 }
@@ -105,7 +105,6 @@ public class FlowLayout extends ViewGroup {
             removeAllViews();
         }
     }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int selfWidth = resolveSize(0, widthMeasureSpec);

@@ -3,6 +3,6 @@
     <corners  android:radius="4dp" />
     <!--<padding android:bottom="10dp" android:right="10dp" android:left="10dp" android:top="10dp"/>-->
     <!-- 线的宽度，颜色灰色 -->
-    <stroke android:width="0.5dp" android:color="#ffffff"></stroke>
-    <solid android:color="@color/text_color_green"/>
+    <stroke android:width="0.5dp" android:color="@color/bg_gray"></stroke>
+    <solid android:color="@color/white"/>
 </shape>

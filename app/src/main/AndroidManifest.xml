@@ -46,7 +46,8 @@
             android:name="com.fengmap.mapapi.appkey"
             android:value="586474d3190f48f1974777a7a847b063" />
 
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".WelcomeActivity"
+          >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jdjt.mangrove.R;
-import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.Map;
 
@@ -39,12 +40,19 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
 
     @Override
     protected void bindViewHolder(BaseViewHolder holder, int position, Map<String, String> data) {
-        String map = data.get("title");
-
+        final String map = data.get("title");
+        Ioc.getIoc().getLogger().e(map);
         TextView txt = holder.getView(R.id.tags_name);
-        txt.setWidth(screenWidth/5- Handler_System.dip2px(4));
+//        txt.setWidth(screenWidth/5- Handler_System.dip2px(4));
         txt.setGravity(Gravity.CENTER);
+        txt.setPadding(screenWidth/28,screenWidth/28,screenWidth/28,screenWidth/28);
         txt.setText(map);
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),map,Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

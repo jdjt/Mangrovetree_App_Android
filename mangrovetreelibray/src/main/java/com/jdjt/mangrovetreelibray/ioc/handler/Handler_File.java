@@ -540,7 +540,7 @@ public class Handler_File {
 			while ((i = file.read(buffer, 0, buffer.length)) > 0) {
 				bs.write(buffer, 0, i);
 			}
-			String content = new String(bs.toString());
+			String content =     new String(bs.toByteArray(),"GB2312");
 			return content;
 		} catch (IOException e) {
 			e.printStackTrace();

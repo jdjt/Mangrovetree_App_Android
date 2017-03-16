@@ -22,6 +22,7 @@
     <color name="green_25">#3f7ab193</color>
     <color name="green_50">#557ab193</color>
 
+
     <color name="boder_green">#126600</color>
 
     <!-- 白色 -->
@@ -34,11 +35,12 @@
     <color name="half_full">#00000000</color>
     <!-- 25%全透明 -->
     <color name="half_white_25">#3fffffff</color>
-    <color name="half_white_75">#bfffffff</color>
+    <color name="half_white_75">#e6ffffff</color>
     <!-- title背景色 咖色  80% b不透明-->
     <color name="title_bg_80">#DB847678</color>
     <color name="block_90">#DB000000</color>
     <color name="bg_gray">#FFE3E3E7</color>
+    <color name="text_gray">#666666</color>
     <color name="orange">#FFE84E0E</color>
     <color name="transparent">#00000000</color>
     <color name="bg">#FFF39200</color>

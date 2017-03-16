@@ -75,10 +75,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -102,21 +99,18 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/white</item>
-
     </style>
-
-    <style name="myToolbarNavigationButtonStyle" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="android:minWidth">0dp</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:scaleType">centerInside</item>
-    </style>
-
-    <style name="myToolbarStyle" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="android:paddingRight">10dp</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabBackground">@drawable/tab_selected_bg</item>
+        <item name="tabIndicatorColor">@color/half_full</item>
+        <item name="tabIndicatorHeight">2dp</item>
+    </style>
 </resources>

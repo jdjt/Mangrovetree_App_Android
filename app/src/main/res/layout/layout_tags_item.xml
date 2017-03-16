@@ -8,12 +8,14 @@
 
     <TextView
         android:id="@+id/tags_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="11122"
         android:background="@drawable/main_bg_shape"
-        android:textColor="@color/white"
+        android:textColor="@color/text_gray"
         android:textSize="@dimen/textsize_26"
         android:padding="6dp"
+        android:layout_marginRight="10dp"
         android:layout_margin="1dp"/>
 </LinearLayout>

@@ -29,6 +29,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_String;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
@@ -47,6 +48,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_welcome);
         try {
             init();
@@ -148,6 +150,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @InHttp(Constant.HttpUrl.LOGIN_KEY)
     public void result(ResponseEntity entity) {
+        Ioc.getIoc().getLogger().e("转换像素："+ Handler_System.px2dip(132));
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;

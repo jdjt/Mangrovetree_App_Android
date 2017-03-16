@@ -126,6 +126,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
+        pDialog.dismiss();
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         //------------------------------------------------------------
@@ -137,8 +138,10 @@ public class LoginFragment extends Fragment implements ValidationListener {
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
-           pDialog.dismiss();
+
            startActivity();
+       }else {
+           Toast.makeText(getActivity(), data.get("errMessage")+"", Toast.LENGTH_SHORT).show();
        }
         //------------------------------------------------------------
     }

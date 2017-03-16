@@ -91,6 +91,7 @@ import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.io.BufferedReader;
@@ -2264,6 +2265,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.menu_frame, leftFragment).commit();
         menu.setMenu(R.layout.leftmenu_layout);//设置menu的布局文件
+
         toolbar.setNavigationIcon(R.mipmap.ic_person);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

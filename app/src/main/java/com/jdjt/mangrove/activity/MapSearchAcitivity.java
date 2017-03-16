@@ -31,24 +31,13 @@ public class MapSearchAcitivity extends CommonActivity {
         inflater.inflate(R.menu.menu_map_search_acitivity, menu);
         return super.onCreateOptionsMenu(menu);
     }
-//    @Override
-//    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-////        switch (item.getItemId()) {
-////            case R.id.menu_item_search:
-//////                startActivity(new Intent(StartSearchActivity.this, PhotoGalleryActivity.class));
-////                return true;
-////        }
-//        return super.onMenuItemSelected(featureId, item);
-//    }
     @Init
     private void initView() {
-//        getActionBarToolbar().findViewById(R.id.toolbar_title).setVisibility(View.GONE);
-//        getActionBarToolbar().findViewById(R.id.searchView).setVisibility(View.VISIBLE);
         List<Fragment> fragments = new ArrayList<Fragment>();
         for (int i = 0; i < titles.length; i++) {
             Fragment fragment = new SearchFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("text", titles[i]);
+            bundle.putString("title", titles[i]);
             fragment.setArguments(bundle);
             fragments.add(fragment);
         }

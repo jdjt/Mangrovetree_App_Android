@@ -36,16 +36,18 @@ public class CommonActivity extends AppCompatActivity {
 
     public static final String EXTRA_TITLE = "title";
 
-    SweetAlertDialog pDialog=null;
-    public void showLoading(){
-        if(pDialog==null)
+    SweetAlertDialog pDialog = null;
+
+    public void showLoading() {
+        if (pDialog == null)
             pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("加载中...");
         pDialog.setCancelable(false);
         pDialog.show();
     }
-    public void showConfirm(String msg ,SweetAlertDialog.OnSweetClickListener listener){
+
+    public void showConfirm(String msg, SweetAlertDialog.OnSweetClickListener listener) {
         pDialog = new SweetAlertDialog(this);
         pDialog.setTitleText("温馨提示")
                 .setContentText(msg)
@@ -60,15 +62,16 @@ public class CommonActivity extends AppCompatActivity {
                 }).setConfirmClickListener(listener)
                 .show();
     }
+
     /**
      * activity销毁时 同时销毁
      */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(pDialog!=null){
+        if (pDialog != null) {
             pDialog.dismiss();
-            pDialog=null;
+            pDialog = null;
         }
     }
 
@@ -132,7 +135,7 @@ public class CommonActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (mActionBarToolbar != null) {
-            TextView textView= (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
+            TextView textView = (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
             textView.setText(getTitle());
         }
     }
@@ -146,13 +149,14 @@ public class CommonActivity extends AppCompatActivity {
         }
         return mActionBarToolbar;
     }
+
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg),0);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg), 0);
     }
 
     @Override
     public void onBackPressed() {
-        if(isTaskRoot()){
+        if (isTaskRoot()) {
             showConfirm("是否确定退出？", new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -162,14 +166,13 @@ public class CommonActivity extends AppCompatActivity {
 
                 }
             });
-        }else{
+        } else {
             finish();
         }
-//        super.onBackPressed();
     }
 
     @Init
-    private void initActivity(){
+    private void initActivity() {
         initActionBar();
         setStatusBar();
     }
