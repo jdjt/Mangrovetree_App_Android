@@ -209,7 +209,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LeftFragment leftFragment;
 
     // 更新Ui的Handler
-    private  Handler UiHandler;
+    private Handler UiHandler;
 
     @Init
     protected void initView() {
@@ -421,9 +421,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
 
     /**
-    * @method 根据搜索结果调整地图
-    */
-    private void showSearchResult( String fid){
+     * @method 根据搜索结果调整地图
+     */
+    private void showSearchResult(String fid) {
         mCurrentModel = mLayerProxy.queryFMExternalModelByFid(fid);
 
         if (mCurrentModel.getDataType() == 100000 ||
@@ -449,8 +449,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         view.setTitle(name);
         // 查询
         List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-        String               typeName = "";
-        String               address  = "";
+        String typeName = "";
+        String address = "";
         if (!elements.isEmpty()) {
             typeName = elements.get(0).getTypename();
             address = elements.get(0).getAddress();
@@ -458,7 +458,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         elements.clear();
         elements = null;
         String viewAddress = "";
-        if (typeName==null || typeName.equals("")) {
+        if (typeName == null || typeName.equals("")) {
             viewAddress = address;
         } else {
             viewAddress = String.format("%s・%s", typeName, address);
@@ -467,10 +467,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         view.setEnterMapIdByModelFid(mCurrentModel.getFid());
         main_bottom_bar.findViewById(R.id.main_bottom_bar);
-        main_bottom_bar.measure(0,0);
-        mOpenModelInfoWindow.getConvertView().measure(0,0);
+        main_bottom_bar.measure(0, 0);
+        mOpenModelInfoWindow.getConvertView().measure(0, 0);
 
-        mOpenModelInfoWindow.showAtLocation(main_bottom_bar,Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0, main_bottom_bar.getMeasuredHeight());
+        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight());
 //        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
@@ -498,8 +498,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     /**
-    * @method 新建模型点击弹出界面
-    */
+     * @method 新建模型点击弹出界面
+     */
     private void initNewModelWindow() {
         NewModelView modelView = new NewModelView(this);
         mOpenModelInfoWindow = new CustomPopupWindow(this, modelView);
@@ -1469,8 +1469,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 view.setTitle(name);
                 // 查询
                 List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-                String               typeName = "";
-                String               address  = "";
+                String typeName = "";
+                String address = "";
                 if (!elements.isEmpty()) {
                     typeName = elements.get(0).getTypename();
                     address = elements.get(0).getAddress();
@@ -1478,7 +1478,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 elements.clear();
                 elements = null;
                 String viewAddress = "";
-                if (typeName==null || typeName.equals("")) {
+                if (typeName == null || typeName.equals("")) {
                     viewAddress = address;
                 } else {
                     viewAddress = String.format("%s・%s", typeName, address);
@@ -1486,9 +1486,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                view.setAddress(viewAddress);
 
                 view.setEnterMapIdByModelFid(mCurrentModel.getFid());
-                main_bottom_bar.measure(0,0);
-                mOpenModelInfoWindow.getConvertView().measure(0,0);
-                mOpenModelInfoWindow.showAtLocation(main_bottom_bar,Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0, main_bottom_bar.getMeasuredHeight());
+                main_bottom_bar.measure(0, 0);
+                mOpenModelInfoWindow.getConvertView().measure(0, 0);
+                mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight());
 //                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
                 mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                         .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
@@ -1581,14 +1581,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     /**
-    * @method 设置默认位置坐标点为主大堂
-    */
-    private FMTotalMapCoord getdefaultcoord(){
+     * @method 设置默认位置坐标点为主大堂
+     */
+    private FMTotalMapCoord getdefaultcoord() {
         //默认位置坐标点
-        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7,2071275.90186538,0.0);
+        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7, 2071275.90186538, 0.0);
         defaultPosition.setGroupId(1);
         defaultPosition.setMapId("79980");
-        return  defaultPosition;
+        return defaultPosition;
     }
 
     @Override
@@ -2161,8 +2161,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         @Override
         public void onReceiveLocation(int type, FMTotalMapCoord lastLocation, FMTotalMapCoord currentLocation, final float angle) {
 
-            String logC = "type: " + type+" ,"+ currentLocation.toString();
-            Log.e("TAGTAGTAG","定位回调返回 "+"type: " + type+" ,"+ currentLocation.toString());
+            String logC = "type: " + type + " ," + currentLocation.toString();
+            Log.e("TAGTAGTAG", "定位回调返回 " + "type: " + type + " ," + currentLocation.toString());
             if (!isMapLoadCompleted) {
                 return;
             }
@@ -2360,7 +2360,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
-    public void isShow(){
+    public void isShow() {
         menu.toggle();
     }
 }
