@@ -97,6 +97,10 @@
             android:name=".activity.MapSearchAcitivity"
             android:label="@string/title_activity_map_search_acitivity"
             android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".login.UserAgreementWebActivity"
+            android:label="@string/app_xy"
+            android:theme="@style/AppTheme.Base" />
     </application>
 
 </manifest>

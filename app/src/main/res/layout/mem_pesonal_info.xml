@@ -24,7 +24,8 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_marginTop="52dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="60dp"
                     android:id="@+id/ll_personal_layout"
                     android:layout_width="match_parent"
                     android:layout_height="58dp"
@@ -62,13 +63,14 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="292dp"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="24dp"
                     android:background="@color/line_color_in" />
 
                 <LinearLayout
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="24dp"
                     android:id="@+id/ll_account_tel_layout"
                     android:layout_width="match_parent"
                     android:layout_height="58dp"
@@ -105,13 +107,14 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="292dp"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="24dp"
                     android:background="@color/line_color_in" />
 
                 <LinearLayout
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="24dp"
                     android:id="@+id/ll_account_password_layout"
                     android:layout_width="match_parent"
                     android:layout_height="58dp"
@@ -137,9 +140,10 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="292dp"
                     android:layout_height="1dp"
-                    android:background="@color/line_color_out" />
+                    android:layout_marginLeft="24dp"
+                    android:background="@color/line_color_in" />
 
             </LinearLayout>
 

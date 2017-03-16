@@ -137,8 +137,10 @@ public class LoginFragment extends Fragment implements ValidationListener {
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
-           pDialog.dismiss();
+//           pDialog.dismiss();
            startActivity();
+       }else {
+           Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
        }
         //------------------------------------------------------------
     }
@@ -155,10 +157,10 @@ public class LoginFragment extends Fragment implements ValidationListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(pDialog!=null){
-            pDialog.dismiss();
-            pDialog=null;
-        }
+//        if(pDialog!=null){
+//            pDialog.dismiss();
+//            pDialog=null;
+//        }
     }
 
     @Override
@@ -167,16 +169,16 @@ public class LoginFragment extends Fragment implements ValidationListener {
         jsonObject.addProperty("account", login_account.getText().toString());
         jsonObject.addProperty("password", login_password.getText().toString());
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
-        showLoading();
+//        showLoading();
     }
-    SweetAlertDialog   pDialog;
-    public void showLoading(){
-           pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("加载中...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
+//    SweetAlertDialog   pDialog;
+//    public void showLoading(){
+//           pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//        pDialog.setTitleText("加载中...");
+//        pDialog.setCancelable(false);
+//        pDialog.show();
+//    }
 
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {

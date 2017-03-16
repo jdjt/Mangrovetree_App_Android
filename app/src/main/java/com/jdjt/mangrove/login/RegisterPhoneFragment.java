@@ -1,5 +1,6 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,9 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     private CheckBox read_agreement;//同意条款
     @InView(value = R.id.register_button)
     private Button register_button;  //注册按钮
+
+    @InView(value = R.id.register_agree_text)
+    Button register_agree_text;
     //验证
     Validator validator;
 
@@ -110,6 +114,12 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                     register_button.setBackgroundResource(R.drawable.setbtn_bg_false);
 
                 }
+            }
+        });
+        register_agree_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),UserAgreementWebActivity.class));
             }
         });
 
