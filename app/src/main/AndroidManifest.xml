@@ -99,7 +99,7 @@
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".login.UserAgreementWebActivity"
-            android:label="@string/app_xy"
+            android:label="@string/app_xy_wv"
             android:theme="@style/AppTheme.Base" />
     </application>
 
