@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
+	android:background="@color/white"
     android:orientation="vertical"
     >
 	<!--~~~~~~~~~~~登录~~~~~~~~~~~~~~~-->
 	<LinearLayout
+		android:layout_marginTop="56dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/white"
 		android:orientation="vertical">
 
 		<LinearLayout
@@ -17,10 +18,11 @@
 			android:orientation="horizontal">
 
 			<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical"
+				android:layout_width="40dp"
+				android:layout_height="40dp"
 				android:layout_marginLeft="18dp"
+				android:background="@drawable/phonenumber"
+				android:layout_gravity="center_vertical"
 				android:textColor="@color/text_gray_lable" />
 
 			<EditText
@@ -39,21 +41,23 @@
 
 
         <View
-			android:layout_width="match_parent"
+			android:layout_width="305dp"
 			android:layout_height="1dp"
-			android:layout_marginLeft="18dp"
+			android:layout_gravity="right"
 			android:background="@color/line_color_in" />
 
 		<LinearLayout
+			android:layout_marginTop="32dp"
 			android:layout_width="match_parent"
 			android:layout_height="58dp"
 			android:orientation="horizontal">
 
             <ImageView
-				android:layout_width="wrap_content"
+				android:src="@drawable/password"
+				android:layout_width="40dp"
+				android:layout_marginLeft="18dp"
 				android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-				android:layout_marginLeft="18dp" />
+                android:layout_gravity="center_vertical"/>
 
 			<EditText
 				android:id="@+id/login_password"
@@ -71,6 +75,7 @@
 			<!--控制显示隐藏密码的眼睛-->
 			<CheckBox
 				android:id="@+id/password_visible"
+				style="@style/custom_checkbox"
 				android:layout_marginRight="8dp"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"/>
@@ -78,26 +83,33 @@
 		</LinearLayout>
 
         <View
-			android:layout_width="match_parent"
+			android:layout_width="305dp"
 			android:layout_height="1dp"
+			android:layout_gravity="right"
 			android:background="@color/line_color_out" />
 	</LinearLayout>
 
-	<TextView
-		android:id="@+id/login_findpwd_button"
-		android:layout_width="wrap_content"
-		android:layout_marginTop="16dp"
-		android:layout_marginRight="8dp"
-		android:layout_height="wrap_content"
-		android:text="忘记密码？"
-		android:textColor="@color/green"
-		android:layout_gravity="right"
-		android:textSize="@dimen/textsize_26" />
+
         <Button
             android:id="@+id/login_button"
             style="@style/AppBtn"
+			android:text="立 即 登 录"
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:text="登  录" />
+            android:layout_marginTop="32dp"/>
+	<TextView
+		android:id="@+id/login_findpwd_button"
+		android:layout_width="wrap_content"
+		android:layout_marginTop="8dp"
+		android:layout_marginRight="18dp"
+		android:layout_height="wrap_content"
+		android:text="忘记密码？"
+		android:textColor="@color/text"
+		android:layout_gravity="right"
+		android:textSize="@dimen/textsize_26" />
+	<!--<ImageView-->
+		<!--android:background="@color/white"-->
+		<!--android:layout_width="match_parent"-->
+		<!--android:layout_height="match_parent" />-->
+
 
 </LinearLayout>

@@ -16,14 +16,14 @@ import com.fengmap.android.utils.FMLog;
 import com.fengmap.android.wrapmv.db.FMDBMapElement;
 import com.fengmap.android.wrapmv.db.FMDBSearchElement;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.base.CommonActivity;
 
 
 /**
  * 搜索界面。
  * Created by yangbin on 16/8/14.
  */
-
-public class SearchActivity extends FragmentActivity implements View.OnClickListener, TextWatcher {
+public class SearchActivity extends CommonActivity implements View.OnClickListener, TextWatcher {
     // top bar
     protected ImageView mBackView;
     public    EditText  mEditView;

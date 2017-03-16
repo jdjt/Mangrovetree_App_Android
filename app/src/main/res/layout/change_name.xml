@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="52dp"
         android:visibility="visible">
 
         <TextView
@@ -24,11 +24,11 @@
         <com.jdjt.mangrove.view.ClearEditText
             android:id="@+id/edit_person_name"
             android:layout_width="match_parent"
+            android:background="@drawable/name_edit"
             android:layout_height="58dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:layout_weight="1"
-            android:background="@null"
             android:hint="请输入姓名"
             android:inputType="text"
             android:singleLine="true"
@@ -40,12 +40,7 @@
         </com.jdjt.mangrove.view.ClearEditText>
 
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color_in"
-        android:layout_marginLeft="18dp"
-        />
+
 
     <Button
         android:id="@+id/btn_submit"

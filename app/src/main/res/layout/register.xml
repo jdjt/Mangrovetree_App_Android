@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
     <!-- ~~~~~~~~~~~~注册信息~~~~~~~~~~~~~ -->
     <LinearLayout
@@ -11,6 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="56dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -59,6 +61,7 @@
             android:background="@color/line_color_in" />
 
         <LinearLayout
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -94,6 +97,7 @@
             android:background="@color/line_color_in" />
 
         <LinearLayout
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -131,23 +135,25 @@
         android:id="@+id/register_agree_text"
         android:layout_width="match_parent"
         android:layout_height="21dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="18dp"
         android:background="@null"
         android:gravity="left"
         android:layout_marginTop="8dp"
         android:text="@string/app_xy"
-        android:textColor="@color/text_color_green"
+        android:textColor="@color/title_bg"
         android:textSize="@dimen/textsize_28" />
 
         <CheckBox
+            style="@style/read_checkbox"
             android:layout_marginTop="8dp"
             android:id="@+id/read_agreement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:textColor="@color/text"
             android:textSize="@dimen/textsize_26"
-            android:text="已阅读用户协议并接受所有条款"
-            android:layout_marginLeft="8dp" />
+            android:text="  已阅读用户协议并接受所有条款"
+            android:layout_marginLeft="18dp" />
 
 
         <!--<com.android.mymhotel.view.SlipButton-->
@@ -162,8 +168,8 @@
     <Button
         android:id="@+id/register_button"
         style="@style/RegisterStyle"
+        android:text="@string/app_register"
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:text="@string/app_register" />
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>

@@ -27,6 +27,7 @@
     <string name="text_login_pwd">登录密码</string>
     <string name="valid_6_to_18_number">6-18位数字或字母</string>
     <string name="app_xy">《红树林管家用户协议》</string>
+    <string name="app_xy_wv">红树林管家用户协议</string>
     <string name="app_register">注 册</string>
     <string name="btn_submit">保 存</string>
     <string name="str_logout">注 销</string>

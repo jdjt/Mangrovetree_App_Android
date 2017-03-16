@@ -20,7 +20,7 @@
 
     <style name="member_order_click">
         <item name="android:textColor">@drawable/text_mem_content_selector</item>
-        <item name="android:background">@drawable/mem_order_press_backgroud</item>
+        <!--<item name="android:background">@drawable/mem_order_press_backgroud</item>-->
     </style>
     <!--登录注册按钮样式 -->
     <style name="AppBtn">
@@ -34,6 +34,7 @@
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
+    <!--注册状态-->
 
     <style name="RegisterStyle">
         <item name="android:layout_height">53dp</item>
@@ -42,10 +43,38 @@
         <!-- <item name="android:textStyle">bold</item> -->
         <item name="android:layout_marginLeft">18dp</item>
         <item name="android:layout_marginRight">18dp</item>
-        <item name="android:background">@color/unPresentMonth_FontColor</item>
+        <item name="android:background">@drawable/setbtn_bg_false</item>
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
+
+    <style name="custom_checkbox"
+        parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/check_style</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+    <style name="read_checkbox"
+        parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/read_check_style</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+
+    <!--登录注册按钮样式 -->
+    <style name="LogOut">
+        <item name="android:layout_height">53dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <!-- <item name="android:textStyle">bold</item> -->
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:background">@drawable/setbtn_bg</item>
+        <item name="android:textColor">@drawable/text_state_whitetogreen</item>
+        <item name="android:textSize">@dimen/textsize_32</item>
+    </style>
+
+
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

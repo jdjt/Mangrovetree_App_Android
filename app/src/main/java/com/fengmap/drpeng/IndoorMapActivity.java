@@ -162,6 +162,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private String wifiStatues = "";
     private int wifiDelayTime = 0;
     private String logText = "";
+    private String selectFid = "";
 
     // 底部栏按钮
     private LinearLayout search_dest_btn;
@@ -299,6 +300,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             // 从搜索结果界面而来
             FMDBMapElement e = (FMDBMapElement) pB.getSerializable(SearchResultFragment.class.getName());
             mapId = e.getMapId();
+            Log.d("TAGTAGTAG","e.getFid() = "+e.getFid());
             // 创建标注
             mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGroupId(),
                                                                    new FMMapCoord(e.getX(), e.getY()),
@@ -310,6 +312,8 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             mInitGroupId = e.getGroupId();
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
+//            showSearchResult(e.getFid());
+            selectFid  = e.getFid();
 
         } else if (SearchFragment.class.getName().equals(pWhere)) {
             // 从搜索界面而来
@@ -318,7 +322,8 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             mInitGroupId = e.getGroupId();
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
-
+            Log.d("TAGTAGTAG","e.getFid() = "+e.getFid());
+//            showSearchResult(e.getFid());
             // 目的
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
@@ -329,6 +334,8 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                                                                        40,
                                                                        FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
                                                                        e.getZ());
+//                showSearchResult(e.getFid());
+                selectFid  = e.getFid();
             } else if (TARGET_CALCULATE_ROUTE.equals(target)) {
                 FMTotalMapCoord myPos = FMLocationService.instance().getFirstMyLocatePosition();
                 if (myPos == null) {
@@ -382,6 +389,72 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         return mapId;
     }
 
+    /**
+    * @method 显示搜索结果
+    */
+    private void showSearchResult(String fid){
+        Log.d("TAGTAGTAG","showSearchResult fid= "+fid);
+        if(mMap==null){
+            mMap = mMapView.getFMMap();
+        }
+        if(mLayerProxy!=null){
+            mCurrentModel = mLayerProxy.queryFMModelByFid(fid);
+        }else {
+            mLayerProxy = mMap.getFMLayerProxy();
+            mCurrentModel = mLayerProxy.queryFMModelByFid(fid);
+        }
+        if (mLastModel != null) {
+            mLastModel.setSelected(false);
+        }
+
+        mCurrentModel.setFMMap(mMap);
+        mCurrentModel.setSelected(true);
+
+        NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
+        String          name = mCurrentModel.getName();
+        if (name.equals("") || name == null) {
+            name = "暂无名称";
+        }
+        view.setTitle(name);
+
+        // 查询
+        List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
+        String               typeName = "";
+        String               address  = "";
+        if (!elements.isEmpty()) {
+            typeName = elements.get(0).getTypename();
+            address = elements.get(0).getAddress();
+        }
+        elements.clear();
+        elements = null;
+        String viewAddress = "";
+        if (typeName==null || typeName.equals("")) {
+            viewAddress = address;
+        } else {
+            viewAddress = String.format("%s・%s", typeName, address);
+        }
+
+//                    view.setAddress(viewAddress);
+        view.setDetailOpen();
+        main_bottom_bar.measure(0,0);
+        mOpenModelInfoWindow.getConvertView().measure(0,0);
+        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight());
+
+        mLastModel = mCurrentModel;
+
+        mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
+                .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
+                .setDurationTime(800)
+                .start();
+
+        mMap.updateMap();
+        //导航规划路径
+        clearCalculateRouteLineMarker();
+        clearStartAndEndMarker();
+        mProgressDialog.setInfoViewContext("加载中...");
+        mProgressDialog.show();
+        needLocate(true);
+    }
 
     /**
      * 切换地图。
@@ -457,7 +530,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     mCurrentModel.setSelected(true);
 
                     NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
-                    String          name = mCurrentModel.getName()+"   地图ID："+mCurrentModel.getFid();
+                    String          name = mCurrentModel.getName();
                     if (name.equals("") || name == null) {
                         name = "暂无名称";
                     }
@@ -535,10 +608,11 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         }
         mSwitchFloorView.setSelectedGroupId(mInitGroupId);
         mMap.setMultiDisplay(new int[] { mInitGroupId });
-
         isLoadMapCompleted = true;
-
         mProgressDialog.dismiss();
+        if(selectFid!=null&&!"".equals(selectFid)){
+            showSearchResult(selectFid);
+        }
     }
 
     // 处理地图初始化后的任务

@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="52dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -68,6 +69,7 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="horizontal">
@@ -105,15 +107,9 @@
     </LinearLayout>
 
     <Button
+        android:layout_marginTop="32dp"
         android:id="@+id/binding_submit"
-        android:layout_width="348dp"
-        android:layout_height="53dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="41dp"
-        android:background="@drawable/btn_corner_green"
+        style="@style/AppBtn"
         android:text="@string/btn_submit"
-        android:textColor="@color/white"
         android:textSize="@dimen/textsize_32" />
 </LinearLayout>

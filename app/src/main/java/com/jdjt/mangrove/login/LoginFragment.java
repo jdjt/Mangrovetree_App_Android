@@ -1,7 +1,6 @@
 package com.jdjt.mangrove.login;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
@@ -42,8 +41,6 @@ import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Telphone;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by huyanan on 2017/3/9.
@@ -126,7 +123,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-        pDialog.dismiss();
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         //------------------------------------------------------------
@@ -141,7 +137,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
            startActivity();
        }else {
-           Toast.makeText(getActivity(), data.get("errMessage")+"", Toast.LENGTH_SHORT).show();
+           Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
        }
         //------------------------------------------------------------
     }
@@ -158,10 +154,10 @@ public class LoginFragment extends Fragment implements ValidationListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(pDialog!=null){
-            pDialog.dismiss();
-            pDialog=null;
-        }
+//        if(pDialog!=null){
+//            pDialog.dismiss();
+//            pDialog=null;
+//        }
     }
 
     @Override
@@ -170,16 +166,16 @@ public class LoginFragment extends Fragment implements ValidationListener {
         jsonObject.addProperty("account", login_account.getText().toString());
         jsonObject.addProperty("password", login_password.getText().toString());
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
-        showLoading();
+//        showLoading();
     }
-    SweetAlertDialog   pDialog;
-    public void showLoading(){
-           pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("加载中...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
+//    SweetAlertDialog   pDialog;
+//    public void showLoading(){
+//           pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//        pDialog.setTitleText("加载中...");
+//        pDialog.setCancelable(false);
+//        pDialog.show();
+//    }
 
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
