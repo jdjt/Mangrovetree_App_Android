@@ -137,9 +137,9 @@
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
-        <item name="tabBackground">@drawable/tab_selected_bg</item>
-        <item name="tabIndicatorColor">@color/half_full</item>
-        <item name="tabIndicatorHeight">2dp</item>
-    </style>
+    <!--<style name="Base.Widget.Design.TabLayout" parent="android:Widget">-->
+        <!--<item name="tabBackground">@drawable/tab_selected_bg</item>-->
+        <!--<item name="tabIndicatorColor">@color/half_full</item>-->
+        <!--<item name="tabIndicatorHeight">2dp</item>-->
+    <!--</style>-->
 </resources>

@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.fengmap.drpeng.db.FMDBMapElementOveridDao;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.adapter.OperationAdapter;
-import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
@@ -90,40 +88,6 @@ public class SearchFragment extends Fragment {
 
 
 
-    private  void getData(){
-        FMDBMapElementOveridDao fbd=new FMDBMapElementOveridDao();
-        List<Stores> list= fbd.queryStoresByTypeName("美食");
-        Ioc.getIoc().getLogger().e(list.get(0).getSubtypename());
-    }
 
 
-//    /**
-//     * 设置标签组
-//     *
-//     * @param getData
-//     */
-//    private void initTags(List<Map<String, String>> getData) {
-//        //新建适配器
-//        FlowLayout gl_tags = (FlowLayout) getActivity().findViewById(R.id.gl_tags);
-//        gl_tags.setHorizontalSpacing(1);
-//        gl_tags.setVerticalSpacing(1);
-//        TagsAdapter tagsAdapter = new TagsAdapter(getActivity());
-//        tagsAdapter.setDataSource(tagData);
-//        gl_tags.setAdapter(tagsAdapter);
-//    }
-//
-//    /**
-//     * 删除标签
-//     *
-//     * @param getData
-//     */
-//    private void removeTag(Map<String, Object> getData) {
-//        FlowLayout gl_tags = (FlowLayout) getActivity().findViewById(R.id.gl_tags);
-//        for (int i = 0; i < tagData.size(); i++) {
-//            if (getData.get("title").equals(tagData.get(i).get("title") + "")) {
-//                gl_tags.removeViewAt(i);
-//                tagData.remove(i);
-//            }
-//        }
-//    }
 }

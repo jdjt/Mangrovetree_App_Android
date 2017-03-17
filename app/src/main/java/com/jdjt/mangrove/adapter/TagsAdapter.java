@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.Map;
@@ -24,7 +24,6 @@ import java.util.Map;
 public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdapter.BaseViewHolder> {
     int screenHeight;
     int screenWidth;
-
     public TagsAdapter(Context context) {
         super(context);
         DisplayMetrics dm = new DisplayMetrics();
@@ -43,14 +42,15 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
         final String map = data.get("title");
         Ioc.getIoc().getLogger().e(map);
         TextView txt = holder.getView(R.id.tags_name);
-//        txt.setWidth(screenWidth/5- Handler_System.dip2px(4));
+        txt.setWidth(screenWidth/4);
         txt.setGravity(Gravity.CENTER);
-        txt.setPadding(screenWidth/28,screenWidth/28,screenWidth/28,screenWidth/28);
+//        txt.setPadding(screenWidth/28,screenWidth/28,screenWidth/28,screenWidth/28);
         txt.setText(map);
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(),map,Toast.LENGTH_SHORT).show();
+                MapSearchAcitivity acitivity= (MapSearchAcitivity) getContext();
+                acitivity.search(map);
             }
         });
 
