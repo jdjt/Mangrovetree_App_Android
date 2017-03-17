@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"/>
 
-                    <com.fengmap.drpeng.widget.DrawableCenterTextView
+                    <TextView
                         android:text="燃烧7000卡路里"
                         android:id="@+id/fm_navi_need_calorie"
                         android:layout_alignParentRight="true"

@@ -47,8 +47,9 @@ public class NewModelView extends RelativeLayout {
     private ScrollView scroll;
     private Handler mHanler;
     TextView combo_name, group_open_icon, combo_details;
-    TextView fm_navi_need_distance, fm_navi_start, fm_navi_end;
+    TextView fm_navi_start, fm_navi_end;
     TextView fm_open_navi_small,fm_enter_inside,fm_open_navi_big;
+    TextView fm_navi_need_distance,fm_navi_need_time,fm_navi_need_calorie;
 
     private String mEnterMapId;
 
@@ -81,6 +82,10 @@ public class NewModelView extends RelativeLayout {
         fm_open_navi_big = (TextView) findViewById(R.id.fm_open_navi_big);
         fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
         fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
+
+        fm_navi_need_distance = (TextView) findViewById(R.id.fm_navi_need_distance);
+        fm_navi_need_time = (TextView) findViewById(R.id.fm_navi_need_time);
+        fm_navi_need_calorie = (TextView) findViewById(R.id.fm_navi_need_calorie);
         // 进入室内点击逻辑
         fm_enter_inside.setOnClickListener(new OnClickListener() {
             @Override
@@ -224,4 +229,23 @@ public class NewModelView extends RelativeLayout {
         return fm_open_navi_big;
     }
 
+    public void setNaviNeedTime(String needTime) {
+        fm_navi_need_time.setText(needTime);
+    }
+
+    public void setNaviNeedDistance(String needDistance) {
+        fm_navi_need_distance.setText(needDistance);
+    }
+
+    public void setNaviNeedCalorie(String needCalorie) {
+        fm_navi_need_calorie.setText(needCalorie);
+    }
+
+    public void setComboName(String name) {
+        combo_name.setText(name);
+    }
+
+    public void setComboDetails(String details) {
+        combo_details.setText(details);
+    }
 }
