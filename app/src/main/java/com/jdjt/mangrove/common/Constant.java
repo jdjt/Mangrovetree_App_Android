@@ -15,6 +15,7 @@ public class Constant {
 
         public static final String DATA_USER = "User";
         public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
+        public static final String SYW_PROJECTMANAGER = "http://syw.mymhotel.com/";
         //public static final String BASE = "http://rc-ws.mymhotel.com/";
         public static final String LOGIN = BASE + "uum/mem/sso/login.json";
         //获取会员信息
@@ -41,6 +42,11 @@ public class Constant {
          */
         public static final String REBINDINGPHONE = BASE + "uum/mem/account/binding.json";
 
+        /**
+         * 业态详情
+         */
+        public static final String GET_ACTIVITYDETAIL = SYW_PROJECTMANAGER + "syw_projectmanager/activitydetail/getActivitydetail";
+
 
         public static final int LOGIN_KEY = 0;
         public static final int LOGOUT_KEY = 1;
@@ -54,6 +60,6 @@ public class Constant {
         public static final int GETUSERINFO_KEY = 11;
         public static final int REBINDINGPHONE_KEY = 12;
 
-
+        public static final int GETACTIVITYDETAIL_KEY = 13;
     }
 }

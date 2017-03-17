@@ -42,7 +42,8 @@ public class NewInsideModelView extends RelativeLayout {
     private ScrollView scroll;
     private Handler mHanler;
     TextView combo_name, group_open_icon, combo_details;
-    TextView fm_navi_need_distance, fm_navi_start, fm_navi_end;
+    TextView fm_navi_start, fm_navi_end;
+    TextView fm_navi_need_time,fm_navi_need_calorie,fm_navi_need_distance;
     TextView fm_open_navi_big;
 
     private String mEnterMapId;
@@ -68,12 +69,17 @@ public class NewInsideModelView extends RelativeLayout {
 
     private void initView() {
         view = View.inflate(mContext, R.layout.new_inside_view_model_info,this);
+        //业态详情
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
         group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
         fm_open_navi_big = (TextView) findViewById(R.id.fm_open_navi_big);
         fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
         fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
+
+        fm_navi_need_distance = (TextView) findViewById(R.id.fm_navi_need_distance);
+        fm_navi_need_calorie = (TextView) findViewById(R.id.fm_navi_need_calorie);
+        fm_navi_need_time = (TextView) findViewById(R.id.fm_navi_need_time);
 
         panel = (RelativeLayout) view.findViewById(R.id.panel);
         content = (LinearLayout) view.findViewById(R.id.content);
@@ -166,9 +172,31 @@ public class NewInsideModelView extends RelativeLayout {
     /**
     * @method 开始导航按钮
     */
-
     public TextView getStartNaviButton() {
         return fm_open_navi_big;
+    }
+
+    /**
+     * @method 设置导航、距离、卡路里
+     */
+    public void setNaviNeedTime(String needTime) {
+        fm_navi_need_time.setText(needTime);
+    }
+
+    public void setNaviNeedDistance(String needDistance) {
+        fm_navi_need_distance.setText(needDistance);
+    }
+
+    public void setNaviNeedCalorie(String needCalorie) {
+        fm_navi_need_calorie.setText(needCalorie);
+    }
+
+    public void setComboName(String name) {
+        combo_name.setText(name);
+    }
+
+    public void setComboDetails(String details) {
+        combo_details.setText(details);
     }
 
 }

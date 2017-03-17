@@ -83,14 +83,27 @@ import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
+import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
+import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.fragment.LeftFragment;
+import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
+import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
+import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.io.BufferedReader;
@@ -98,7 +111,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.fengmap.android.wrapmv.Tools.OUTSIDE_MAP_ID;
@@ -1313,10 +1328,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void setStartOpenNavigationView(int[] pResultCode) {
         NavigationUtils.NavigationDataDescription nvdd = NavigationUtils.forNavigationDataDescription(pResultCode);
 
-        NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
-        naviView.setNaviNeedTime(nvdd.getTotalTimeDesc());
-        naviView.setNaviNeedDistance(nvdd.getTotalDistanceDesc());
-        naviView.setNaviNeedCalorie(nvdd.getTotalCalorieDesc());
+        NewModelView modelView = (NewModelView) mOpenModelInfoWindow.getConvertView();
+        modelView.setNaviNeedTime(nvdd.getTotalTimeDesc());
+        modelView.setNaviNeedDistance(nvdd.getTotalDistanceDesc());
+        modelView.setNaviNeedCalorie(nvdd.getTotalCalorieDesc());
     }
 
 
@@ -1498,7 +1513,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 clearCalculateRouteLineMarker();
                 clearStartAndEndMarker();
                 needLocate(true);
-
+                getActivityDetail("SYW201608010395");
                 return true;
             }
 
@@ -2363,4 +2378,53 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     public void isShow() {
         menu.toggle();
     }
+
+    String uuid;
+    @InResume
+    private void resume() {
+        //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
+        if (MapVo.get("register_valitation") != null) {
+            uuid = MapVo.get("register_valitation").toString();
+        } else {
+            uuid = Uuid.getUuid();//给初始值
+        }
+    }
+
+    private void getActivityDetail(String code){
+        HashMap<String, Object> mapBase = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
+        mapBase.put("id", uuid);
+        mapBase.put("send", map);
+        map.put("code", code);
+        MangrovetreeApplication.instance.http.u(this).getActivityDetail(new Gson().toJson(mapBase));
+    }
+
+
+    /**
+     *  网络请求逻辑
+     */
+    @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY})
+    public void result(ResponseEntity entity) {
+        Ioc.getIoc().getLogger().e(entity.getContentAsString());
+        Log.d("NETNETNET","网络请求的数据："+entity.getContentAsString());
+        //请求失败
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+
+        switch (entity.getKey()) {
+            case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
+                HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
+                HashMap<String, String> base_info = (HashMap<String, String>) receive.get("base_info");
+                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+                view.setComboName(""+base_info.get("name"));
+                view.setComboDetails(""+base_info.get("abstracts"));
+                Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
+                break;
+        }
+        }
+
 }

@@ -74,17 +74,29 @@ import com.fengmap.drpeng.widget.NaviView;
 import com.fengmap.drpeng.widget.NewInsideModelView;
 import com.fengmap.drpeng.widget.SwitchFloorView;
 import com.fengmap.drpeng.widget.TopBarView;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
+import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrove.common.HeaderConst;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
+import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
+import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.fengmap.android.wrapmv.Tools.getFMNaviAnalyserByMapId;
@@ -393,10 +405,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     * @method 显示搜索结果
     */
     private void showSearchResult(String fid){
-        Log.d("TAGTAGTAG","showSearchResult fid= "+fid);
-        if(mMap==null){
-            mMap = mMapView.getFMMap();
-        }
         if(mLayerProxy!=null){
             mCurrentModel = mLayerProxy.queryFMModelByFid(fid);
         }else {
@@ -1111,11 +1119,10 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     // Navigation Data Description
     private void setStartOpenNavigationView(int[] pResultCode) {
         NavigationUtils.NavigationDataDescription nvdd = NavigationUtils.forNavigationDataDescription(pResultCode);
-
-        NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
-        naviView.setNaviNeedTime(nvdd.getTotalTimeDesc());
-        naviView.setNaviNeedDistance(nvdd.getTotalDistanceDesc());
-        naviView.setNaviNeedCalorie(nvdd.getTotalCalorieDesc());
+        NewInsideModelView modelView = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
+        modelView.setNaviNeedTime(nvdd.getTotalTimeDesc());
+        modelView.setNaviNeedDistance(nvdd.getTotalDistanceDesc());
+        modelView.setNaviNeedCalorie(nvdd.getTotalCalorieDesc());
     }
 
     private void initFMLocationService() {
