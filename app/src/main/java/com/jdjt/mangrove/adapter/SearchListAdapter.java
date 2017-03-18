@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.view.FlowLayout;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_String;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
@@ -24,11 +25,12 @@ import java.util.zip.Inflater;
  * @Package com.jdjt.mangrove.adapter
  * @Date 2017/3/15 13:18
  */
-public class SearchListAdapter extends AppBaseAdapter<HashMap<String, String>, AppBaseAdapter.BaseViewHolder> {
+public class SearchListAdapter extends AppBaseAdapter<Stores, AppBaseAdapter.BaseViewHolder> {
     Context context;
     BaseViewHolder viewHolder;
-    TagsAdapter tagsAdapter=null;
+    TagsAdapter tagsAdapter = null;
     private Inflater mInflater;
+
     public SearchListAdapter(Context context) {
         super(context);
         this.context = context;
@@ -36,56 +38,18 @@ public class SearchListAdapter extends AppBaseAdapter<HashMap<String, String>, A
 
     @Override
     protected BaseViewHolder createViewHolder(int position, ViewGroup parent) {
-        viewHolder = new BaseViewHolder(View.inflate(getContext(), R.layout.list_operation_item, null));
+        viewHolder = new BaseViewHolder(View.inflate(getContext(), R.layout.activity_map_search_list_item, null));
 
         return viewHolder;
     }
 
     @Override
-    protected void bindViewHolder(BaseViewHolder holder, int position, HashMap<String, String> data) {
-        if(Handler_String.isBlank(data.get("title_name") )){
-           View view= holder.getView(R.id.ll_title);
-            view.setVisibility(View.GONE);
-        }else {
-            TextView textView = holder.getView(R.id.title);
-            textView.setText(data.get("title_name") + "");
-
-        }
-        initTags(setTageData(data), holder);
+    protected void bindViewHolder(BaseViewHolder holder, int position, Stores data) {
+        TextView title = holder.getView(R.id.tv_title);
+        TextView content = holder.getView(R.id.tv_content);
+        title.setText(data.getName());
+        content.setText(data.getAddress());
     }
 
-    List<Map<String, String>> tagData;
-
-    private List<Map<String, String>> setTageData(Map tag) {
-        Ioc.getIoc().getLogger().e(tag.get("items"));
-        String items = (String) tag.get("items");
-        tagData = new ArrayList<>();
-        Map map = null;
-        for (String item : items.split(",")) {
-            map = new HashMap();
-            map.put("title", item);
-            tagData.add(map);
-        }
-        return tagData;
-    }
-
-
-    /**
-     * 设置标签组
-     *
-     * @param getData
-     */
-    private void initTags(List<Map<String, String>> getData,BaseViewHolder holder) {
-        //新建适配器
-
-        FlowLayout gl_tags = (FlowLayout) holder.getView(R.id.gl_tags);
-
-        tagsAdapter=new TagsAdapter(context);
-//        gl_tags.setHorizontalSpacing(1);
-//        gl_tags.setVerticalSpacing(1);
-
-        tagsAdapter.setDataSource(getData);
-        gl_tags.setAdapter(tagsAdapter);
-    }
 
 }

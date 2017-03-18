@@ -42,7 +42,7 @@ public class FMDBMapElementOveridDao  {
     public List<Stores> queryStoresByTypeName(String typeName) {
         try {
 
-            return this.mDao.queryForEq("typename",typeName);
+            return this.mDao.queryForEq("subtypename",typeName);
         } catch (SQLException var3) {
 
             var3.printStackTrace();

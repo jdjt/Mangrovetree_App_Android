@@ -5,9 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -18,6 +20,7 @@ import com.fengmap.drpeng.db.FMDBMapElementOveridDao;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.adapter.SearchListAdapter;
 import com.jdjt.mangrove.adapter.TabFragmentAdapter;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.entity.Stores;
@@ -31,14 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @InLayer(value = R.layout.activity_map_search_acitivity, parent = R.id.center_common)
-public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQueryTextListener,MenuItemCompat.OnActionExpandListener{
+public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
     String[] titles = {"本酒店度假设施", "本酒店服务设施"}; //, "本酒店服务设施"
     @InView
     ViewPager container;
     @InView
     SegmentTabLayout tabs;
-     SearchView searchView;
+    SearchView searchView;
     private ListView search_listView;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -47,11 +51,31 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         //获得searchView对象
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_item_search));
         // 设置该SearchView默认是否自动缩小为图标
-        searchView.setIconifiedByDefault(false);
+        searchView.setIconified(false);
+        searchView.setIconifiedByDefault(true);
         // 为该SearchView组件设置事件监听器
         searchView.setOnQueryTextListener(this);
         // 设置该SearchView显示搜索按钮
         searchView.setSubmitButtonEnabled(false);
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Toast.makeText(MapSearchAcitivity.this, "position", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Toast.makeText(MapSearchAcitivity.this, "onClose", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
         searchView.setQueryHint("请输入您要去的地方");
         //获得searchManager对象
 //        SearchManager searchManager = (SearchManager)getSystemService(SEARCH_SERVICE);
@@ -60,12 +84,18 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         MenuItemCompat.setOnActionExpandListener(menuItem, this);
         return super.onCreateOptionsMenu(menu);
     }
-    SimpleCursorAdapter mAdapter=null;
+
+    SearchListAdapter mAdapter = null;
+
     @Init
     private void initView() {
         // 通过传入mCursor，将联系人名字放入listView中。
 
-        search_listView= (ListView) findViewById(android.R.id.list);
+        search_listView = (ListView) findViewById(R.id.search_listView);
+
+        mAdapter = new SearchListAdapter(this);
+
+        search_listView.setAdapter(mAdapter);
         List<Fragment> fragments = new ArrayList<Fragment>();
         for (int i = 0; i < titles.length; i++) {
             Fragment fragment = new SearchFragment();
@@ -115,16 +145,26 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(this, "textChange--->" + query, 1).show();
+        getData(query);
         return true;
     }
 
-    public void search(String content){
-        searchView.setQuery(content,true);
+    public void search(String content) {
+        searchView.setQuery(content, true);
     }
+
     @Override
     public boolean onQueryTextChange(String newText) {
-        Toast.makeText(this, "您的选择是:" + newText, Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(newText)){
+            searchView.clearFocus();
+            list.clear();
+            mAdapter.setDataSource(list);
+            search_listView.clearTextFilter();
+            search_listView.setVisibility(View.GONE);
+
+        }else {
+            search_listView.setVisibility(View.VISIBLE);
+        }
         return true;
     }
 
@@ -140,10 +180,10 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         return false;
     }
 
-
-    private  void getData(){
-        FMDBMapElementOveridDao fbd=new FMDBMapElementOveridDao();
-        List<Stores> list= fbd.queryStoresByTypeName("美食");
-        Ioc.getIoc().getLogger().e(list.get(0).getSubtypename());
+    List<Stores> list=null;
+    private void getData(String subtypename) {
+        FMDBMapElementOveridDao fbd = new FMDBMapElementOveridDao();
+        list = fbd.queryStoresByTypeName(subtypename);
+        mAdapter.setDataSource(list);
     }
 }

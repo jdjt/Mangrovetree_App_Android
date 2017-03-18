@@ -1,8 +1,10 @@
 package com.jdjt.mangrove.adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
@@ -28,10 +30,16 @@ public class OperationAdapter extends AppBaseAdapter<HashMap<String, String>, Ap
     Context context;
     BaseViewHolder viewHolder;
     TagsAdapter tagsAdapter=null;
+    int screenHeight;
+    int screenWidth;
     private Inflater mInflater;
     public OperationAdapter(Context context) {
         super(context);
         this.context = context;
+        DisplayMetrics dm = new DisplayMetrics();
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+        screenHeight = dm.heightPixels;
+        screenWidth = dm.widthPixels;
     }
 
     @Override
@@ -81,8 +89,8 @@ public class OperationAdapter extends AppBaseAdapter<HashMap<String, String>, Ap
         FlowLayout gl_tags = (FlowLayout) holder.getView(R.id.gl_tags);
 
         tagsAdapter=new TagsAdapter(context);
-//        gl_tags.setHorizontalSpacing(1);
-//        gl_tags.setVerticalSpacing(1);
+        gl_tags.setHorizontalSpacing(screenWidth/28);
+        gl_tags.setVerticalSpacing(10);
 
         tagsAdapter.setDataSource(getData);
         gl_tags.setAdapter(tagsAdapter);

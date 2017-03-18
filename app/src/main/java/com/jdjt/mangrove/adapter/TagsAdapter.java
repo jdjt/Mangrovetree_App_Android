@@ -1,11 +1,13 @@
 package com.jdjt.mangrove.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
@@ -42,9 +44,17 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
         final String map = data.get("title");
         Ioc.getIoc().getLogger().e(map);
         TextView txt = holder.getView(R.id.tags_name);
-        txt.setWidth(screenWidth/4);
+        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(0,0,screenWidth/28,0);
+        layoutParams.width=(screenWidth-(screenWidth/28))/4;
+        txt.setWidth(screenWidth/5);
+        txt.setSingleLine(true);
         txt.setGravity(Gravity.CENTER);
+        txt.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+        txt.setTextSize(12l);
 //        txt.setPadding(screenWidth/28,screenWidth/28,screenWidth/28,screenWidth/28);
+
+//        txt.setLayoutParams(layoutParams);
         txt.setText(map);
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
