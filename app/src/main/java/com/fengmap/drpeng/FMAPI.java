@@ -71,7 +71,7 @@ public class FMAPI {
     public FMZoneManager     mZoneManager;           //区域管理器
 
 
-    public static final float COMPLETED_MIN_DISTANCE = 30;  // 最小的完成导航的距离
+    public static final float COMPLETED_MIN_DISTANCE = 10;  // 最小的完成导航的距离
     public float mInitNeedDistance = 0;       // 全程距离
     public float mInitNeedTime = 0;           // 全程时间
     public float mInitNeedCalorie = 0;        // 全程消耗卡路里

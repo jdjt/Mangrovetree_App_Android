@@ -103,4 +103,12 @@ public interface HttpInterFace {
     @InPost(Constant.HttpUrl.REBINDINGPHONE)
     public void reBindingPhone(@InParam String json);
 
+    /**
+     * 获取业态详情
+     *
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.GET_ACTIVITYDETAIL)
+    public void getActivityDetail(@InParam String json);
+
 }
