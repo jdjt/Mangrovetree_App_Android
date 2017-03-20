@@ -1,21 +1,30 @@
 package com.jdjt.mangrove.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fengmap.android.FMDevice;
+import com.fengmap.android.wrapmv.Tools;
+import com.fengmap.drpeng.FMAPI;
+import com.fengmap.drpeng.IndoorMapActivity;
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.fengmap.drpeng.db.FMDBMapElementOveridDao;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -42,6 +51,17 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     SegmentTabLayout tabs;
     SearchView searchView;
     private ListView search_listView;
+    private TextView mMoreView;
+    private SearchListAdapter mAdapter = null;
+    private String mMapId;//地图id
+    private int mGroupId; //组id
+    private int index = 0;
+    List<Stores> list = null; //地图poi数据
+    FMDBMapElementOveridDao fbd = null;
+    public static int SEARCHTYPE_NAME = 0; //查询类别 0 按name 查询
+    public static int SEARCHTYPE_SUBNAME = 1;//查询类别 1 按subtypname 查询
+    int type = 0;//默认为0 按名字检索，1 为按subtypename 检索
+    public int countmax = 10; //最大条数
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,29 +93,28 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
             @Override
             public boolean onClose() {
                 Toast.makeText(MapSearchAcitivity.this, "onClose", Toast.LENGTH_LONG).show();
+
                 return true;
             }
         });
         searchView.setQueryHint("请输入您要去的地方");
-        //获得searchManager对象
-//        SearchManager searchManager = (SearchManager)getSystemService(SEARCH_SERVICE);
-//
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         MenuItemCompat.setOnActionExpandListener(menuItem, this);
         return super.onCreateOptionsMenu(menu);
     }
 
-    SearchListAdapter mAdapter = null;
 
     @Init
     private void initView() {
-        // 通过传入mCursor，将联系人名字放入listView中。
+        list = new ArrayList<>(0);
+        fbd = new FMDBMapElementOveridDao();
+        initList();
+        initViewGroup();
+    }
 
-        search_listView = (ListView) findViewById(R.id.search_listView);
-
-        mAdapter = new SearchListAdapter(this);
-
-        search_listView.setAdapter(mAdapter);
+    /**
+     * 初始化标签
+     */
+    private void initViewGroup() {
         List<Fragment> fragments = new ArrayList<Fragment>();
         for (int i = 0; i < titles.length; i++) {
             Fragment fragment = new SearchFragment();
@@ -143,26 +162,67 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         container.setCurrentItem(0);
     }
 
+    /**
+     * 初始化listview
+     */
+    private void initList() {
+        // 通过传入mCursor，将联系人名字放入listView中。
+        Bundle b = getIntent().getExtras();
+        mMapId = b.getString(FMAPI.ACTIVITY_MAP_ID, null);
+        mGroupId = b.getInt(FMAPI.ACTIVITY_MAP_GROUP_ID, 0);
+        search_listView = (ListView) findViewById(R.id.search_listView);
+        mMoreView = new TextView(this);
+        mMoreView.setText("查看更多搜索结果");
+        mMoreView.setTextSize(14);
+        mMoreView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+                (int) (50 * FMDevice.getDeviceDensity())));
+        mMoreView.setTextColor(Color.parseColor("#90C98C"));
+        mMoreView.setGravity(Gravity.CENTER);
+        search_listView.addFooterView(mMoreView);
+        mAdapter = new SearchListAdapter(this);
+        mAdapter.setDataSource(list);
+        search_listView.setAdapter(mAdapter);
+        search_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 加载更多
+                if (position >= mAdapter.getCount()) {
+                    if (isLoadCompleted) {
+                        return;
+                    }
+                    loadMore();
+                    return;
+                }
+                gotoMap(mAdapter.getItem(position));
+            }
+        });
+    }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
+        Ioc.getIoc().getLogger().e("onQueryTextSubmit 当前查询条件 " + type);
         getData(query);
         return true;
     }
 
-    public void search(String content) {
+    /**
+     * 调用查询方法
+     *
+     * @param content
+     * @param type
+     */
+    public void search(String content, int type) {
+        clearData();
+        this.type = type;
         searchView.setQuery(content, true);
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(TextUtils.isEmpty(newText)){
-            searchView.clearFocus();
-            list.clear();
-            mAdapter.setDataSource(list);
-            search_listView.clearTextFilter();
-            search_listView.setVisibility(View.GONE);
-
-        }else {
+        Ioc.getIoc().getLogger().e("onQueryTextChange  当前查询条件 " + type);
+        if (TextUtils.isEmpty(newText)) {
+            clearData();
+        } else {
             search_listView.setVisibility(View.VISIBLE);
         }
         return true;
@@ -180,10 +240,85 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         return false;
     }
 
-    List<Stores> list=null;
+    /**
+     * 获取查询数据
+     *
+     * @param subtypename 标签名称
+     */
     private void getData(String subtypename) {
-        FMDBMapElementOveridDao fbd = new FMDBMapElementOveridDao();
-        list = fbd.queryStoresByTypeName(subtypename);
+        List<Stores> dataList = new ArrayList<>();
+        if (type == SEARCHTYPE_NAME) {
+            dataList = fbd.queryStoresByName(subtypename, index * countmax);
+        } else if (type == SEARCHTYPE_SUBNAME) {
+            dataList = fbd.queryPrioritySubTypename(mMapId, mGroupId, subtypename, index * countmax);
+        }
+        Ioc.getIoc().getLogger().e("查询条数 ：" + dataList.size());
+        ++index;
+        if (dataList.isEmpty()) {
+            isLoadCompleted = true;
+            index = 0;
+            mMoreView.setText("没有更多数据了");
+            mMoreView.setTextColor(Color.parseColor("#999999"));
+        } else {
+            isLoadCompleted = false;
+            mMoreView.setText("查看更多搜索结果");
+            mMoreView.setTextColor(Color.parseColor("#90C98C"));
+            mMoreView.setVisibility(View.VISIBLE);
+        }
+        list.addAll(dataList);
+        Ioc.getIoc().getLogger().e("查询条数 ：" + list.size());
+        mAdapter.notifyDataSetChanged();
+    }
+
+    boolean isLoadCompleted = false;
+
+    private void loadMore() {
+        String content = searchView.getQuery().toString().trim();
+        if (content == null || content.equals("")) {
+            return;
+        }
+        getData(content);
+
+
+    }
+
+    /**
+     * 清除数据
+     */
+    private void clearData() {
+        //初始化显示类型
+        type = SEARCHTYPE_NAME;
+        index = 0;//还原指针
+        list.clear();
+        search_listView.clearTextFilter();
+        search_listView.setVisibility(View.GONE);
+
+        isLoadCompleted = false;
         mAdapter.setDataSource(list);
+        searchView.clearFocus();
+    }
+
+    /**
+     * 蜂鸟封装的方法，未处理原来逻辑
+     *
+     * @param s
+     */
+    private void gotoMap(Stores s) {
+        boolean isInside = Tools.isInsideMap(mMapId);
+        Bundle b = new Bundle();
+        String className = this.getClass().getName();
+        Ioc.getIoc().getLogger().e("当前的name" + s.getName());
+        b.putSerializable(className, s);
+        b.putString(FMAPI.ACTIVITY_WHERE, className);
+        if (isInside) {
+            FMAPI.instance().gotoActivity(this,
+                    IndoorMapActivity.class,
+                    b);
+        } else {
+            FMAPI.instance().gotoActivity(this,
+                    OutdoorMapActivity.class,
+                    b);
+        }
+        this.finish();
     }
 }

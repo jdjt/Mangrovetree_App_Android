@@ -22,6 +22,7 @@ public class Stores implements Serializable {
             columnName = "id",
             generatedId = true
     )
+
     int id;
     @DatabaseField(
             columnName = "mid"

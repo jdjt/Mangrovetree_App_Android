@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
-import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
     @Override
     protected void bindViewHolder(BaseViewHolder holder, int position, Map<String, String> data) {
         final String map = data.get("title");
-        Ioc.getIoc().getLogger().e(map);
+//        Ioc.getIoc().getLogger().e(map);
         TextView txt = holder.getView(R.id.tags_name);
         LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(0,0,screenWidth/28,0);
@@ -60,7 +59,7 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
             @Override
             public void onClick(View v) {
                 MapSearchAcitivity acitivity= (MapSearchAcitivity) getContext();
-                acitivity.search(map);
+                acitivity.search(map,MapSearchAcitivity.SEARCHTYPE_SUBNAME);
             }
         });
 

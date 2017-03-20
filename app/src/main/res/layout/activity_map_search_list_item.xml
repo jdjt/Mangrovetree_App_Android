@@ -30,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:textSize="@dimen/textsize_32"
             android:layout_weight="1"
             android:text="泰餐厅" />
 
@@ -38,8 +39,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:textSize="@dimen/textsize_26"
+            android:textColor="@color/text_gray_value"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="11111111111*111111111111" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

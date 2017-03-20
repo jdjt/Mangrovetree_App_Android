@@ -7,14 +7,7 @@ import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.entity.Stores;
-import com.jdjt.mangrove.view.FlowLayout;
-import com.jdjt.mangrovetreelibray.ioc.handler.Handler_String;
-import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.zip.Inflater;
 
 /**
@@ -48,7 +41,7 @@ public class SearchListAdapter extends AppBaseAdapter<Stores, AppBaseAdapter.Bas
         TextView title = holder.getView(R.id.tv_title);
         TextView content = holder.getView(R.id.tv_content);
         title.setText(data.getName());
-        content.setText(data.getAddress());
+        content.setText(data.getTypename()+"•"+data.getAddress());
     }
 
 

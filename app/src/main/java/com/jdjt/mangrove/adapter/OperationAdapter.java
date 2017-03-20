@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.view.FlowLayout;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_String;
-import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,10 +28,11 @@ import java.util.zip.Inflater;
 public class OperationAdapter extends AppBaseAdapter<HashMap<String, String>, AppBaseAdapter.BaseViewHolder> {
     Context context;
     BaseViewHolder viewHolder;
-    TagsAdapter tagsAdapter=null;
+    TagsAdapter tagsAdapter = null;
     int screenHeight;
     int screenWidth;
     private Inflater mInflater;
+
     public OperationAdapter(Context context) {
         super(context);
         this.context = context;
@@ -51,10 +51,10 @@ public class OperationAdapter extends AppBaseAdapter<HashMap<String, String>, Ap
 
     @Override
     protected void bindViewHolder(BaseViewHolder holder, int position, HashMap<String, String> data) {
-        if(Handler_String.isBlank(data.get("title_name") )){
-           View view= holder.getView(R.id.ll_title);
+        if (Handler_String.isBlank(data.get("title_name"))) {
+            View view = holder.getView(R.id.ll_title);
             view.setVisibility(View.GONE);
-        }else {
+        } else {
             TextView textView = holder.getView(R.id.title);
             textView.setText(data.get("title_name") + "");
 
@@ -65,7 +65,7 @@ public class OperationAdapter extends AppBaseAdapter<HashMap<String, String>, Ap
     List<Map<String, String>> tagData;
 
     private List<Map<String, String>> setTageData(Map tag) {
-        Ioc.getIoc().getLogger().e(tag.get("items"));
+//        Ioc.getIoc().getLogger().e(tag.get("items"));
         String items = (String) tag.get("items");
         tagData = new ArrayList<>();
         Map map = null;
@@ -83,13 +83,13 @@ public class OperationAdapter extends AppBaseAdapter<HashMap<String, String>, Ap
      *
      * @param getData
      */
-    private void initTags(List<Map<String, String>> getData,BaseViewHolder holder) {
+    private void initTags(List<Map<String, String>> getData, BaseViewHolder holder) {
         //新建适配器
 
         FlowLayout gl_tags = (FlowLayout) holder.getView(R.id.gl_tags);
 
-        tagsAdapter=new TagsAdapter(context);
-        gl_tags.setHorizontalSpacing(screenWidth/28);
+        tagsAdapter = new TagsAdapter(context);
+        gl_tags.setHorizontalSpacing(screenWidth / 28);
         gl_tags.setVerticalSpacing(10);
 
         tagsAdapter.setDataSource(getData);

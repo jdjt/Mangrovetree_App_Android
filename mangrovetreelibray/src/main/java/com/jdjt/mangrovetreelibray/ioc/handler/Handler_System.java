@@ -365,6 +365,17 @@ public class Handler_System {
 	}
 
 	/**
+	 * 转换字号 px-->sp
+	 * @param pxValue
+	 * @return
+	 */
+	public static int px2sp(float pxValue) {
+		final float dpi =Ioc.getIoc().getApplication().getResources().getDisplayMetrics().densityDpi;
+		float pt=pxValue*72/Ioc.getIoc().getApplication().getResources().getDisplayMetrics().densityDpi;
+		return (int) (pxValue*72*pt/dpi);
+	}
+
+	/**
 	 * 获取通知栏高度
 	 *
 	 * @author gdpancheng@gmail.com 2012-2-12 下午07:37:13
