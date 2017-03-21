@@ -94,6 +94,7 @@ import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
@@ -227,6 +228,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     // 更新Ui的Handler
     private Handler UiHandler;
     FMDBMapElementOveridDao fbd = null;
+    List<Stores> ActivityCodeList = new ArrayList<>();
+
+    private String selectFid = "";
+    private String selectDetailsCode = "";
     @Init
     protected void initView() {
         initSlidingMenu();
@@ -372,19 +377,22 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void dealWhere(Bundle pB, String pWhere) {
         if (SearchResultFragment.class.getName().equals(pWhere)) {
             // 从搜索结果界面而来
-            mMapElement = (FMDBMapElement) pB.getSerializable(SearchResultFragment.class.getName());
+            // 从搜索结果界面而来
+            Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
 
-            mSpecialWorkMarker = FMAPI.instance().buildImageMarker(mMapElement.getGroupId(),
-                    new FMMapCoord(mMapElement.getX(), mMapElement.getY()),
+            mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGid(),
+                    new FMMapCoord(e.getX(), e.getY()),
                     "fmr/water_marker.png",
                     40,
                     FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
-                    mMapElement.getZ());
-            showSearchResult(mMapElement.getFid());
+                    e.getZ());
+            selectFid = e.getFid();
+            selectDetailsCode = e.getActivitycode();
+            showSearchResult(selectFid,selectDetailsCode);
         } else if (SearchFragment.class.getName().equals(pWhere)) {
             // 从搜索界面而来
             mSearchElement = (FMDBSearchElement) pB.getSerializable(SearchFragment.class.getName());
-            showSearchResult(mSearchElement.getFid());
+//            showSearchResult(mSearchElement.getFid());
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
                 // 创建标注
@@ -441,63 +449,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     /**
      * @method 根据搜索结果调整地图
      */
-    private void showSearchResult(String fid) {
+    /**
+     * @method 根据搜索结果调整地图
+     */
+    private void showSearchResult(String fid,String activitycode) {
         mCurrentModel = mLayerProxy.queryFMExternalModelByFid(fid);
-
-        if (mCurrentModel.getDataType() == 100000 ||
-                mCurrentModel.getFid().equals("999800171") ||
-                mCurrentModel.getFid().equals("999800170")) {
-        }
-
-        if (mLastModel != null) {
-            mMapView.setHighlight(mLastModel, false);
-        }
-
-        mMapView.setHighlight(mCurrentModel, true);
-        mLastModel = mCurrentModel;
-
-        mMap.updateMap();
-
-        NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
-//                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
-        String name = mCurrentModel.getName();
-        if ("".equals(name) || name == null) {
-            name = "暂无名称";
-        }
-        view.setTitle(name);
-        // 查询
-        List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-        String typeName = "";
-        String address = "";
-        if (!elements.isEmpty()) {
-            typeName = elements.get(0).getTypename();
-            address = elements.get(0).getAddress();
-        }
-        elements.clear();
-        elements = null;
-        String viewAddress = "";
-        if (typeName == null || typeName.equals("")) {
-            viewAddress = address;
-        } else {
-            viewAddress = String.format("%s・%s", typeName, address);
-        }
-//                view.setAddress(viewAddress);
-
-        view.setEnterMapIdByModelFid(mCurrentModel.getFid());
-        main_bottom_bar.findViewById(R.id.main_bottom_bar);
-        main_bottom_bar.measure(0, 0);
-        mOpenModelInfoWindow.getConvertView().measure(0, 0);
-
-        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight());
-//        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
-        mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
-                .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                .setDurationTime(800)
-                .start();
-        //导航线绘制逻辑
-        clearCalculateRouteLineMarker();
-        clearStartAndEndMarker();
-        needLocate(true);
+        ShowPopModelView(mCurrentModel,activitycode);
     }
 
     // 初始化窗口
@@ -1460,63 +1417,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
-
                 mCurrentModel = (FMExternalModel) pFMNode;
-
-                if (mCurrentModel.getDataType() == 100000 ||
-                        mCurrentModel.getFid().equals("999800171") ||
-                        mCurrentModel.getFid().equals("999800170")) {
-                    return false;
-                }
-
-                if (mLastModel != null) {
-                    mMapView.setHighlight(mLastModel, false);
-                }
-
-                mMapView.setHighlight(mCurrentModel, true);
-                mLastModel = mCurrentModel;
-
-                mMap.updateMap();
-
-                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
-//                ModelView view = (ModelView) mOpenModelInfoWindow.getConvertView();
-                String name = mCurrentModel.getName();
-                if ("".equals(name) || name == null) {
-                    name = "暂无名称";
-                }
-                view.setTitle(name);
-                // 查询
-                List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-                String typeName = "";
-                String address = "";
-                if (!elements.isEmpty()) {
-                    typeName = elements.get(0).getTypename();
-                    address = elements.get(0).getAddress();
-                }
-                elements.clear();
-                elements = null;
-                String viewAddress = "";
-                if (typeName == null || typeName.equals("")) {
-                    viewAddress = address;
-                } else {
-                    viewAddress = String.format("%s・%s", typeName, address);
-                }
-//                view.setAddress(viewAddress);
-
-                view.setEnterMapIdByModelFid(mCurrentModel.getFid());
-                main_bottom_bar.measure(0, 0);
-                mOpenModelInfoWindow.getConvertView().measure(0, 0);
-                mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight());
-//                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
-                mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
-                        .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                        .setDurationTime(800)
-                        .start();
-                //导航线绘制逻辑
-                clearCalculateRouteLineMarker();
-                clearStartAndEndMarker();
-                needLocate(true);
-                getActivityDetail("SYW201608010395");
+                //这里需要添加查询模型activity_code的逻辑
+//                String activitycode = getModelActivityCode();
+                ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
+                String activitycode = ActivityCodeList.get(0).getActivitycode();
+                ShowPopModelView(mCurrentModel,activitycode);
                 return true;
             }
 
@@ -1591,6 +1497,79 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                }
 //            }
 //        }).start();
+    }
+
+    /**
+     * @method 显示modelPopView
+     */
+    private void ShowPopModelView(FMExternalModel mCurrentModel,String activitycode){
+
+        if (mCurrentModel.getDataType() == 100000 ||
+                mCurrentModel.getFid().equals("999800171") ||
+                mCurrentModel.getFid().equals("999800170")) {
+        }
+
+        if (mLastModel != null) {
+            mMapView.setHighlight(mLastModel, false);
+        }
+
+        mMapView.setHighlight(mCurrentModel, true);
+        mLastModel = mCurrentModel;
+
+        mMap.updateMap();
+
+        NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+        String name = mCurrentModel.getName();
+        if ("".equals(name) || name == null) {
+            name = "未知位置";
+        }
+        view.setTitle(name);
+        // 查询
+        List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
+        String typeName = "";
+        String address = "";
+        if (!elements.isEmpty()) {
+            typeName = elements.get(0).getTypename();
+            address = elements.get(0).getAddress();
+        }
+        elements.clear();
+        elements = null;
+        String viewAddress = "";
+        if (typeName == null || typeName.equals("")) {
+            viewAddress = address;
+        } else {
+            viewAddress = String.format("%s・%s", typeName, address);
+        }
+//                view.setAddress(viewAddress);
+
+        view.setEnterMapIdByModelFid(mCurrentModel.getFid());
+        if(activitycode!=null&&!"".equals(activitycode)){
+            view.showDetail(true);
+            getActivityDetail(activitycode);
+            ActivityCodeList.clear();
+        }else {
+            popNaviView();
+        }
+
+    }
+
+    /**
+     * @method 弹出导航界面
+     */
+
+    private void popNaviView(){
+        main_bottom_bar.measure(0, 0);
+        mOpenModelInfoWindow.getConvertView().measure(0, 0);
+        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight());
+//                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
+        mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
+                .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
+                .setDurationTime(800)
+                .start();
+        //导航线绘制逻辑
+        clearCalculateRouteLineMarker();
+        clearStartAndEndMarker();
+        needLocate(true);
     }
 
     @Override
@@ -2460,6 +2439,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
                 Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
+                popNaviView();
                 break;
         }
         }

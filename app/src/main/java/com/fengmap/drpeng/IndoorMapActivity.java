@@ -63,6 +63,7 @@ import com.fengmap.android.wrapmv.service.OnFMReceivePositionInCallServiceListen
 import com.fengmap.android.wrapmv.service.OnFMWifiStatusListener;
 import com.fengmap.drpeng.common.NavigationUtils;
 import com.fengmap.drpeng.common.StringUtils;
+import com.fengmap.drpeng.db.FMDBMapElementOveridDao;
 import com.fengmap.drpeng.entity.Floor;
 import com.fengmap.drpeng.widget.CustomPopupWindow;
 import com.fengmap.drpeng.widget.CustomProgressDialog;
@@ -184,6 +185,10 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private String selectFid = "";
     private String selectDetailsCode = "";
 
+    FMDBMapElementOveridDao fbd = null;
+    //数据库查询结果
+    List<Stores> ActivityCodeList = new ArrayList<>();
+
     // 底部栏按钮
     private LinearLayout search_dest_btn;
     private LinearLayout globle_plateform_btn;
@@ -200,6 +205,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     @Init
     protected void initView() {
         mInstance = this;
+        fbd = new FMDBMapElementOveridDao();
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mSwitchFloorView = (SwitchFloorView) findViewById(R.id.indoor_switch_floor);
         mSwitchFloorView.setCallBackFloor(new SwitchFloorView.OnCallBackFloor() {
@@ -550,7 +556,8 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     }
                     mCurrentModel = (FMModel) pFMNode;
                     //这里查询activity_code
-                    selectDetailsCode = getModelActivityCode();
+                    ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
+                    selectDetailsCode = ActivityCodeList.get(0).getActivitycode();
                     showHighLigtModel(mCurrentModel.getFid());
                     return true;
                 }

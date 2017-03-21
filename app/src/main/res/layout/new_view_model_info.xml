@@ -11,14 +11,14 @@
              <!--title-->
             <RelativeLayout
                 android:id="@+id/panel"
-                android:visibility="gone"
                 android:background="@color/white"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/combo_image"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@mipmap/default_image"/>
@@ -28,27 +28,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="行动书屋"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/location_text_color"
                     android:textSize="@dimen/t_l"
-                    android:layout_alignBottom="@+id/group_open_icon" />
+                    android:layout_toLeftOf="@+id/group_open_icon" />
 
                 <TextView
                     android:id="@+id/group_open_icon"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@mipmap/arrow_up"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true" />
 
                 <TextView
                     android:id="@+id/combo_details"
                     android:layout_toRightOf="@+id/combo_image"
                     android:layout_marginTop="5dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_below="@+id/combo_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/group_open_icon"
                     android:text="书籍涵盖人文、音乐、禅茶、艺术、生活家居等诸多领域。"
                     android:textColor="@color/location_text_color"
                     android:textSize="@dimen/t_s"/>
@@ -64,8 +68,8 @@
                 android:layout_height="wrap_content">
                 <RelativeLayout
                     android:background="@drawable/fm_half_white"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp">
 
@@ -92,6 +96,7 @@
 
                     <TextView
                         android:text="燃烧7000卡路里"
+                        android:layout_marginRight="8dp"
                         android:id="@+id/fm_navi_need_calorie"
                         android:layout_alignParentRight="true"
                         android:drawableLeft="@mipmap/fm_calorie"
@@ -123,7 +128,7 @@
                     <TextView
                         android:id="@+id/fm_open_navi_small"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="8dp"
                         android:layout_marginTop="5dp"
                         android:background="@mipmap/start_navi_small"
                         android:layout_width="wrap_content"
@@ -146,7 +151,7 @@
                     <TextView
                         android:id="@+id/fm_enter_inside"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="8dp"
                         android:layout_below="@+id/fm_navi_start"
                         android:layout_alignParentRight="true"
                         android:background="@mipmap/enter_inside"
