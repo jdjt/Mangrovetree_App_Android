@@ -644,4 +644,16 @@ public class Handler_File {
 		}
 		return cacheDir.getPath();
 	}
+	public static File getCacheDirF(String dirs) {
+		File cacheDir = null;
+		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+			cacheDir = Handler_File.getExternalCacheDir(Ioc.getIoc().getApplication(), dirs);
+		} else {
+			cacheDir = Ioc.getIoc().getApplication().getCacheDir();
+		}
+		if (cacheDir != null && !cacheDir.exists()) {
+			cacheDir.mkdirs();
+		}
+		return cacheDir;
+	}
 }
