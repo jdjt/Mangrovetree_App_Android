@@ -90,7 +90,7 @@
     <color name="line_color_in">#e3e4e8</color>
 
     <color name="red_point">#e36274</color>
-
+    <color name="text_color_53">#535353</color>
     <!-- 筛选右侧侧滑出的分割线 -->
     <color name="filter_line_color">#74666a</color>
     <color name="seleted_date_E6">#4aE6e6e6</color>
