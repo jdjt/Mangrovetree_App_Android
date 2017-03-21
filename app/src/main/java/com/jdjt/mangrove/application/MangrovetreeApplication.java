@@ -17,6 +17,7 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Http;
 
 import java.io.File;
+import java.net.SocketException;
 import java.util.HashMap;
 
 /**
@@ -30,7 +31,6 @@ import java.util.HashMap;
 public class MangrovetreeApplication extends Application {
     public static MangrovetreeApplication instance;
     public Http<HttpInterFace> http;
-
 
 
     @Override
@@ -56,35 +56,45 @@ public class MangrovetreeApplication extends Application {
         http = new Http<HttpInterFace>(HttpInterFace.class);
         IocListener.newInstance().setHttpListener(listener);
     }
+
     //全局拦截器
     public IocHttpListener<ResponseEntity> listener = new IocHttpListener<ResponseEntity>() {
 
         @Override
         public ResponseEntity netCore(NetConfig config) {
-            System.out.println("拦截请求："+config);
+            System.out.println("拦截请求：" + config);
 //            config.setHead(HeaderConst.inHeaders());
             InternetConfig netConfig = InternetConfig.defaultConfig();
             netConfig.setHead(HeaderConst.inHeaders());
             netConfig.setKey(config.getCode());
-//
             ResponseEntity reslut = null;
-            switch (config.getType()) {
-                case GET:
-                    reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
-                    break;
-                case POST:
-                    reslut = FastHttp.postString(config.getUrl(), config.getParam(), netConfig);
-                    break;
-                case FORM:
-                    reslut = FastHttp.form(config.getUrl(), config.getParams(), new HashMap<String, File>(), netConfig);
-                    break;
-                case WEB:
-                    netConfig.setMethod(config.getMethod());
-                    netConfig.setName_space(config.getName_space());
-                    reslut = FastHttp.webServer(config.getUrl(), config.getParams(), netConfig, "post");
-                    break;
+//
+            try {
+
+
+                switch (config.getType()) {
+                    case GET:
+                        reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
+                        break;
+                    case POST:
+                        reslut = FastHttp.postString(config.getUrl(), config.getParam(), netConfig);
+                        break;
+                    case FORM:
+                        reslut = FastHttp.form(config.getUrl(), config.getParams(), new HashMap<String, File>(), netConfig);
+                        break;
+                    case WEB:
+                        netConfig.setMethod(config.getMethod());
+                        netConfig.setName_space(config.getName_space());
+                        reslut = FastHttp.webServer(config.getUrl(), config.getParams(), netConfig, "post");
+                        break;
+                }
+                System.out.println("拦截结果：" + reslut);
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                System.out.println("请求超时：" + reslut);
+
             }
-            System.out.println("拦截结果："+reslut);
             return reslut;
         }
     };

@@ -77,6 +77,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         searchView.setOnQueryTextListener(this);
         // 设置该SearchView显示搜索按钮
         searchView.setSubmitButtonEnabled(false);
+        searchView.clearFocus();
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
@@ -92,8 +93,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                Toast.makeText(MapSearchAcitivity.this, "onClose", Toast.LENGTH_LONG).show();
-
+                searchView.clearFocus();
                 return true;
             }
         });
@@ -305,7 +305,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
      * @param s
      */
     private void gotoMap(Stores s) {
-        boolean isInside = Tools.isInsideMap(mMapId);
+        boolean isInside = Tools.isInsideMap(s.getMid());
         Bundle b = new Bundle();
         String className = this.getClass().getName();
         Ioc.getIoc().getLogger().e("当前的name" + s.getName());
