@@ -199,4 +199,10 @@ public class NewInsideModelView extends RelativeLayout {
         combo_details.setText(details);
     }
 
+    public void showDetail(boolean isShow){
+        if(isShow){
+            panel.setVisibility(VISIBLE);
+        }
+    }
+
 }

@@ -72,22 +72,29 @@ import com.fengmap.drpeng.widget.InsideModelView;
 import com.fengmap.drpeng.widget.NaviProcessingView;
 import com.fengmap.drpeng.widget.NaviView;
 import com.fengmap.drpeng.widget.NewInsideModelView;
+import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.SwitchFloorView;
 import com.fengmap.drpeng.widget.TopBarView;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.common.HeaderConst;
+import com.jdjt.mangrove.entity.Stores;
+import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
+import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -175,6 +182,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private int wifiDelayTime = 0;
     private String logText = "";
     private String selectFid = "";
+    private String selectDetailsCode = "";
 
     // 底部栏按钮
     private LinearLayout search_dest_btn;
@@ -308,24 +316,24 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private String dealWhere(Bundle pB, String pWhere) {
         FMLog.le("IndoorMapActivity", "IndoorMapActivity#dealWhere");
         String mapId = "";
-        if (SearchResultFragment.class.getName().equals(pWhere)) {
+        if (MapSearchAcitivity.class.getName().equals(pWhere)) {
             // 从搜索结果界面而来
-            FMDBMapElement e = (FMDBMapElement) pB.getSerializable(SearchResultFragment.class.getName());
-            mapId = e.getMapId();
+            Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
+            mapId = e.getMid();
             Log.d("TAGTAGTAG","e.getFid() = "+e.getFid());
             // 创建标注
-            mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGroupId(),
+            mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGid(),
                                                                    new FMMapCoord(e.getX(), e.getY()),
                                                                    "fmr/water_marker.png",
                                                                    40,
                                                                    FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
                                                                    e.getZ());
 
-            mInitGroupId = e.getGroupId();
+            mInitGroupId = e.getGid();
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
-//            showSearchResult(e.getFid());
             selectFid  = e.getFid();
+            selectDetailsCode = e.getActivitycode();
 
         } else if (SearchFragment.class.getName().equals(pWhere)) {
             // 从搜索界面而来
@@ -334,8 +342,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             mInitGroupId = e.getGroupId();
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
-            Log.d("TAGTAGTAG","e.getFid() = "+e.getFid());
-//            showSearchResult(e.getFid());
             // 目的
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
@@ -346,7 +352,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                                                                        40,
                                                                        FMStyle.FMNodeOffsetType.FMNODE_CUSTOM_HEIGHT,
                                                                        e.getZ());
-//                showSearchResult(e.getFid());
                 selectFid  = e.getFid();
             } else if (TARGET_CALCULATE_ROUTE.equals(target)) {
                 FMTotalMapCoord myPos = FMLocationService.instance().getFirstMyLocatePosition();
@@ -404,13 +409,16 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     /**
     * @method 显示搜索结果
     */
-    private void showSearchResult(String fid){
-        if(mLayerProxy!=null){
-            mCurrentModel = mLayerProxy.queryFMModelByFid(fid);
-        }else {
-            mLayerProxy = mMap.getFMLayerProxy();
-            mCurrentModel = mLayerProxy.queryFMModelByFid(fid);
+    private void showHighLigtModel(String fid){
+        //地图未加载完成则return
+        if(!isLoadMapCompleted){
+            return;
         }
+        if(mLayerProxy == null){
+            mLayerProxy = mMap.getFMLayerProxy();
+        }
+        mCurrentModel = mLayerProxy.queryFMModelByFid(fid);
+
         if (mLastModel != null) {
             mLastModel.setSelected(false);
         }
@@ -421,7 +429,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
         String          name = mCurrentModel.getName();
         if (name.equals("") || name == null) {
-            name = "暂无名称";
+            name = "未知位置";
         }
         view.setTitle(name);
 
@@ -444,6 +452,18 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
 
 //                    view.setAddress(viewAddress);
         view.setDetailOpen();
+        if(selectDetailsCode!=null&&!"".equals(selectDetailsCode)){
+            view.showDetail(true);
+            getActivityDetail(selectDetailsCode);
+        }else {
+            showNaviPopWinidow();
+        }
+    }
+
+    /**
+    * @method 显示底部导航View
+    */
+    private void showNaviPopWinidow(){
         main_bottom_bar.measure(0,0);
         mOpenModelInfoWindow.getConvertView().measure(0,0);
         mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight());
@@ -528,60 +548,10 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                         return false;
                     }
-
                     mCurrentModel = (FMModel) pFMNode;
-
-                    if (mLastModel != null) {
-                        mLastModel.setSelected(false);
-                    }
-
-                    mCurrentModel.setSelected(true);
-
-                    NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
-                    String          name = mCurrentModel.getName();
-                    if (name.equals("") || name == null) {
-                        name = "暂无名称";
-                    }
-                    view.setTitle(name);
-
-                    // 查询
-                    List<FMDBMapElement> elements = mMapElementDAO.queryFid(mMap.currentMapId(), mCurrentModel.getFid());
-                    String               typeName = "";
-                    String               address  = "";
-                    if (!elements.isEmpty()) {
-                        typeName = elements.get(0).getTypename();
-                        address = elements.get(0).getAddress();
-                    }
-                    elements.clear();
-                    elements = null;
-                    String viewAddress = "";
-                    if (typeName==null || typeName.equals("")) {
-                        viewAddress = address;
-                    } else {
-                        viewAddress = String.format("%s・%s", typeName, address);
-                    }
-
-//                    view.setAddress(viewAddress);
-                    view.setDetailOpen();
-                    main_bottom_bar.measure(0,0);
-                    mOpenModelInfoWindow.getConvertView().measure(0,0);
-                    mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight());
-
-                    mLastModel = mCurrentModel;
-
-                    mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
-                            .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                            .setDurationTime(800)
-                            .start();
-
-                    mMap.updateMap();
-                    //导航规划路径
-                    clearCalculateRouteLineMarker();
-                    clearStartAndEndMarker();
-                    mProgressDialog.setInfoViewContext("加载中...");
-                    mProgressDialog.show();
-                    needLocate(true);
-
+                    //这里查询activity_code
+                    selectDetailsCode = getModelActivityCode();
+                    showHighLigtModel(mCurrentModel.getFid());
                     return true;
                 }
 
@@ -619,7 +589,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         isLoadMapCompleted = true;
         mProgressDialog.dismiss();
         if(selectFid!=null&&!"".equals(selectFid)){
-            showSearchResult(selectFid);
+            showHighLigtModel(selectFid);
         }
     }
 
@@ -771,7 +741,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             drawFloorLine(groupId);
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -2220,5 +2189,58 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
 //            }
 //        }
 //    });
+
+
+    String uuid;
+    @InResume
+    private void resume() {
+        //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
+        if (MapVo.get("register_valitation") != null) {
+            uuid = MapVo.get("register_valitation").toString();
+        } else {
+            uuid = Uuid.getUuid();//给初始值
+        }
+    }
+
+    private void getActivityDetail(String code){
+        if (code==null || code.equals("")) {
+            return;
+        }
+        HashMap<String, Object> mapBase = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
+        mapBase.put("id", uuid);
+        mapBase.put("send", map);
+        map.put("code", code);
+        MangrovetreeApplication.instance.http.u(this).getActivityDetail(new Gson().toJson(mapBase));
+    }
+
+
+    /**
+     *  网络请求逻辑
+     */
+    @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY})
+    public void result(ResponseEntity entity) {
+        Ioc.getIoc().getLogger().e(entity.getContentAsString());
+        Log.d("NETNETNET","网络请求的数据："+entity.getContentAsString());
+        //请求失败
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+
+        switch (entity.getKey()) {
+            case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
+                HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
+                HashMap<String, String> base_info = (HashMap<String, String>) receive.get("base_info");
+                NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
+                view.setComboName(""+base_info.get("name"));
+                view.setComboDetails(""+base_info.get("abstracts"));
+                Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
+                showNaviPopWinidow();
+                break;
+        }
+    }
 
 }

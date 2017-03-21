@@ -176,4 +176,13 @@ public class CommonActivity extends AppCompatActivity {
         initActionBar();
         setStatusBar();
     }
+
+    /**
+     * @method 查询activitycode
+     */
+    public String getModelActivityCode(){
+        String code = "";
+
+        return code;
+    }
 }
