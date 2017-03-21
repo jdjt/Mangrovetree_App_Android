@@ -1505,10 +1505,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
      * @method 显示modelPopView
      */
     private void ShowPopModelView(FMExternalModel mCurrentModel,String activitycode){
-
+        Log.d("TAGTAGTAG","id = "+mCurrentModel.getFid());
         if (mCurrentModel.getDataType() == 100000 ||
                 mCurrentModel.getFid().equals("999800171") ||
                 mCurrentModel.getFid().equals("999800170")) {
+            return;
         }
 
         if (mLastModel != null) {
