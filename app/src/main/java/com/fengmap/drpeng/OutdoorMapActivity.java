@@ -2392,6 +2392,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     private void getActivityDetail(String code){
+        if (code==null || code.equals("")) {
+            return;
+        }
         HashMap<String, Object> mapBase = new HashMap<>();
         HashMap<String, Object> map = new HashMap<>();
         mapBase.put("id", uuid);
