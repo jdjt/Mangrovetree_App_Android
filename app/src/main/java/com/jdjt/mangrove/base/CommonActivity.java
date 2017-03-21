@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
-import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -151,7 +150,8 @@ public class CommonActivity extends AppCompatActivity {
     }
 
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg), 0);
+        setTranslucentStatus( R.color.title_bg);
+//        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg), 0);
     }
 
     @Override

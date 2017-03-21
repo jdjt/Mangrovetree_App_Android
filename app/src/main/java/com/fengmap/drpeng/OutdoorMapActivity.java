@@ -1,5 +1,6 @@
 package com.fengmap.drpeng;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -83,14 +87,12 @@ import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
-import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
@@ -102,7 +104,6 @@ import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
-import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -113,7 +114,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static com.fengmap.android.wrapmv.Tools.OUTSIDE_MAP_ID;
@@ -2342,11 +2342,33 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
+    @Override
+    protected void setStatusBar() {
+//        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
+        setTranslucentStatus( R.color.white);
+    }
+    /** 设置沉浸式状态栏 */
+    @TargetApi(19)
+    public void setStatus() {
+        Window window = this.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        window.setAttributes(layoutParams);
+    }
 
     private void initSlidingMenu() {
+//        setTranslucentStatus( getResources().getColor(R.color.white));
+//        SystemStatusManager tintManager = new SystemStatusManager(this);
+//        tintManager.setStatusBarTintEnabled(true);
+//        tintManager.setStatusBarTintColor(Color.WHITE);
+//        tintManager.setStatusBarAlpha(90);
+//        tintManager.setNavigationBarAlpha(90);
+//        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
+//        setStatus();
         Toolbar toolbar = getActionBarToolbar();
-
+//        toolbar.setBackgroundColor(Color.WHITE);
+//        toolbar.setAlpha(90);
         menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
@@ -2355,8 +2377,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         menu.setShadowDrawable(R.drawable.shadow);
         // 设置滑动菜单视图的宽度
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setFadeEnabled(true);
+        menu.setBehindScrollScale(0.333f);// 设置滑动时拖拽效果
         // 设置渐入渐出效果的值
-//        menu.setFadeDegree(0.35f);
+        menu.setFadeDegree(0.35f);
         /**
          * SLIDING_WINDOW will include the Title/ActionBar in the content
          * section of the SlidingMenu, while SLIDING_CONTENT does not.
@@ -2366,7 +2390,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.menu_frame, leftFragment).commit();
         menu.setMenu(R.layout.leftmenu_layout);//设置menu的布局文件
+       View view= menu.getMenu();
 
+        //设置占位view的高度为状态栏高度
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getStatusBarHeight());
+        view.setLayoutParams(params);
+        //或者可以设置padding
+        //v.setPadding(0,height,0,0);
         toolbar.setNavigationIcon(R.mipmap.ic_person);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
