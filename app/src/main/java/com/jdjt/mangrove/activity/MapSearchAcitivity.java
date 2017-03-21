@@ -97,6 +97,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
                 return true;
             }
         });
+
         searchView.setQueryHint("请输入您要去的地方");
         MenuItemCompat.setOnActionExpandListener(menuItem, this);
         return super.onCreateOptionsMenu(menu);

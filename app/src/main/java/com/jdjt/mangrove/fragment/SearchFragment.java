@@ -15,15 +15,19 @@ import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * 搜索标签页
+ */
 public class SearchFragment extends Fragment {
-
+    View view;
     private String title ;
     public static final String ARGUMENT ="title";
+    public List<HashMap<String,String>> list;
+    private ListView lv_list;
+    private  OperationAdapter adapter;
 
 
     @Override
@@ -34,7 +38,7 @@ public class SearchFragment extends Fragment {
         if (bundle != null)
             title = bundle.getString(ARGUMENT);
     }
-    View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,13 +46,7 @@ public class SearchFragment extends Fragment {
         init();
         return view;
     }
-    List<HashMap<String,String>> list;
-    private ListView lv_list;
-    ArrayList<Map<String, String>> tagData;
 
-    OperationAdapter adapter;
-
-//    @Init
     private void init(){
         Ioc.getIoc().getLogger().e(getFromAssets("mangrove/vacation.json"));
         //"本酒店度假设施", "本酒店服务设施"
