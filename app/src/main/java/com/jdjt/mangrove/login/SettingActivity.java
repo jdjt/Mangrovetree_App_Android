@@ -1,10 +1,13 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.google.gson.JsonObject;
+import com.fengmap.android.data.FMDataManager;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
@@ -14,14 +17,17 @@ import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
-import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_File;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by huyanan on 2017/3/13.
@@ -32,36 +38,44 @@ public class SettingActivity extends CommonActivity {
 
     @InView(value = R.id.account_logout)
     Button account_logout;
-
+    @InView(value = R.id.app_cache)
+    TextView app_cache;
     @Init
     public void init() {
-//        account_logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                logout();
-//            }
-//        });
+//        try {
+//         String TotalCache=getTotalCacheSize(this);
+//            app_cache.setText(app_cache.getText()+"  "+ TotalCache);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 
-        @InListener(ids = {R.id.account_logout},listeners = OnClick.class)
-    private void click(View view){
-        switch (view.getId()){
+    @InListener(ids = {R.id.account_logout,R.id.app_cache}, listeners = OnClick.class)
+    private void click(View view) {
+        switch (view.getId()) {
             case R.id.account_logout:
                 logout();
                 break;
+            case R.id.app_cache:
+                show();
+                break;
         }
+    }
+
+
+    private void show(){
+        showConfirm("是否确定清除本地数据？", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                Handler_System.cleanApplicationData(getApplicationContext(),"");
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        });
     }
     private void logout() {
         MangrovetreeApplication.instance.http.u(this).logout();
     }
-//
-//    @InResume
-//    private void getUser() {
-//        JsonObject json = new JsonObject();
-//        json.addProperty("proceedsPhone", "");
-//        MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
-//    }
 
     @InHttp(Constant.HttpUrl.LOGOUT_KEY)
     public void result1(ResponseEntity entity) {
@@ -77,4 +91,20 @@ public class SettingActivity extends CommonActivity {
             finish();
         }
     }
+    /**
+     * 获取当前应的缓存文件大小
+     * @param context
+     * @return
+     * @throws Exception
+     */
+    public static String getTotalCacheSize(Context context) throws Exception {
+        long cacheSize = Handler_System.getFolderSize(context.getCacheDir());
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            cacheSize += Handler_System.getFolderSize(context.getExternalCacheDir());
+        }
+        cacheSize += Handler_System.getFolderSize(Handler_File.getCacheDirF(FMDataManager.getCacheDirectory()));
+        return Handler_System.getFormatSize(cacheSize);
+    }
+
+
 }

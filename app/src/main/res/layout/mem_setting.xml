@@ -25,6 +25,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="18dp"
                 android:layout_weight="1"
+                android:id="@+id/app_cache"
                 android:text="清除缓存数据"
                 android:textColor="@color/app_bar_text_color"
                 android:textSize="@dimen/textsize_30" />
