@@ -49,13 +49,11 @@
                     android:id="@+id/combo_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/combo_name"
+                    android:layout_below="@+id/group_open_icon"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@+id/combo_image"
                     android:text="书籍涵盖人文、音乐、禅茶、艺术、生活家居等诸多领域。"
-                    android:textColor="@color/location_text_color"
-                    android:layout_toLeftOf="@+id/group_open_icon"
                     android:textSize="@dimen/t_s" />
 
             </RelativeLayout>

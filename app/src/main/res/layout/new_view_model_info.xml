@@ -12,15 +12,15 @@
             <RelativeLayout
                 android:id="@+id/panel"
                 android:background="@color/white"
-                android:visibility="gone"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/combo_image"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:background="@mipmap/default_image"/>
                 <TextView
                     android:id="@+id/combo_name"
@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="行动书屋"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/location_text_color"
                     android:textSize="@dimen/t_l"
@@ -37,7 +37,7 @@
                 <TextView
                     android:id="@+id/group_open_icon"
                     android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@mipmap/arrow_up"
@@ -47,12 +47,12 @@
                 <TextView
                     android:id="@+id/combo_details"
                     android:layout_toRightOf="@+id/combo_image"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_below="@+id/combo_name"
+                    android:layout_marginRight="8dp"
+                    android:layout_below="@+id/group_open_icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/group_open_icon"
                     android:text="书籍涵盖人文、音乐、禅茶、艺术、生活家居等诸多领域。"
                     android:textColor="@color/location_text_color"
                     android:textSize="@dimen/t_s"/>
@@ -68,13 +68,12 @@
                 android:layout_height="wrap_content">
                 <RelativeLayout
                     android:background="@drawable/fm_half_white"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp">
 
                     <TextView
                         android:text="10分钟"
+                        android:layout_marginLeft="8dp"
                         android:textColor="#333333"
                         android:id="@+id/fm_navi_need_time"
                         android:layout_centerVertical="true"

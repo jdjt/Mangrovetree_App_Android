@@ -375,7 +375,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     private void dealWhere(Bundle pB, String pWhere) {
-        if (SearchResultFragment.class.getName().equals(pWhere)) {
+        if (MapSearchAcitivity.class.getName().equals(pWhere)) {
             // 从搜索结果界面而来
             // 从搜索结果界面而来
             Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
@@ -1560,7 +1560,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void popNaviView(){
         main_bottom_bar.measure(0, 0);
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
-        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight());
+        Log.d("TAGTAGTAG","main_bottom_bar.getMeasuredHeight()="+main_bottom_bar.getMeasuredHeight());
+        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight()+2);
 //                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
