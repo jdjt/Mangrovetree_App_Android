@@ -458,10 +458,12 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
 
 //                    view.setAddress(viewAddress);
         view.setDetailOpen();
-        if(selectDetailsCode!=null&&!"".equals(selectDetailsCode)){
+        if(selectDetailsCode!=null&&!"".equals(selectDetailsCode)&&!"NULL".equals(selectDetailsCode)){
             view.showDetail(true);
             getActivityDetail(selectDetailsCode);
+            ActivityCodeList.clear();
         }else {
+            view.showDetail(false);
             showNaviPopWinidow();
         }
     }
@@ -557,7 +559,9 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     mCurrentModel = (FMModel) pFMNode;
                     //这里查询activity_code
                     ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
-                    selectDetailsCode = ActivityCodeList.get(0).getActivitycode();
+                    if(ActivityCodeList.size()>0){
+                        selectDetailsCode = ActivityCodeList.get(0).getActivitycode();
+                    }
                     showHighLigtModel(mCurrentModel.getFid());
                     return true;
                 }

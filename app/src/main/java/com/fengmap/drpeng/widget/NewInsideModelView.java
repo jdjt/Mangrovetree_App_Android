@@ -188,7 +188,7 @@ public class NewInsideModelView extends RelativeLayout {
     }
 
     public void setNaviNeedCalorie(String needCalorie) {
-        fm_navi_need_calorie.setText(needCalorie);
+        fm_navi_need_calorie.setText("燃烧"+needCalorie);
     }
 
     public void setComboName(String name) {
@@ -202,6 +202,8 @@ public class NewInsideModelView extends RelativeLayout {
     public void showDetail(boolean isShow){
         if(isShow){
             panel.setVisibility(VISIBLE);
+        }else {
+            panel.setVisibility(GONE);
         }
     }
 

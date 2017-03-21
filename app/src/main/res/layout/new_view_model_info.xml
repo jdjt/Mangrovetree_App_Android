@@ -12,15 +12,14 @@
             <RelativeLayout
                 android:id="@+id/panel"
                 android:background="@color/white"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/combo_image"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
                     android:background="@mipmap/default_image"/>
                 <TextView
                     android:id="@+id/combo_name"
@@ -53,7 +52,7 @@
                     android:layout_below="@+id/group_open_icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="书籍涵盖人文、音乐、禅茶、艺术、生活家居等诸多领域。"
+                    android:text="皇后棕是度假世界的标志性酒店，拥有购物街，红树林平价奢侈品中心，数家特色餐厅，今日X书屋，皇后棕酒店还拥有女士楼层。"
                     android:textColor="@color/location_text_color"
                     android:textSize="@dimen/t_s"/>
 

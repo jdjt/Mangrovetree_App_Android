@@ -1419,9 +1419,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
                 mCurrentModel = (FMExternalModel) pFMNode;
                 //这里需要添加查询模型activity_code的逻辑
-//                String activitycode = getModelActivityCode();
+                String activitycode = "";
                 ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
-                String activitycode = ActivityCodeList.get(0).getActivitycode();
+                if(ActivityCodeList.size()>0){
+                    activitycode = ActivityCodeList.get(0).getActivitycode();
+                }
                 ShowPopModelView(mCurrentModel,activitycode);
                 return true;
             }
@@ -1543,11 +1545,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                view.setAddress(viewAddress);
 
         view.setEnterMapIdByModelFid(mCurrentModel.getFid());
-        if(activitycode!=null&&!"".equals(activitycode)){
+        if(activitycode!=null&&!"".equals(activitycode)&&!"NULL".equals(activitycode)){
             view.showDetail(true);
             getActivityDetail(activitycode);
             ActivityCodeList.clear();
         }else {
+            view.showDetail(false);
             popNaviView();
         }
 
@@ -1560,7 +1563,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void popNaviView(){
         main_bottom_bar.measure(0, 0);
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
-        Log.d("TAGTAGTAG","main_bottom_bar.getMeasuredHeight()="+main_bottom_bar.getMeasuredHeight());
+        Log.d("TAGTAGTAG","底部高度="+main_bottom_bar.getMeasuredHeight()+" 内容高度："+ mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
         mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, main_bottom_bar.getMeasuredHeight()+2);
 //                mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() -  main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
