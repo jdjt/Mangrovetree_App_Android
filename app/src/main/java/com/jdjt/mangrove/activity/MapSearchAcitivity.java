@@ -6,7 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +42,7 @@ import com.jdjt.mangrove.fragment.SearchFragment;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.ArrayList;
@@ -68,15 +74,26 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_map_search_acitivity, menu);
         MenuItem menuItem = menu.findItem(R.id.menu_item_search);//在菜单中找到对应控件的item
+        initSearchView(menu);
+        MenuItemCompat.setOnActionExpandListener(menuItem, this);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void initSearchView(Menu menu) {
         //获得searchView对象
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_item_search));
         // 设置该SearchView默认是否自动缩小为图标
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(true);
+//        ImageView search_button = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+//        search_button.setImageIcon(Icon.createWithResource(this, R.mipmap.icon_searcher_white));
+        ImageView go_button = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_go_btn);
+        go_button.setImageResource(R.mipmap.icon_seach_text);
         // 为该SearchView组件设置事件监听器
         searchView.setOnQueryTextListener(this);
         // 设置该SearchView显示搜索按钮
-        searchView.setSubmitButtonEnabled(false);
+        searchView.setSubmitButtonEnabled(true);
+
         searchView.clearFocus();
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
@@ -97,12 +114,15 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
                 return true;
             }
         });
+        SpannableString spanText = new SpannableString("请输入您要去的地方");
 
-        searchView.setQueryHint("请输入您要去的地方");
-        MenuItemCompat.setOnActionExpandListener(menuItem, this);
-        return super.onCreateOptionsMenu(menu);
+        // 设置字体大小
+        spanText.setSpan(new AbsoluteSizeSpan(15, true), 0, spanText.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        // 设置字体颜色
+        spanText.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        searchView.setQueryHint(spanText);
     }
-
 
     @Init
     private void initView() {
@@ -127,7 +147,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         container.setAdapter(new TabFragmentAdapter(fragments, titles, getSupportFragmentManager(), this));
         //设置tab 宽高
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.height = 104;
+        layoutParams.height = Handler_System.dip2px(42);
         int margin = (int) getResources().getDimension(R.dimen.activity_horizontal_margin);
         layoutParams.setMargins(margin, margin, margin, margin);
         tabs.setLayoutParams(layoutParams);
