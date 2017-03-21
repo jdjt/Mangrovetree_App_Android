@@ -75,6 +75,7 @@ import com.fengmap.drpeng.adapter.LineAdapter;
 import com.fengmap.drpeng.adapter.WorkAdapter;
 import com.fengmap.drpeng.common.NavigationUtils;
 import com.fengmap.drpeng.common.StringUtils;
+import com.fengmap.drpeng.db.FMDBMapElementOveridDao;
 import com.fengmap.drpeng.widget.ButtonGroup;
 import com.fengmap.drpeng.widget.CustomPopupWindow;
 import com.fengmap.drpeng.widget.CustomProgressDialog;
@@ -225,7 +226,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     // 更新Ui的Handler
     private Handler UiHandler;
-
+    FMDBMapElementOveridDao fbd = null;
     @Init
     protected void initView() {
         initSlidingMenu();
@@ -300,6 +301,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mMapView.setManager(FMAPI.instance().mActivityManager,
                 FMAPI.instance().mRouteManager,
                 FMAPI.instance().mZoneManager);
+
+        fbd = new FMDBMapElementOveridDao();
     }
 
     public FMMap getMap() {

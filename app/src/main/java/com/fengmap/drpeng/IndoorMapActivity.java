@@ -1721,11 +1721,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                                                                    startPoint);
             // 路径规划
             if (calculateAndDrawRoute()) {
-//                NaviView naviView = (NaviView) mOpenNaviWindow.getConvertView();
-//                naviView.setStartText("我的位置");
-//                naviView.setEndText(mCurrentModel.getName());
-//                mOpenNaviWindow.getConvertView().measure(0,0);
-//                mOpenNaviWindow.showAsDropDown(mMapView, 0, -mOpenNaviWindow.getConvertView().getMeasuredHeight());
                 NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
                 view.setStartText("我的位置");
                 view.setEndText(mCurrentModel.getName());

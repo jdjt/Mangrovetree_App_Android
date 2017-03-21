@@ -1,5 +1,7 @@
 package com.fengmap.drpeng.db;
 
+import android.util.Log;
+
 import com.fengmap.android.utils.FMLog;
 import com.fengmap.android.wrapmv.db.FMDatabaseHelper;
 import com.j256.ormlite.dao.Dao;
@@ -156,5 +158,21 @@ public class FMDBMapElementOveridDao  {
 
     public boolean isSearchHistoryExist(String historyName) {
         return this.queryStoresByTypeName(historyName).size() > 0;
+    }
+
+    //根据name查询activitycode
+    public String queryActivityCodeByname(String name){
+        String activitycode = "";
+        if(name!=null&!"".equals(name)){
+            try {
+                String pE1 = "SELECT activitycode  from stores WHERE name like \'%" + name;
+                GenericRawResults where = this.mDao.queryRaw(pE1, new DataType[]{DataType.INTEGER, DataType.STRING}, new String[0]);
+                activitycode = where.getResults().toString();
+                Log.d("CCCCCCCCCCC","查询数据库结果 activitycode = "+activitycode);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return activitycode;
     }
 }
