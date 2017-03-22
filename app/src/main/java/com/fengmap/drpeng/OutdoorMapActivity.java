@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -2354,8 +2353,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         // configure the SlidingMenu
 //        setStatus();
         Toolbar toolbar = getActionBarToolbar();
-//        toolbar.setBackgroundColor(Color.WHITE);
-//        toolbar.setAlpha(90);
+        toolbar.setBackgroundColor(Color.WHITE);
+        toolbar.setAlpha(90);
+        TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        textView.setTextColor(Color.parseColor("#666666"));
+        textView.setText(getTitle());
+        toolbar.setNavigationIcon(R.mipmap.ic_person);
         menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
@@ -2377,14 +2380,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.menu_frame, leftFragment).commit();
         menu.setMenu(R.layout.leftmenu_layout);//设置menu的布局文件
-       View view= menu.getMenu();
-
-        //设置占位view的高度为状态栏高度
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getStatusBarHeight());
-        view.setLayoutParams(params);
+//        View view= menu.getMenu();
+//
+//        //设置占位view的高度为状态栏高度
+//        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getStatusBarHeight());
+//        view.setLayoutParams(params);
         //或者可以设置padding
         //v.setPadding(0,height,0,0);
-        toolbar.setNavigationIcon(R.mipmap.ic_person);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

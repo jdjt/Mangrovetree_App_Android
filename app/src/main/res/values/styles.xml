@@ -128,6 +128,10 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/white</item>
+
+        <!--<item name="android:toolbarStyle">-->
+            <!--@style/AppTheme.Toolbar-->
+        <!--</item>-->
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -137,9 +141,14 @@
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <!--<style name="Base.Widget.Design.TabLayout" parent="android:Widget">-->
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <!--<item name="tabBackground">@drawable/tab_selected_bg</item>-->
         <!--<item name="tabIndicatorColor">@color/half_full</item>-->
-        <!--<item name="tabIndicatorHeight">2dp</item>-->
-    <!--</style>-->
+        <item name="contentInsetStart">2dp</item>
+    </style>
+    <style name="statusBarStyle" parent="@android:style/Theme.DeviceDefault.Light">
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
 </resources>

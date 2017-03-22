@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.util.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
@@ -132,7 +133,7 @@ public class CommonActivity extends AppCompatActivity {
         });
         String title = getIntent().getStringExtra(EXTRA_TITLE);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        StatusBarUtil.StatusBarLightMode(this);
         if (mActionBarToolbar != null) {
             TextView textView = (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
             textView.setText(getTitle());
