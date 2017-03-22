@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
+    android:titleTextColor="?attr/titleTextColor"
     app:contentInsetLeft="0dp"
     android:minHeight="?attr/actionBarSize"
     android:fitsSystemWindows="true"
@@ -11,6 +12,7 @@
     app:layout_scrollFlags="scroll|enterAlways"
     app:popupTheme="@style/AppTheme.PopupOverlay"
     app:theme="@style/AppTheme.AppBarOverlay"
+    app:contentInsetStart="0dp"
     app:titleTextAppearance="@style/ActionBar.TitleText">
 
 
@@ -23,11 +25,7 @@
         <!--android:iconifiedByDefault="true"-->
         <!--android:layout_marginRight="10dp"-->
         <!--android:inputType="textCapWords"-->
-        <!--app:searchHintIcon="@color/text_gray_value"-->
         <!--android:imeOptions="actionSearch"-->
-        <!--android:queryHint="请输入您要查找的内容"-->
-        <!--app:iconifiedByDefault="false"-->
-        <!--app:goIcon="@mipmap/go_seach"-->
     <!--/>-->
     <TextView
         android:layout_width="wrap_content"
@@ -37,5 +35,5 @@
         android:id="@+id/toolbar_title"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 </android.support.v7.widget.Toolbar>
