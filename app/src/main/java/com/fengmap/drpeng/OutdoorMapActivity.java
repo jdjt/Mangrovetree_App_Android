@@ -2365,8 +2365,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
 //        setStatus();
-//        findViewById(R.id.center_common_map).setVisibility(View.VISIBLE);
-//        findViewById(R.id.center_common).setVisibility(View.GONE);
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setAlpha(90);
