@@ -192,7 +192,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     WelcomeActivity.this.finish();
                 }
             }
-        }, 2000);
+        }, 500);
 
     }
 }

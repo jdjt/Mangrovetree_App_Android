@@ -1,5 +1,7 @@
 package com.fengmap.drpeng.db;
 
+import android.util.Log;
+
 import com.fengmap.android.utils.FMLog;
 import com.fengmap.android.wrapmv.db.FMDatabaseHelper;
 import com.j256.ormlite.dao.Dao;

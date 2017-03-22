@@ -64,6 +64,7 @@ public class CustomPopupWindow {
     public void setOutsideTouchable(boolean touchable) {
         mWindow.setOutsideTouchable(touchable);
         mWindow.update();
+        mWindow.dismiss();
     }
 
 

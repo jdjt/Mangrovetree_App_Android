@@ -20,13 +20,14 @@
             android:layout_marginLeft="18dp"
             android:background="@mipmap/person_logo" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/account_personal_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="24dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/account_item_name"
@@ -45,7 +46,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_22" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/account_personal_turn"
@@ -69,8 +70,8 @@
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="13dp"
             android:layout_margin="10dp"
+            android:layout_marginLeft="13dp"
             android:background="@mipmap/setting" />
 
         <TextView

@@ -238,7 +238,7 @@ public class NewModelView extends RelativeLayout {
     }
 
     public void setNaviNeedCalorie(String needCalorie) {
-        fm_navi_need_calorie.setText(needCalorie);
+        fm_navi_need_calorie.setText("燃烧"+needCalorie);
     }
 
     public void setComboName(String name) {
@@ -247,5 +247,14 @@ public class NewModelView extends RelativeLayout {
 
     public void setComboDetails(String details) {
         combo_details.setText(details);
+    }
+
+    //是否显示详情
+    public void showDetail(boolean isShow){
+        if(isShow){
+            panel.setVisibility(VISIBLE);
+        }else {
+            panel.setVisibility(GONE);
+        }
     }
 }

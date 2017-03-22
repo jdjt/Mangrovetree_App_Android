@@ -7,12 +7,30 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/Layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/center_common"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_bg"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_below="@+id/toolbar_actionbar"
+            android:layout_toEndOf="@+id/center_common_map" />
+        <RelativeLayout
+            android:id="@+id/center_common_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            android:visibility="gone"/>
 
         <include
             android:id="@+id/toolbar_actionbar"
@@ -20,13 +38,6 @@
             android:layout_width="fill_parent"
             android:layout_height="53dp" />
 
-        <RelativeLayout
-            android:id="@+id/center_common"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/common_bg"
-            android:orientation="vertical"
-            android:visibility="visible"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

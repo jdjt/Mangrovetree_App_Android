@@ -13,9 +13,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.util.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
-import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -133,7 +133,7 @@ public class CommonActivity extends AppCompatActivity {
         });
         String title = getIntent().getStringExtra(EXTRA_TITLE);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        StatusBarUtil.StatusBarLightMode(this);
         if (mActionBarToolbar != null) {
             TextView textView = (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
             textView.setText(getTitle());
@@ -151,7 +151,8 @@ public class CommonActivity extends AppCompatActivity {
     }
 
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg), 0);
+        setTranslucentStatus( R.color.title_bg);
+//        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg), 0);
     }
 
     @Override
@@ -175,5 +176,14 @@ public class CommonActivity extends AppCompatActivity {
     private void initActivity() {
         initActionBar();
         setStatusBar();
+    }
+
+    /**
+     * @method 查询activitycode
+     */
+    public String getModelActivityCode(){
+        String code = "";
+
+        return code;
     }
 }
