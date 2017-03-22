@@ -60,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
             android:background="@color/line_color_in" />
 
         <EditText
@@ -100,6 +101,8 @@
         </LinearLayout>
 
         <View
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line_color_out" />
