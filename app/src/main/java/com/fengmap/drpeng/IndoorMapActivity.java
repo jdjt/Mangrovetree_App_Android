@@ -474,7 +474,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private void showNaviPopWinidow(){
         main_bottom_bar.measure(0,0);
         mOpenModelInfoWindow.getConvertView().measure(0,0);
-        mOpenModelInfoWindow.showAsDropDown(mMapView, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight());
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight()-2);
 
         mLastModel = mCurrentModel;
 
@@ -831,7 +831,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
                 b.putInt(FMAPI.ACTIVITY_MAP_GROUP_ID, OutdoorMapActivity.mInstance.getMap().getFocusGroupId());
 
-                FMAPI.instance().gotoActivity(this, SearchActivity.class, b);
+                FMAPI.instance().gotoActivity(this, MapSearchAcitivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
                 Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
