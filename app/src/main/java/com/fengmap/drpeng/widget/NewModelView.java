@@ -263,6 +263,6 @@ public class NewModelView extends RelativeLayout  {
 
     //加载业态图片
     public void loadComboImage(String url){
-        
+
     }
 }

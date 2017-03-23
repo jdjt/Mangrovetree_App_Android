@@ -236,7 +236,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     protected void initView() {
         initSlidingMenu();
         mInstance = this;
-        mapHandler = new Handler();
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
@@ -277,6 +276,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
 
+        // 初始化定位服务
+        initFMLocationService();
         // 开启定位服务
         boolean openedResult = FMMapSDK.setLocateServiceState(true);
         if (!openedResult) {
@@ -286,8 +287,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         // 进度条
         mProgressDialog = new CustomProgressDialog(this, R.style.custom_dialog);
         mProgressDialog.setCustomContentView(R.layout.fm_custome_dialog);
-        mProgressDialog.setInfoViewContext("加载中...");
-        mProgressDialog.show();
+//        mProgressDialog.setInfoViewContext("加载中...");
+//        mProgressDialog.show();
 
         // 搜索
         mMapElementDAO = new FMDBMapElementDAO();
@@ -307,16 +308,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         fbd = new FMDBMapElementOveridDao();
     }
-
-    private Runnable mapRunnable = new Runnable() {
-        @Override
-        public void run() {
-            // 初始化定位服务
-            initFMLocationService();
-        }
-    };
-
-
 
     public FMMap getMap() {
         return mMap;
@@ -1478,7 +1469,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         FMMapSDK.setLocateServiceState(true);
 //        FMMapSDK.setCallServiceState(true);
         needLocate(false);
-        mapHandler.removeCallbacks(mapRunnable);
 
 //        new Thread(new Runnable() {
 //            int index = 0;
