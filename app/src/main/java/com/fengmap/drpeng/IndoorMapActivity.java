@@ -214,7 +214,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 needSwitchFloor(pFloor.getGroupId(), true ,true);
             }
         });
-        mLocationView = (ImageView) findViewById(R.id.indoor_location);
+        mLocationView = (ImageView) findViewById(R.id.fm_map_img_location);
         mLocationView.setOnClickListener(this);
 
         mCallView = (DrawableCenterTextView) findViewById(R.id.indoor_call);
@@ -756,7 +756,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.indoor_location:
+            case R.id.fm_map_img_location:
 
 
                 if (!FMLocationService.instance().checkLocationValid(this)) {

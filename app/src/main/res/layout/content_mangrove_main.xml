@@ -66,17 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
-        <ImageView
-            android:id="@+id/fm_map_img_location"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:visibility="gone"
-            android:src="@mipmap/fm_loc"
-            android:scaleType="centerInside"
-            android:background="@drawable/fm_green_normal_button"
-            android:layout_above="@+id/main_bottom_bar"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp" />
     </com.fengmap.android.wrapmv.FMMangroveMapView>
     <include
         layout="@layout/main_bottom_bar"/>

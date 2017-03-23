@@ -231,10 +231,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     private String selectFid = "";
     private String selectDetailsCode = "";
+    private Handler mapHandler;
     @Init
     protected void initView() {
         initSlidingMenu();
         mInstance = this;
+        mapHandler = new Handler();
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mTopBarView.setTitle(String.format("%s・%s", "三亚", "三亚湾"));
@@ -253,7 +255,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         mMapView = (FMMangroveMapView) findViewById(R.id.mapview);
         mMap = mMapView.getFMMap();
-
         main_bottom_bar = (LinearLayout) findViewById(R.id.main_bottom_bar);
         //底部栏
         search_dest_btn = (LinearLayout) findViewById(R.id.search_dest_btn);
@@ -276,8 +277,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
 
-        // 初始化定位服务
-        initFMLocationService();
         // 开启定位服务
         boolean openedResult = FMMapSDK.setLocateServiceState(true);
         if (!openedResult) {
@@ -308,6 +307,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         fbd = new FMDBMapElementOveridDao();
     }
+
+    private Runnable mapRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 初始化定位服务
+            initFMLocationService();
+        }
+    };
+
+
 
     public FMMap getMap() {
         return mMap;
@@ -1469,6 +1478,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         FMMapSDK.setLocateServiceState(true);
 //        FMMapSDK.setCallServiceState(true);
         needLocate(false);
+        mapHandler.removeCallbacks(mapRunnable);
 
 //        new Thread(new Runnable() {
 //            int index = 0;
@@ -2443,9 +2453,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
                 HashMap<String, String> base_info = (HashMap<String, String>) receive.get("base_info");
+//                HashMap<String, Object> activity_image = (HashMap<String, Object>) receive.get("activity_image");
+//                HashMap<String, String> image = (HashMap<String, String>) activity_image.get(0);
+//                Log.d("NETNETNET","url：abstract = "+image.get("url"));
                 NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
+//                if(image!=null){
+//                    view.loadComboImage(image.get("url"));
+//                }
+                view.loadComboImage("http://img.mymhotel.com/yjqbuploads/syw/activity/5aa4b6e304ec4b949fdab9da6fe41b04.jpg");
                 Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
                 popNaviView();
                 break;
