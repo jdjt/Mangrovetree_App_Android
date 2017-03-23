@@ -107,6 +107,7 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -2341,8 +2342,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         layoutParams.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         window.setAttributes(layoutParams);
     }
-
+ImageLoader imageLoader=null;
     private void initSlidingMenu() {
+        imageLoader=ImageLoader.getInstance();
 //        setTranslucentStatus( getResources().getColor(R.color.white));
 //        SystemStatusManager tintManager = new SystemStatusManager(this);
 //        tintManager.setStatusBarTintEnabled(true);
@@ -2380,7 +2382,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.menu_frame, leftFragment).commit();
         menu.setMenu(R.layout.leftmenu_layout);//设置menu的布局文件
-//        View view= menu.getMenu();
 //
 //        //设置占位view的高度为状态栏高度
 //        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getStatusBarHeight());
@@ -2447,6 +2448,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
                 Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
+                view.downloadImage(imageLoader,"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490280558833&di=45fc7c9449891b94e164e7ce34f77eb2&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fc2fdfc039245d688c0fc3fbba6c27d1ed21b2436.jpg");
                 popNaviView();
                 break;
         }
