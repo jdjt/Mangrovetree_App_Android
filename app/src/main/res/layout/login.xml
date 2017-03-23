@@ -41,7 +41,9 @@
 
 
         <View
-			android:layout_width="305dp"
+			android:layout_width="match_parent"
+			android:layout_marginLeft="48dp"
+			android:layout_marginRight="18dp"
 			android:layout_height="1dp"
 			android:layout_gravity="right"
 			android:background="@color/line_color_in" />
@@ -83,8 +85,10 @@
 		</LinearLayout>
 
         <View
-			android:layout_width="305dp"
+			android:layout_width="match_parent"
 			android:layout_height="1dp"
+			android:layout_marginLeft="48dp"
+			android:layout_marginRight="18dp"
 			android:layout_gravity="right"
 			android:background="@color/line_color_out" />
 	</LinearLayout>
