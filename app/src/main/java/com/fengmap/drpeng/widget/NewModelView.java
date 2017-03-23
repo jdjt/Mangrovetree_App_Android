@@ -263,7 +263,6 @@ public class NewModelView extends RelativeLayout  {
 
     //加载业态图片
     public void loadComboImage(String url){
-        ImageListener in = new ImageListener();
-        in.onLoadingCancelled(url,combo_image);
+        
     }
 }
