@@ -67,8 +67,10 @@
             android:layout_height="30dp" />
 
     </com.fengmap.android.wrapmv.FMMangroveMapView>
+
     <include
         layout="@layout/main_bottom_bar"/>
+
 </RelativeLayout>
 
 

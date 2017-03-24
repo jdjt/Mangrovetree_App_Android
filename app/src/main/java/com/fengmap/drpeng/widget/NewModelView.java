@@ -7,14 +7,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -26,7 +22,7 @@ import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.IndoorMapActivity;
 import com.fengmap.drpeng.OutdoorMapActivity;
 import com.jdjt.mangrove.R;
-import com.jdjt.mangrovetreelibray.ioc.net.ImageListener;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.HashMap;
 
@@ -38,7 +34,7 @@ import java.util.HashMap;
  * @Package com.fengmap.drpeng.widget
  * @Date 2017/3/13 16:22
  */
-public class NewModelView extends RelativeLayout  {
+public class NewModelView extends RelativeLayout {
     public  Context    mContext;
     private ExpandableListView mExpandableListView;
     private View view;
@@ -52,7 +48,6 @@ public class NewModelView extends RelativeLayout  {
     TextView fm_open_navi_small,fm_enter_inside,fm_open_navi_big;
     TextView fm_navi_need_distance,fm_navi_need_time,fm_navi_need_calorie;
     ImageView combo_image;
-
     private String mEnterMapId;
 
     private HashMap<String,String> group = new HashMap<>();
@@ -88,7 +83,8 @@ public class NewModelView extends RelativeLayout  {
         fm_navi_need_distance = (TextView) findViewById(R.id.fm_navi_need_distance);
         fm_navi_need_time = (TextView) findViewById(R.id.fm_navi_need_time);
         fm_navi_need_calorie = (TextView) findViewById(R.id.fm_navi_need_calorie);
-        combo_image = (ImageView) findViewById(R.id.combo_image);
+
+        combo_image= (ImageView) findViewById(R.id.combo_image);
         // 进入室内点击逻辑
         fm_enter_inside.setOnClickListener(new OnClickListener() {
             @Override
@@ -260,9 +256,7 @@ public class NewModelView extends RelativeLayout  {
             panel.setVisibility(GONE);
         }
     }
-
-    //加载业态图片
-    public void loadComboImage(String url){
-
+    public void downloadImage(ImageLoader imageLoader,String url){
+        imageLoader.displayImage(url,combo_image);
     }
 }
