@@ -2445,10 +2445,7 @@ ImageLoader imageLoader=null;
             case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
                 HashMap<String, Object> base_info = (HashMap<String, Object>) receive.get("base_info");
-                Log.d("NETNETNET"," base_info = "+base_info);
                 HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
-//                HashMap<String, String> image = (HashMap<String, String>) Handler_Json.JsonToHashMap(base_info.get("first_image"));
-                Log.d("NETNETNET","image Url="+image.get("url"));
                 NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
