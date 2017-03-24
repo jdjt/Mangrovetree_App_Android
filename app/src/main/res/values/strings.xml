@@ -36,6 +36,8 @@
     <string name="title_activity_map_search_acitivity">搜索</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="first_text">请确认已连接本酒店WIFI，以便您使用地图导航和呼叫服务的功能，祝您旅途愉快！ </string>
+    <string name="first_hint">温馨提示 </string>
 
     <!-- Strings related to Settings -->
 

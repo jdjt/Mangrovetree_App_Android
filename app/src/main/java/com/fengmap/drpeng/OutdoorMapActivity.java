@@ -11,12 +11,14 @@ import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,6 +109,7 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import android.view.ViewGroup.LayoutParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -234,6 +237,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Init
     protected void initView() {
         initSlidingMenu();
+//        showPopWindow();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
@@ -2450,6 +2454,21 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 popNaviView();
                 break;
         }
+        }
+
+
+        private void showPopWindow(){
+            View contentView = LayoutInflater.from(this).inflate(
+                    R.layout.main_dialog, null);
+            final PopupWindow popupWindow = new PopupWindow(contentView,
+                    LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+
+            popupWindow.setTouchable(true);
+            popupWindow.setBackgroundDrawable(getResources().getDrawable(
+                    R.drawable.dialog_background));
+
+            popupWindow.showAsDropDown(contentView);
+
         }
 
 }

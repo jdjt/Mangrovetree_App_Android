@@ -158,6 +158,7 @@
     <color name="sbc_layout_view">#ffffffff</color>
     <color name="sbc_page_number_text">#ff000000</color>
     <color name="sbc_snippet_text">#ff4b4b4b</color>
+    <color name="half_snippet_text">#aa4b4b4b</color>
     <color name="share_text">#ff000000</color>
     <color name="share_view">#ffffffff</color>
     <color name="status_view">#50000000</color>
