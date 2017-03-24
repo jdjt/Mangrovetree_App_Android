@@ -219,6 +219,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LinearLayout main_bottom_bar;
     private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
     private TextView call_button_text, search_button_text, globle_plateform_button_text;
+    private TextView  header_first_tv;
 
     //    导航菜单
     private SlidingMenu menu = null;
@@ -277,6 +278,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         call_button_text = (TextView) findViewById(R.id.call_button_text);
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
+        header_first_tv = (TextView) findViewById(R.id.header_first_tv);
 
         // 初始化定位服务
         initFMLocationService();
@@ -1418,6 +1420,15 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
+                if(header_first_tv.getVisibility()==View.VISIBLE){
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            header_first_tv.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
                 mCurrentModel = (FMExternalModel) pFMNode;
                 //这里需要添加查询模型activity_code的逻辑
                 String activitycode = "";
@@ -1600,7 +1611,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         if (result != null) {
             FMLog.e("onMapClick", result.getMapCoord().toString());
 
-            // TODO: 2016/12/10  test zone
+            // TODO: 2016/12/10  test zoneF
             FMTotalMapCoord totalCoord = new FMTotalMapCoord();
             totalCoord.setMapCoord(result.getMapCoord());
             totalCoord.setGroupId(1);

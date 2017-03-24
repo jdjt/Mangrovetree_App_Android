@@ -39,6 +39,7 @@
         android:layout_below="@+id/toolbar_actionbar"
         android:layout_alignParentStart="true">
         <TextView
+            android:id="@+id/header_first_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="点击任意建筑即可为你提供导航路线"
@@ -46,7 +47,7 @@
             android:gravity ="center"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:background="@color/bg"/>
+            android:background="@color/head_remind_bg"/>
 
         <com.fengmap.drpeng.widget.DrawableCenterTextView
             android:text="呼叫"
