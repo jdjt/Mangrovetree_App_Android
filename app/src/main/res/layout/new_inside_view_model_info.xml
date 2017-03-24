@@ -50,11 +50,17 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/group_open_icon"
                     android:layout_marginLeft="5dp"
+                    android:lines="3"
+                    android:ellipsize="end"
                     android:layout_marginTop="2dp"
                     android:layout_toRightOf="@+id/combo_image"
                     android:text="皇后棕是度假世界的标志性酒店，大王棕酒店是度假世界的标志性酒店，拥有购物街，拥有购物街，红树林平价奢侈品中心，数家特色餐厅，今日X书屋，皇后棕酒店还拥有女士楼层。"
                     android:textSize="@dimen/t_s" />
 
+                <View
+                    android:layout_below="@+id/combo_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"/>
             </RelativeLayout>
 
             <!--显示详情的布局-->
@@ -147,12 +153,7 @@
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:background="@color/bg_gray"
-                    android:layout_height="0.1dp"/>
-
+                    android:layout_height="3dp"/>
             </LinearLayout>
 
         </LinearLayout>

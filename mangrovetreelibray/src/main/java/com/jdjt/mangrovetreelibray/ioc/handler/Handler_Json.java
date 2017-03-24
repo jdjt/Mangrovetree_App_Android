@@ -34,7 +34,7 @@ public class Handler_Json {
 	 * @param str
 	 * @return Object
 	 */
-	private static Object JsonToHashMap(String str) {
+	public static Object JsonToHashMap(String str) {
 		LinkedHashMap<String, Object> json = new LinkedHashMap<String, Object>();
 		try {
 			Object object = new JSONTokener(str).nextValue();

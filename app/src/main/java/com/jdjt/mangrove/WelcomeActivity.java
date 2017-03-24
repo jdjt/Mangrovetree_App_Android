@@ -1,9 +1,11 @@
 package com.jdjt.mangrove;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -33,7 +35,18 @@ import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +104,49 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 初始化 图片加载配置
+     *
+     * @param context
+     */
+    public static void initImageLoader(Context context) {
+        //缓存文件的目录
+        File cacheDir = StorageUtils.getOwnCacheDirectory(context, "image/cache");
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.default_load_image) // resource or drawable
+                .showImageForEmptyUri(R.drawable.default_load_image) // resource or drawable
+                .showImageOnFail(R.drawable.default_load_image) // resource or drawable
+                .resetViewBeforeLoading(false)  // default
+                .delayBeforeLoading(1000)
+                .cacheInMemory(false) // default
+                .cacheOnDisk(false) // default
+                .considerExifParams(false) // default
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // default
+                .displayer(new SimpleBitmapDisplayer()) // default
+                .handler(new Handler()) // default
+                .build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .memoryCacheExtraOptions(480, 800) // max width, max height，即保存的每个缓存文件的最大长宽
+                .threadPoolSize(5) //线程池内线程的数量
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator()) //将保存的时候的URI名称用MD5 加密
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024) // 内存缓存的最大值
+                .diskCacheSize(50 * 1024 * 1024)  // SD卡缓存的最大值
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .defaultDisplayImageOptions(options)
+                // 由原先的discCache -> diskCache
+//                .diskCache(new UnlimitedDiscCache(cacheDir))//自定义缓存路径
+                .imageDownloader(new BaseImageDownloader(context, 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间
+                .writeDebugLogs() // Remove for release app
+                .build();
+        //全局初始化此配置
+        ImageLoader.getInstance().init(config);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -133,9 +189,14 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
 
+    /**
+     * 初始化登陆并加载 框架
+     */
     private void login() {
         Ioc.getIoc().init(MangrovetreeApplication.instance);
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getAppExceptionHandler(this));
+
+        initImageLoader(getApplicationContext());
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
         String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
         if (Handler_String.isBlank(account)) {
@@ -150,7 +211,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @InHttp(Constant.HttpUrl.LOGIN_KEY)
     public void result(ResponseEntity entity) {
-        Ioc.getIoc().getLogger().e("转换像素："+ Handler_System.px2dip(132));
+        Ioc.getIoc().getLogger().e("转换像素：" + Handler_System.px2dip(132));
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
@@ -173,6 +234,7 @@ public class WelcomeActivity extends AppCompatActivity {
         startActivity();
         //------------------------------------------------------------
     }
+
     /**
      * 跳转到主页面
      */

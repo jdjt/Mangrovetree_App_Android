@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -21,6 +22,7 @@ import com.fengmap.drpeng.FMAPI;
 import com.fengmap.drpeng.IndoorMapActivity;
 import com.fengmap.drpeng.OutdoorMapActivity;
 import com.jdjt.mangrove.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.HashMap;
 
@@ -45,6 +47,7 @@ public class NewInsideModelView extends RelativeLayout {
     TextView fm_navi_start, fm_navi_end;
     TextView fm_navi_need_time,fm_navi_need_calorie,fm_navi_need_distance;
     TextView fm_open_navi_big;
+    ImageView combo_image;
 
     private String mEnterMapId;
 
@@ -83,6 +86,7 @@ public class NewInsideModelView extends RelativeLayout {
 
         panel = (RelativeLayout) view.findViewById(R.id.panel);
         content = (LinearLayout) view.findViewById(R.id.content);
+        combo_image = (ImageView) view.findViewById(R.id.combo_image);
         panel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,5 +210,9 @@ public class NewInsideModelView extends RelativeLayout {
             panel.setVisibility(GONE);
         }
     }
+    public void downloadImage(ImageLoader imageLoader, String url){
+        imageLoader.displayImage(url,combo_image);
+    }
+
 
 }

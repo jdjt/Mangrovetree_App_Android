@@ -1,6 +1,5 @@
 package com.fengmap.drpeng;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,13 +75,11 @@ import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.SwitchFloorView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
-import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
@@ -94,8 +90,8 @@ import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
-import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -104,8 +100,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import static com.fengmap.android.wrapmv.Tools.getFMNaviAnalyserByMapId;
 import static com.fengmap.drpeng.FMAPI.TARGET_ADD_MARKER;
@@ -197,6 +193,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private LinearLayout main_bottom_bar;
     private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
     private TextView call_button_text, search_button_text, globle_plateform_button_text;
+    ImageLoader imageLoader=null;
 
     public FMMap getMap() {
         return mMap;
@@ -206,6 +203,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     protected void initView() {
         mInstance = this;
         fbd = new FMDBMapElementOveridDao();
+        imageLoader=ImageLoader.getInstance();
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
         mSwitchFloorView = (SwitchFloorView) findViewById(R.id.indoor_switch_floor);
         mSwitchFloorView.setCallBackFloor(new SwitchFloorView.OnCallBackFloor() {
@@ -214,7 +212,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 needSwitchFloor(pFloor.getGroupId(), true ,true);
             }
         });
-        mLocationView = (ImageView) findViewById(R.id.indoor_location);
+        mLocationView = (ImageView) findViewById(R.id.fm_map_img_location);
         mLocationView.setOnClickListener(this);
 
         mCallView = (DrawableCenterTextView) findViewById(R.id.indoor_call);
@@ -756,7 +754,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.indoor_location:
+            case R.id.fm_map_img_location:
 
 
                 if (!FMLocationService.instance().checkLocationValid(this)) {
@@ -2196,7 +2194,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
 //        }
 //    });
 
-
     String uuid;
     @InResume
     private void resume() {
@@ -2239,11 +2236,19 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         switch (entity.getKey()) {
             case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
-                HashMap<String, String> base_info = (HashMap<String, String>) receive.get("base_info");
+                HashMap<String, Object> base_info = (HashMap<String, Object>) receive.get("base_info");
+                Log.d("NETNETNET"," base_info = "+base_info);
+                HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
+//                HashMap<String, String> image = (HashMap<String, String>) Handler_Json.JsonToHashMap(base_info.get("first_image"));
+                Log.d("NETNETNET","image Url="+image.get("url"));
                 NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
-                Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
+                if(image.get("url")!=null&&!"".equals(image.get("url"))){
+                    imageLoader.clearDiskCache();
+                    imageLoader.clearMemoryCache();
+                    view.downloadImage(imageLoader,image.get("url"));
+                }
                 showNaviPopWinidow();
                 break;
         }
