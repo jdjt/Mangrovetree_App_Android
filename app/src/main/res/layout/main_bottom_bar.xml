@@ -34,13 +34,13 @@
 
     <ImageView
         android:id="@+id/fm_map_img_location"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@mipmap/fm_loc"
         android:scaleType="centerInside"
         android:background="@drawable/fm_green_normal_button"
         android:layout_above="@+id/main_bottom_bar"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginLeft="8dp" />
 
     <View
