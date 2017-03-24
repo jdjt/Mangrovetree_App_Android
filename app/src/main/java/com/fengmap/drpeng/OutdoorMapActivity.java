@@ -87,6 +87,7 @@ import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
@@ -2443,19 +2444,19 @@ ImageLoader imageLoader=null;
         switch (entity.getKey()) {
             case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
-                HashMap<String, String> base_info = (HashMap<String, String>) receive.get("base_info");
-//                HashMap<String, Object> activity_image = (HashMap<String, Object>) receive.get("activity_image");
-//                HashMap<String, String> image = (HashMap<String, String>) activity_image.get(0);
-//                Log.d("NETNETNET","url：abstract = "+image.get("url"));
+                HashMap<String, Object> base_info = (HashMap<String, Object>) receive.get("base_info");
+                Log.d("NETNETNET"," base_info = "+base_info);
+                HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
+//                HashMap<String, String> image = (HashMap<String, String>) Handler_Json.JsonToHashMap(base_info.get("first_image"));
+                Log.d("NETNETNET","image Url="+image.get("url"));
                 NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
-//                if(image!=null){
-//                    view.loadComboImage(image.get("url"));
-//                }
-                view.loadComboImage("http://img.mymhotel.com/yjqbuploads/syw/activity/5aa4b6e304ec4b949fdab9da6fe41b04.jpg");
-                Log.d("NETNETNET","网络请求的数据：abstract = "+base_info.get("abstracts")+" name = "+base_info.get("name"));
-                view.downloadImage(imageLoader,"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490280558833&di=45fc7c9449891b94e164e7ce34f77eb2&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fc2fdfc039245d688c0fc3fbba6c27d1ed21b2436.jpg");
+                if(image.get("url")!=null&&!"".equals(image.get("url"))){
+                    imageLoader.clearDiskCache();
+                    imageLoader.clearMemoryCache();
+                    view.downloadImage(imageLoader,image.get("url"));
+                }
                 popNaviView();
                 break;
         }
