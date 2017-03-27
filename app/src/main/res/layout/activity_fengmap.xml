@@ -36,7 +36,9 @@
     <com.fengmap.android.wrapmv.FMMangroveMapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
         <com.fengmap.drpeng.widget.DrawableCenterTextView
             android:text="呼叫"
             android:visibility="gone"
@@ -58,6 +60,7 @@
 
         <com.fengmap.drpeng.widget.TopBarView
             android:id="@+id/fm_topbar"
+            android:visibility="gone"
             android:background="@mipmap/hotel_name_bg"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="50dp"

@@ -51,6 +51,7 @@ public class NewModelView extends RelativeLayout {
     TextView fm_navi_need_distance_x,fm_navi_need_time_x,fm_navi_need_calorie_x;
     ImageView combo_image;
     private String mEnterMapId;
+    private View divider_line;
 
     private HashMap<String,String> group = new HashMap<>();
     private HashMap<String,String> child = new HashMap<>();
@@ -74,21 +75,22 @@ public class NewModelView extends RelativeLayout {
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
         group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
-        fm_enter_inside = (TextView) findViewById(R.id.fm_enter_inside);
-        fm_open_navi_small = (TextView) findViewById(R.id.fm_open_navi_small);
-        fm_open_navi_big_x = (TextView) findViewById(R.id.fm_open_navi_big_x);
-        fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
-        fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
+        fm_enter_inside = (TextView) view.findViewById(R.id.fm_enter_inside);
+        fm_open_navi_small = (TextView) view.findViewById(R.id.fm_open_navi_small);
+        fm_open_navi_big_x = (TextView) view.findViewById(R.id.fm_open_navi_big_x);
+        fm_navi_start = (TextView) view.findViewById(R.id.fm_navi_start);
+        fm_navi_end = (TextView) view.findViewById(R.id.fm_navi_end);
+        divider_line = view.findViewById(R.id.divider_line);
 
-        fm_navi_need_distance = (TextView) findViewById(R.id.fm_navi_need_distance);
-        fm_navi_need_time = (TextView) findViewById(R.id.fm_navi_need_time);
-        fm_navi_need_calorie = (TextView) findViewById(R.id.fm_navi_need_calorie);
+        fm_navi_need_distance = (TextView) view.findViewById(R.id.fm_navi_need_distance);
+        fm_navi_need_time = (TextView) view.findViewById(R.id.fm_navi_need_time);
+        fm_navi_need_calorie = (TextView) view.findViewById(R.id.fm_navi_need_calorie);
 
-        fm_navi_need_distance_x = (TextView) findViewById(R.id.fm_navi_need_distance_x);
-        fm_navi_need_time_x = (TextView) findViewById(R.id.fm_navi_need_time_x);
-        fm_navi_need_calorie_x = (TextView) findViewById(R.id.fm_navi_need_calorie_x);
+        fm_navi_need_distance_x = (TextView) view.findViewById(R.id.fm_navi_need_distance_x);
+        fm_navi_need_time_x = (TextView) view.findViewById(R.id.fm_navi_need_time_x);
+        fm_navi_need_calorie_x = (TextView) view.findViewById(R.id.fm_navi_need_calorie_x);
 
-        combo_image= (ImageView) findViewById(R.id.combo_image);
+        combo_image= (ImageView) view.findViewById(R.id.combo_image);
         // 进入室内点击逻辑
         fm_enter_inside.setOnClickListener(new OnClickListener() {
             @Override
@@ -121,6 +123,7 @@ public class NewModelView extends RelativeLayout {
                         @Override
                         public void run() {
                             navi_layout.setVisibility(View.GONE);
+                            divider_line.setVisibility(GONE);
                             group_open_icon.setBackgroundResource(R.mipmap.arrow_up);
                         }
                     });
@@ -130,6 +133,7 @@ public class NewModelView extends RelativeLayout {
                         @Override
                         public void run() {
                             navi_layout.setVisibility(View.VISIBLE);
+                            divider_line.setVisibility(VISIBLE);
                             group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
                         }
                     });

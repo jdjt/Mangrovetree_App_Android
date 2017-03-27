@@ -49,6 +49,14 @@
             android:textColor="@color/white"
             android:background="@color/head_remind_bg"/>
 
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@mipmap/map_logo" />
+
         <com.fengmap.drpeng.widget.DrawableCenterTextView
             android:text="呼叫"
             android:visibility="gone"
