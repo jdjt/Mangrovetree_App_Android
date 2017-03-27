@@ -98,6 +98,7 @@ import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
+import com.jdjt.mangrove.util.CommonUtils;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
@@ -2378,6 +2379,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
 //        setStatus();
+        CommonUtils.updateApp(this);
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setAlpha(90);

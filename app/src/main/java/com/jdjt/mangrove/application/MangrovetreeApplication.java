@@ -17,7 +17,6 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Http;
 
 import java.io.File;
-import java.net.SocketException;
 import java.util.HashMap;
 
 /**
@@ -70,8 +69,6 @@ public class MangrovetreeApplication extends Application {
             ResponseEntity reslut = null;
 //
             try {
-
-
                 switch (config.getType()) {
                     case GET:
                         reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
