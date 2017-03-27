@@ -135,7 +135,7 @@ public class SwitchFloorView extends LinearLayout {
         canvas.drawCircle(mBgWidth / 2, (mBgHeight-2) / 2, 32 * FMDevice.getDeviceDensity(), mPaint);
 
         mPaint.setStyle(Style.FILL);
-        mPaint.setColor(getResources().getColor(R.color.green));
+        mPaint.setColor(getResources().getColor(R.color.btn_orange));
         canvas.drawCircle(mBgWidth / 2, mBgHeight / 2, 20 * FMDevice.getDeviceDensity(), mPaint);
 
         super.onDraw(canvas);
@@ -181,7 +181,7 @@ public class SwitchFloorView extends LinearLayout {
             if (mCurrentPosition == position) {
                 textView.setTextColor(getResources().getColor(R.color.white));
             } else {
-                textView.setTextColor(getResources().getColor(R.color.green));
+                textView.setTextColor(getResources().getColor(R.color.btn_orange));
             }
             textView.setGravity(Gravity.CENTER);
 

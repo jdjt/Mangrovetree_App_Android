@@ -43,6 +43,7 @@
     <color name="bg_gray">#FFE3E3E7</color>
     <color name="text_gray">#666666</color>
     <color name="orange">#FFE84E0E</color>
+    <color name="btn_orange">#EC622A</color>
     <color name="transparent">#00000000</color>
     <color name="bg">#FFF39200</color>
     <color name="blue">#FF007AA2</color>

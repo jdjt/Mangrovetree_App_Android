@@ -1584,7 +1584,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
         Log.d("TAGTAGTAG", "底部高度=" + main_bottom_bar.getMeasuredHeight() + " 内容高度：" + mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
 //        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.NO_GRAVITY, 0, 0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight() - 2);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight() - 1);
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(800)

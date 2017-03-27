@@ -60,41 +60,104 @@
                     android:textSize="@dimen/t_s"/>
                 <View
                     android:layout_below="@+id/combo_image"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"/>
+                    android:background="@color/title_bg_80"
+                    android:layout_height="0.5dp"/>
 
             </RelativeLayout>
 
             <!--显示详情的布局-->
             <LinearLayout
-                android:id="@+id/content"
+                android:id="@+id/navi_layout"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <!--没有室内时显示该布局-->
                 <RelativeLayout
+                    android:id="@+id/navi_layout_x"
+                    android:visibility="gone"
                     android:background="@drawable/fm_half_white"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="10分钟"
-                        android:layout_marginLeft="8dp"
+                        android:text="5000米"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/fm_navi_need_distance_x"
                         android:textColor="#333333"
-                        android:id="@+id/fm_navi_need_time"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:text="5000米"
-                        android:id="@+id/fm_navi_need_distance"
-                        android:layout_toRightOf="@+id/fm_navi_need_time"
+                        android:text="步行10分钟"
+                        android:id="@+id/fm_navi_need_time_x"
+                        android:layout_toRightOf="@+id/fm_navi_need_distance_x"
                         android:layout_marginLeft="12dp"
                         android:textColor="#999999"
-                        android:layout_alignBottom="@+id/fm_navi_need_time"
+                        android:layout_alignBottom="@+id/fm_navi_need_distance_x"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:text="燃烧7000卡路里"
+                        android:layout_below="@+id/fm_navi_need_distance_x"
+                        android:id="@+id/fm_navi_need_calorie_x"
+                        android:drawableLeft="@mipmap/fm_calorie"
+                        android:drawablePadding="5dp"
+                        android:textColor="#de5656"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/fm_open_navi_big_x"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/fm_navi_need_time_x"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/navi_btn_bg"
+                        android:text="开始导航"
+                        android:textSize="@dimen/t_l"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+                    <View
+                        android:layout_below="@+id/fm_open_navi_big_x"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/navi_layout_xx"
+                    android:background="@drawable/fm_half_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="5000米"
+                        android:id="@+id/fm_navi_need_distance"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="#333333"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="10分钟"
+                        android:id="@+id/fm_navi_need_time"
+                        android:layout_marginLeft="12dp"
+                        android:textColor="#999999"
+                        android:layout_alignBottom="@+id/fm_navi_need_distance"
+                        android:layout_toRightOf="@+id/fm_navi_need_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"/>
@@ -112,10 +175,47 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
+                    <LinearLayout
+                        android:id="@+id/button_view"
+                        android:layout_below="@+id/fm_navi_need_calorie"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/fm_open_navi_small"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/navi_btn_bg"
+                            android:textSize="@dimen/t_l"
+                            android:layout_weight="1"
+                            android:text="开始导航"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp" />
+
+                        <TextView
+                            android:id="@+id/fm_enter_inside"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/navi_btn_bg"
+                            android:text="进入室内"
+                            android:gravity="center"
+                            android:textSize="@dimen/t_l"
+                            android:textColor="@color/white"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_below="@+id/button_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"/>
                 </RelativeLayout>
 
-
                 <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -124,25 +224,32 @@
                         android:drawableLeft="@mipmap/fm_w_start"
                         android:gravity="center_vertical"
                         android:text="我的位置"
+                        android:visibility="gone"
                         android:textSize="14sp"
                         android:textColor="#333333"
                         android:drawablePadding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"/>
 
-                    <TextView
-                        android:id="@+id/fm_open_navi_small"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@mipmap/start_navi_small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                    <!--<TextView-->
+                        <!--android:id="@+id/fm_open_navi_small"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_marginRight="8dp"-->
+                        <!--android:background="@drawable/navi_btn_bg"-->
+                        <!--android:textSize="@dimen/t_l"-->
+                        <!--android:text="开始导航"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_width="120dp"-->
+                        <!--android:layout_height="40dp"-->
+                        <!--android:layout_alignParentTop="true"-->
+                        <!--android:layout_toEndOf="@+id/fm_open_navi_big" />-->
 
 
                     <TextView
                         android:id="@+id/fm_navi_end"
                         android:layout_below="@+id/fm_navi_start"
+                        android:visibility="gone"
                         android:layout_marginLeft="8dp"
                         android:text="终点"
                         android:textColor="#333333"
@@ -153,15 +260,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"/>
 
-                    <TextView
-                        android:id="@+id/fm_enter_inside"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_below="@+id/fm_navi_start"
-                        android:layout_alignParentRight="true"
-                        android:background="@mipmap/enter_inside"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                    <!--<TextView-->
+                        <!--android:id="@+id/fm_enter_inside"-->
+                        <!--android:layout_marginRight="8dp"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_below="@+id/fm_navi_start"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:background="@drawable/navi_btn_bg"-->
+                        <!--android:text="进入室内"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textSize="@dimen/t_l"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_width="120dp"-->
+                        <!--android:layout_height="40dp"/>-->
 
                     <TextView
                         android:id="@+id/fm_open_navi_big"
