@@ -2,6 +2,7 @@ package com.fengmap.drpeng;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,8 +15,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -239,11 +242,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private String selectFid = "";
     private String selectDetailsCode = "";
     private Handler mapHandler;
+    private PopupWindow popupWindow;
 
     @Init
     protected void initView() {
         initSlidingMenu();
-//        showPopWindow();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
@@ -318,6 +321,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         fbd = new FMDBMapElementOveridDao();
     }
+
+//
 
     public FMMap getMap() {
         return mMap;
@@ -1040,6 +1045,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             case R.id.call_service_btn:
                 Toast.makeText(this, "呼叫服务", Toast.LENGTH_SHORT).show();
                 break;
+//            case R.id.affirm:
+//                if(popupWindow.isShowing()){
+//                    dismiss();
+//                }
+//                break;
             default:
                 break;
         }
@@ -2378,6 +2388,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
 //        setStatus();
+        showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setAlpha(90);
@@ -2485,16 +2496,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
 
     private void showPopWindow() {
-        View contentView = LayoutInflater.from(this).inflate(
-                R.layout.main_dialog, null);
-        final PopupWindow popupWindow = new PopupWindow(contentView,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.main_dialog, null);
 
-        popupWindow.setTouchable(true);
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.dialog_background));
+         AlertDialog.Builder builder= new AlertDialog.Builder(this).setTitle("").setView(layout);
+        final AlertDialog dialog = builder.show();
+        dialog.setCancelable(false);
+        Button btn= (Button) layout.findViewById(R.id.affirm);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ioc.getIoc().getLogger().e("点击 弹窗按钮");
+                dialog.dismiss();
+            }
+        });
+//        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
 
-        popupWindow.showAsDropDown(contentView);
 
     }
 
