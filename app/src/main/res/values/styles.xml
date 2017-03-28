@@ -151,4 +151,9 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <style name="ButtonTheme">
+        <item name="android:textColor">@drawable/text_color_selector</item>
+        <item name="android:background">@drawable/background_selector</item>
+    </style>
+
 </resources>

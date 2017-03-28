@@ -1370,13 +1370,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     public void onItemClick(ButtonGroup.ButtonType type, boolean isSelected) {
         // effect
-        if (isSelected) {
-            mButtonGroup.unSelected(type);
-            executeButtonType(mButtonGroup.getCurrentType());
-        } else {
-            mButtonGroup.selected(type);
-            executeButtonType(type);
-        }
+//        if (isSelected) {
+//            mButtonGroup.unSelected(type);
+//            executeButtonType(mButtonGroup.getCurrentType());
+//        } else {
+//            mButtonGroup.selected(type);
+//            executeButtonType(type);
+//        }
         mMap.updateMap();
     }
 
@@ -1809,13 +1809,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     // navigation
     private void dealViewChangedWhenOpenNavigationMode() {
-        mButtonGroup.setVisibility(View.INVISIBLE);        // 隐藏ButtonGroup
+//        mButtonGroup.setVisibility(View.INVISIBLE);        // 隐藏ButtonGroup
 //        mShowRouteView.setVisibility(View.INVISIBLE);    //
 //        mLocationView.setVisibility(View.INVISIBLE);
     }
 
     private void dealViewChangedWhenOverNavigationMode() {
-        mButtonGroup.setVisibility(View.VISIBLE);         // 显示ButtonGroup
+//        mButtonGroup.setVisibility(View.VISIBLE);         // 显示ButtonGroup
 //        mShowRouteView.setVisibility(View.VISIBLE);       //
 //        mLocationView.setVisibility(View.VISIBLE);
     }

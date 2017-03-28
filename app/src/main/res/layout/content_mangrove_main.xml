@@ -89,7 +89,6 @@
 
     <include
         layout="@layout/main_bottom_bar"/>
-
 </RelativeLayout>
 
 

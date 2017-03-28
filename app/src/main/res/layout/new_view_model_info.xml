@@ -74,7 +74,7 @@
                     android:id="@+id/group_open_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="-10dp"
+                    android:layout_marginBottom="-13dp"
                     android:background="@mipmap/arrow_up"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true" />
@@ -134,7 +134,7 @@
                         android:id="@+id/fm_open_navi_big_x"
                         android:layout_alignParentRight="true"
                         android:layout_toRightOf="@+id/fm_navi_need_time_x"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="50dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/navi_btn_bg"
                         android:text="开始导航"
@@ -194,23 +194,25 @@
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:id="@+id/fm_open_navi_small"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:background="@drawable/navi_btn_bg"
-                            android:textSize="@dimen/t_l"
-                            android:layout_weight="1"
-                            android:text="开始导航"
-                            android:gravity="center"
-                            android:textColor="@color/white"
                             android:layout_width="0dp"
-                            android:layout_height="40dp" />
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="8dp"
+                            android:clickable="true"
+                            android:layout_marginRight="15dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:background="@drawable/background_selector"
+                            android:textColor="@color/white"
+                            android:text="开始导航"
+                            android:textSize="@dimen/t_l" />
 
                         <TextView
                             android:id="@+id/fm_enter_inside"
                             android:layout_marginRight="8dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="15dp"
                             android:layout_weight="1"
                             android:background="@drawable/navi_btn_bg"
                             android:text="进入室内"

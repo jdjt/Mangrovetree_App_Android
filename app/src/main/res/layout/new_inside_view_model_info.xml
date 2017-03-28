@@ -68,8 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="-13dp"
                     android:background="@mipmap/arrow_up" />
             </RelativeLayout>
             <!--显示详情的布局-->
@@ -121,7 +120,7 @@
                         android:id="@+id/fm_open_navi_big"
                         android:layout_alignParentRight="true"
                         android:layout_toRightOf="@+id/fm_navi_need_time"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="50dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/navi_btn_bg"
                         android:text="开始导航"
