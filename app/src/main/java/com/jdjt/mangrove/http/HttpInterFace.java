@@ -111,4 +111,7 @@ public interface HttpInterFace {
     @InPost(Constant.HttpUrl.GET_ACTIVITYDETAIL)
     public void getActivityDetail(@InParam String json);
 
+    @InPost(Constant.HttpUrl.UPDATESOFTADDRESS)
+    public void getUpdateSoftaddress(@InParam String json);
+
 }

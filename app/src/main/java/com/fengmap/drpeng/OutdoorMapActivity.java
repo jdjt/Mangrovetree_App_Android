@@ -98,12 +98,14 @@ import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
+import com.jdjt.mangrove.util.CommonUtils;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_File;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -119,6 +121,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.fengmap.android.wrapmv.Tools.OUTSIDE_MAP_ID;
@@ -1589,7 +1592,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
         Log.d("TAGTAGTAG", "底部高度=" + main_bottom_bar.getMeasuredHeight() + " 内容高度：" + mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
 //        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.NO_GRAVITY, 0, 0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight()-1);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight() - 1);
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(800)
@@ -2456,12 +2459,22 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         MangrovetreeApplication.instance.http.u(this).getActivityDetail(new Gson().toJson(mapBase));
     }
 
+    /**
+     * 检查版本更新接口
+     */
+    private void getUpdateSoftaddress(){
+        HashMap<String, Object> mapBase = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
+        MangrovetreeApplication.instance.http.u(this).getUpdateSoftaddress(new Gson().toJson(mapBase));
+    }
 
     /**
      * 网络请求逻辑
      */
-    @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY})
+    @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY,Constant.HttpUrl.UPDATESOFTADDRESS_KEY})
     public void result(ResponseEntity entity) {
+
+
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
         //请求失败
@@ -2487,7 +2500,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
                 popNaviView();
                 break;
+            case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
+                new AlertDialog.Builder(this)
+                        .setTitle("红树林管家版本更新")
+                        .setMessage("更新红树林管家最新版本 ")
+                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+//                        CommonUtils.updateApp(this);
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dismissDialog(0);
+                            }
+                        })
+                        .show();
+                break;
         }
+
     }
 
 
@@ -2495,10 +2528,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.main_dialog, null);
 
-         AlertDialog.Builder builder= new AlertDialog.Builder(this).setTitle("").setView(layout);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setView(layout);
         final AlertDialog dialog = builder.show();
         dialog.setCancelable(false);
-        Button btn= (Button) layout.findViewById(R.id.affirm);
+        Button btn = (Button) layout.findViewById(R.id.affirm);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2516,4 +2549,23 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     }
 
+//    private void showDialog() {
+//        new AlertDialog.Builder(this)
+//                .setTitle("红树林管家版本更新")
+//                .setMessage("更新红树林管家最新版本 ")
+//                .setPositiveButton("更新", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+////                        CommonUtils.updateApp(this);
+//                    }
+//                })
+//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dismissDialog(0);
+//                    }
+//                })
+//                .show();
+//    }
 }

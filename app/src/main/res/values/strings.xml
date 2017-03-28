@@ -22,7 +22,7 @@
     <string name="app_change_phone">修改手机号</string>
     <string name="app_change_name">编辑姓名</string>
     <string name="txt_send_check">发送验证</string>
-    <string name="txt_code">验 证 码</string>
+    <string name="txt_code">验证码</string>
     <string name="valid_6_number">6位数字</string>
     <string name="text_login_pwd">登录密码</string>
     <string name="valid_6_to_18_number">6-18位数字或字母</string>

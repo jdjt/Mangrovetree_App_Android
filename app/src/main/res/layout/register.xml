@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="18dp"
-                android:text="账        号"
+                android:text="账 号"
                 android:textColor="@color/text_gray_lable"
                 android:textSize="@dimen/textsize_30" />
 
