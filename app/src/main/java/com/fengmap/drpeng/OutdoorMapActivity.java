@@ -2,7 +2,6 @@ package com.fengmap.drpeng;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +14,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -92,7 +90,6 @@ import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
@@ -114,8 +111,6 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import android.view.ViewGroup.LayoutParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -2388,6 +2383,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
 //        setStatus();
+//      CommonUtils.updateApp(this);
         showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);

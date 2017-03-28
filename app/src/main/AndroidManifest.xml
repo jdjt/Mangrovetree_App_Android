@@ -32,7 +32,7 @@
     <uses-permission android:name="android.permission.HARDWARE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <!-- tools:ignore="HardcodedDebugMode" -->
     <application
         android:name=".application.MangrovetreeApplication"
@@ -102,6 +102,8 @@
             android:name=".login.UserAgreementWebActivity"
             android:label="@string/app_xy_wv"
             android:theme="@style/AppTheme.Base" />
+
+        <service android:name=".service.DownloadService" android:enabled="true"/>
     </application>
 
 </manifest>

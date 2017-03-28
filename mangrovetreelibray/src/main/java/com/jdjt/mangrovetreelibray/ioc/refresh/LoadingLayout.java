@@ -43,6 +43,7 @@ import com.jdjt.mangrovetreelibray.ioc.refresh.PullToRefreshBase.Orientation;
 import com.jdjt.mangrovetreelibray.ioc.util.LoonConstant;
 
 @SuppressLint("ViewConstructor")
+@SuppressWarnings("ResourceType")
 public abstract class LoadingLayout extends FrameLayout implements ILoadingLayout {
 
 	static final String LOG_TAG = "PullToRefresh-LoadingLayout";
@@ -144,7 +145,7 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 			LinearLayout.LayoutParams text_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 			mHeaderText.setLayoutParams(text_params);
 			mHeaderText.setSingleLine(true);
-			mHeaderText.setTextAppearance(context, android.R.attr.textAppearance);
+			mHeaderText.setTextAppearance( android.R.attr.textAppearance);
 			TextPaint tp = mHeaderText.getPaint();
 			tp.setFakeBoldText(true);
 			layout.addView(mHeaderText);
@@ -153,7 +154,7 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 			LinearLayout.LayoutParams sub_text_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 			mSubHeaderText.setLayoutParams(sub_text_params);
 			mSubHeaderText.setSingleLine(true);
-			mSubHeaderText.setTextAppearance(context, android.R.attr.textAppearanceSmall);
+			mSubHeaderText.setTextAppearance(android.R.attr.textAppearanceSmall);
 			mSubHeaderText.setVisibility(View.GONE);
 			layout.addView(mSubHeaderText);
 
@@ -426,7 +427,7 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 
 	private void setSubTextAppearance(int value) {
 		if (null != mSubHeaderText) {
-			mSubHeaderText.setTextAppearance(getContext(), value);
+			mSubHeaderText.setTextAppearance(value);
 		}
 	}
 
@@ -438,10 +439,10 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 
 	private void setTextAppearance(int value) {
 		if (null != mHeaderText) {
-			mHeaderText.setTextAppearance(getContext(), value);
+			mHeaderText.setTextAppearance( value);
 		}
 		if (null != mSubHeaderText) {
-			mSubHeaderText.setTextAppearance(getContext(), value);
+			mSubHeaderText.setTextAppearance( value);
 		}
 	}
 
