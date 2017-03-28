@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/half_snippet_text"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -10,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
+
         android:background="@mipmap/first_button"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
@@ -30,7 +28,7 @@
             android:layout_marginTop="4dp"
             android:text="@string/first_hint"
             android:textColor="@color/main_black"
-            android:textSize="@dimen/textsize_48" />
+            android:textSize="@dimen/textsize_36" />
 
         <TextView
             android:layout_width="match_parent"
@@ -42,15 +40,16 @@
             android:textColor="@color/action_bar_title"
             android:textSize="@dimen/t_s" />
 
-        <TextView
+        <Button
             android:id="@+id/affirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="确认"
+            android:background="@null"
             android:layout_marginBottom="16dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_48" />
+            android:textSize="18sp" />
     </LinearLayout>
 </RelativeLayout>

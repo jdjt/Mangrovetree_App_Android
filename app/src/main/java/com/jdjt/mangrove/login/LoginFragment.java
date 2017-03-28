@@ -112,7 +112,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
     }
 
 
-    @InHttp(Constant.HttpUrl.LOGIN_KEY)
+    @InHttp({Constant.HttpUrl.LOGIN_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
 
         if (entity.getStatus() == FastHttp.result_net_err) {
@@ -125,19 +125,38 @@ public class LoginFragment extends Fragment implements ValidationListener {
         }
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
-        //------------------------------------------------------------
-        //判断当前请求返回是否 有错误，OK 和 ERR
         Map<String, Object> heads = entity.getHeaders();
-        Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
-       if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
-           //存储用户名密码到本地
-           Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
-           Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
-           Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
-           startActivity();
-       }else {
-           Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
-       }
+        switch (entity.getKey()){
+            case Constant.HttpUrl.LOGIN_KEY:
+                //------------------------------------------------------------
+                //判断当前请求返回是否 有错误，OK 和 ERR
+                Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
+                if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+                    //存储用户名密码到本地
+                    Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
+                    Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
+                    Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
+                    startActivity();
+                }else {
+                    Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case Constant.HttpUrl.CHECKACCOUNT_KEY:
+                //------------------------------------------------------------
+                //判断当前请求返回是否 有错误，OK 和 ERR
+                Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
+                if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+                   if("0".equals( data.get("result"))){
+                       login();
+                   }else {
+                       Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
+                   }
+                }else {
+                    Toast.makeText(getActivity(), "网络请求失败，请稍后再试", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+        //------------------------------------------------------------
         //------------------------------------------------------------
     }
 
@@ -153,29 +172,31 @@ public class LoginFragment extends Fragment implements ValidationListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        if(pDialog!=null){
-//            pDialog.dismiss();
-//            pDialog=null;
-//        }
     }
 
     @Override
     public void onValidationSucceeded() {
+        checkAccount();
+    }
+
+    /**
+     * 登陆
+     */
+    private  void login(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("account", login_account.getText().toString());
         jsonObject.addProperty("password", login_password.getText().toString());
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
-//        showLoading();
     }
-//    SweetAlertDialog   pDialog;
-//    public void showLoading(){
-//           pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-//        pDialog.setTitleText("加载中...");
-//        pDialog.setCancelable(false);
-//        pDialog.show();
-//    }
 
+    /**
+     * 验证账号是否存在
+     */
+    private void  checkAccount(){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("account", login_account.getText().toString());
+        MangrovetreeApplication.instance.http.u(this).checkAccount(jsonObject.toString());
+    }
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         String message = failedRule.getFailureMessage();

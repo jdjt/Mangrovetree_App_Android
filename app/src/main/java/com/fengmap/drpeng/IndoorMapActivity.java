@@ -472,7 +472,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private void showNaviPopWinidow(){
         main_bottom_bar.measure(0,0);
         mOpenModelInfoWindow.getConvertView().measure(0,0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight()-2);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight()-1);
 
         mLastModel = mCurrentModel;
 

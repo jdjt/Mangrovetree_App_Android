@@ -76,13 +76,13 @@ public class NewInsideModelView extends RelativeLayout {
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
         group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
-        fm_open_navi_big = (TextView) findViewById(R.id.fm_open_navi_big);
-        fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
-        fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
+        fm_open_navi_big = (TextView) view.findViewById(R.id.fm_open_navi_big);
+        fm_navi_start = (TextView) view.findViewById(R.id.fm_navi_start);
+        fm_navi_end = (TextView) view.findViewById(R.id.fm_navi_end);
 
-        fm_navi_need_distance = (TextView) findViewById(R.id.fm_navi_need_distance);
-        fm_navi_need_calorie = (TextView) findViewById(R.id.fm_navi_need_calorie);
-        fm_navi_need_time = (TextView) findViewById(R.id.fm_navi_need_time);
+        fm_navi_need_distance = (TextView) view.findViewById(R.id.fm_navi_need_distance);
+        fm_navi_need_calorie = (TextView) view.findViewById(R.id.fm_navi_need_calorie);
+        fm_navi_need_time = (TextView) view.findViewById(R.id.fm_navi_need_time);
 
         panel = (RelativeLayout) view.findViewById(R.id.panel);
         content = (LinearLayout) view.findViewById(R.id.content);

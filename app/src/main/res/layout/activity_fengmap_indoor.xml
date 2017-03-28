@@ -26,6 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="64dp" />
 
+        <ImageView
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/indoor_switch_floor"
+            android:layout_alignParentRight="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@mipmap/map_logo" />
+
     </com.fengmap.android.map.FMMapView>
 
     <com.fengmap.drpeng.widget.DrawableCenterTextView

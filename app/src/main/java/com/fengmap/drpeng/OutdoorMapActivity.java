@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -89,7 +90,6 @@ import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
@@ -98,7 +98,6 @@ import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
-import com.jdjt.mangrove.util.CommonUtils;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
@@ -112,8 +111,6 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import android.view.ViewGroup.LayoutParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -240,11 +237,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private String selectFid = "";
     private String selectDetailsCode = "";
     private Handler mapHandler;
+    private PopupWindow popupWindow;
 
     @Init
     protected void initView() {
         initSlidingMenu();
-//        showPopWindow();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
         mTopBarView = (TopBarView) findViewById(R.id.fm_topbar);
@@ -319,6 +316,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         fbd = new FMDBMapElementOveridDao();
     }
+
+//
 
     public FMMap getMap() {
         return mMap;
@@ -1041,6 +1040,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             case R.id.call_service_btn:
                 Toast.makeText(this, "呼叫服务", Toast.LENGTH_SHORT).show();
                 break;
+//            case R.id.affirm:
+//                if(popupWindow.isShowing()){
+//                    dismiss();
+//                }
+//                break;
             default:
                 break;
         }
@@ -1585,7 +1589,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
         Log.d("TAGTAGTAG", "底部高度=" + main_bottom_bar.getMeasuredHeight() + " 内容高度：" + mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
 //        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.NO_GRAVITY, 0, 0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight() - 2);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight()-1);
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(800)
@@ -2379,7 +2383,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
 //        setStatus();
-//        CommonUtils.updateApp(this);
+//      CommonUtils.updateApp(this);
+        showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setAlpha(90);
@@ -2487,16 +2492,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
 
     private void showPopWindow() {
-        View contentView = LayoutInflater.from(this).inflate(
-                R.layout.main_dialog, null);
-        final PopupWindow popupWindow = new PopupWindow(contentView,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.main_dialog, null);
 
-        popupWindow.setTouchable(true);
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.dialog_background));
+         AlertDialog.Builder builder= new AlertDialog.Builder(this).setTitle("").setView(layout);
+        final AlertDialog dialog = builder.show();
+        dialog.setCancelable(false);
+        Button btn= (Button) layout.findViewById(R.id.affirm);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ioc.getIoc().getLogger().e("点击 弹窗按钮");
+                dialog.dismiss();
+            }
+        });
+//        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
 
-        popupWindow.showAsDropDown(contentView);
 
     }
 

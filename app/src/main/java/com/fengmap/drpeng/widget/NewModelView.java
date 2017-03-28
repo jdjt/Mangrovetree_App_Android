@@ -40,15 +40,18 @@ public class NewModelView extends RelativeLayout {
     private View view;
     private boolean isExpand = true;
     private RelativeLayout panel;
-    private LinearLayout content;
+    private LinearLayout navi_layout;
+    private RelativeLayout navi_layout_x,navi_layout_xx;
     private ScrollView scroll;
     private Handler mHanler;
     TextView combo_name, group_open_icon, combo_details;
     TextView fm_navi_start, fm_navi_end;
-    TextView fm_open_navi_small,fm_enter_inside,fm_open_navi_big;
+    TextView fm_open_navi_small,fm_enter_inside,fm_open_navi_big_x;
     TextView fm_navi_need_distance,fm_navi_need_time,fm_navi_need_calorie;
+    TextView fm_navi_need_distance_x,fm_navi_need_time_x,fm_navi_need_calorie_x;
     ImageView combo_image;
     private String mEnterMapId;
+    private View divider_line;
 
     private HashMap<String,String> group = new HashMap<>();
     private HashMap<String,String> child = new HashMap<>();
@@ -58,14 +61,12 @@ public class NewModelView extends RelativeLayout {
         this.mContext = context;
         isExpand = true;
         mHanler  = new Handler(Looper.getMainLooper());
-        initData();
         initView();
     }
 
     public NewModelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext= context;
-        initData();
         initView();
     }
 
@@ -74,17 +75,22 @@ public class NewModelView extends RelativeLayout {
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
         group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
-        fm_enter_inside = (TextView) findViewById(R.id.fm_enter_inside);
-        fm_open_navi_small = (TextView) findViewById(R.id.fm_open_navi_small);
-        fm_open_navi_big = (TextView) findViewById(R.id.fm_open_navi_big);
-        fm_navi_start = (TextView) findViewById(R.id.fm_navi_start);
-        fm_navi_end = (TextView) findViewById(R.id.fm_navi_end);
+        fm_enter_inside = (TextView) view.findViewById(R.id.fm_enter_inside);
+        fm_open_navi_small = (TextView) view.findViewById(R.id.fm_open_navi_small);
+        fm_open_navi_big_x = (TextView) view.findViewById(R.id.fm_open_navi_big_x);
+        fm_navi_start = (TextView) view.findViewById(R.id.fm_navi_start);
+        fm_navi_end = (TextView) view.findViewById(R.id.fm_navi_end);
+        divider_line = view.findViewById(R.id.divider_line);
 
-        fm_navi_need_distance = (TextView) findViewById(R.id.fm_navi_need_distance);
-        fm_navi_need_time = (TextView) findViewById(R.id.fm_navi_need_time);
-        fm_navi_need_calorie = (TextView) findViewById(R.id.fm_navi_need_calorie);
+        fm_navi_need_distance = (TextView) view.findViewById(R.id.fm_navi_need_distance);
+        fm_navi_need_time = (TextView) view.findViewById(R.id.fm_navi_need_time);
+        fm_navi_need_calorie = (TextView) view.findViewById(R.id.fm_navi_need_calorie);
 
-        combo_image= (ImageView) findViewById(R.id.combo_image);
+        fm_navi_need_distance_x = (TextView) view.findViewById(R.id.fm_navi_need_distance_x);
+        fm_navi_need_time_x = (TextView) view.findViewById(R.id.fm_navi_need_time_x);
+        fm_navi_need_calorie_x = (TextView) view.findViewById(R.id.fm_navi_need_calorie_x);
+
+        combo_image= (ImageView) view.findViewById(R.id.combo_image);
         // 进入室内点击逻辑
         fm_enter_inside.setOnClickListener(new OnClickListener() {
             @Override
@@ -106,7 +112,9 @@ public class NewModelView extends RelativeLayout {
             }
         });
         panel = (RelativeLayout) view.findViewById(R.id.panel);
-        content = (LinearLayout) view.findViewById(R.id.content);
+        navi_layout = (LinearLayout) view.findViewById(R.id.navi_layout);
+        navi_layout_x = (RelativeLayout) view.findViewById(R.id.navi_layout_x);
+        navi_layout_xx = (RelativeLayout) view.findViewById(R.id.navi_layout_xx);
         panel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +122,8 @@ public class NewModelView extends RelativeLayout {
                     mHanler.post(new Runnable() {
                         @Override
                         public void run() {
-                            content.setVisibility(View.GONE);
+                            navi_layout.setVisibility(View.GONE);
+                            divider_line.setVisibility(GONE);
                             group_open_icon.setBackgroundResource(R.mipmap.arrow_up);
                         }
                     });
@@ -123,7 +132,8 @@ public class NewModelView extends RelativeLayout {
                     mHanler.post(new Runnable() {
                         @Override
                         public void run() {
-                            content.setVisibility(View.VISIBLE);
+                            navi_layout.setVisibility(View.VISIBLE);
+                            divider_line.setVisibility(VISIBLE);
                             group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
                         }
                     });
@@ -133,26 +143,6 @@ public class NewModelView extends RelativeLayout {
         });
     }
 
-    private void setData() {
-
-        //设置数据
-        combo_name.setText(""+group.get("group_name"));
-        combo_details.setText(""+group.get("group_detail"));
-
-        //设置数据
-        fm_navi_need_distance.setText(""+child.get("distance"));
-        fm_navi_start.setText(""+child.get("start_name"));
-        fm_navi_end .setText(""+child.get("end_name"));
-    }
-
-    private void initData(){
-        group.put("group_name","行动书屋");
-        group.put("group_detail","毗邻红树林国际会展中心，与红树林婚礼广场--皇后广场近在咫尺。你大爷你大爷你大爷");
-
-        child.put("start_name","主大堂");
-        child.put("end_name","行动书屋");
-        child.put("distance","500");
-    }
 
     /**
      * 设置标题。
@@ -179,7 +169,7 @@ public class NewModelView extends RelativeLayout {
             setEnterViewVisible(true);
         }
         isExpand = true;
-        content.setVisibility(View.VISIBLE);
+        navi_layout.setVisibility(View.VISIBLE);
         group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
         mEnterMapId = emr.getMapId();
     }
@@ -190,13 +180,11 @@ public class NewModelView extends RelativeLayout {
      */
     public void setEnterViewVisible(boolean pVisible) {
         if (pVisible) {
-            fm_open_navi_big.setVisibility(GONE);
-            fm_enter_inside.setVisibility(VISIBLE);
-            fm_open_navi_small.setVisibility(VISIBLE);
+            navi_layout_x.setVisibility(GONE);
+            navi_layout_xx.setVisibility(VISIBLE);
         } else {
-            fm_enter_inside.setVisibility(GONE);
-            fm_open_navi_small.setVisibility(GONE);
-            fm_open_navi_big.setVisibility(VISIBLE);
+            navi_layout_x.setVisibility(VISIBLE);
+            navi_layout_xx.setVisibility(GONE);
         }
     }
     /**
@@ -225,19 +213,22 @@ public class NewModelView extends RelativeLayout {
     }
 
     public TextView getBigArriveButton() {
-        return fm_open_navi_big;
+        return fm_open_navi_big_x;
     }
 
     public void setNaviNeedTime(String needTime) {
-        fm_navi_need_time.setText(needTime);
+        fm_navi_need_time.setText("步行"+needTime);
+        fm_navi_need_time_x.setText("步行"+needTime);
     }
 
     public void setNaviNeedDistance(String needDistance) {
         fm_navi_need_distance.setText(needDistance);
+        fm_navi_need_distance_x.setText(needDistance);
     }
 
     public void setNaviNeedCalorie(String needCalorie) {
         fm_navi_need_calorie.setText("燃烧"+needCalorie);
+        fm_navi_need_calorie_x.setText("燃烧"+needCalorie);
     }
 
     public void setComboName(String name) {
