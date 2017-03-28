@@ -2379,7 +2379,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        tintManager.setStatusBarTintResource(R.color.title_world);//通知栏所需颜色
         // configure the SlidingMenu
 //        setStatus();
-        CommonUtils.updateApp(this);
+//        CommonUtils.updateApp(this);
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setAlpha(90);
