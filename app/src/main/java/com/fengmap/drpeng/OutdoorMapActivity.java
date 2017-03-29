@@ -2462,16 +2462,15 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     /**
      * 检查版本更新接口
      */
-    private void getUpdateSoftaddress(){
+    private void getUpdateSoftaddress() {
         HashMap<String, Object> mapBase = new HashMap<>();
-        HashMap<String, Object> map = new HashMap<>();
         MangrovetreeApplication.instance.http.u(this).getUpdateSoftaddress(new Gson().toJson(mapBase));
     }
 
     /**
      * 网络请求逻辑
      */
-    @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY,Constant.HttpUrl.UPDATESOFTADDRESS_KEY})
+    @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY, Constant.HttpUrl.UPDATESOFTADDRESS_KEY})
     public void result(ResponseEntity entity) {
 
 
@@ -2501,28 +2500,29 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 popNaviView();
                 break;
             case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
-                new AlertDialog.Builder(this)
-                        .setTitle("红树林管家版本更新")
-                        .setMessage("更新红树林管家最新版本 ")
-                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+
+//                if (Float.parseFloat(currVersion) < Float.parseFloat(map.get("newVersion"))) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("红树林管家版本更新")
+                            .setMessage("更新红树林管家最新版本 ")
+                            .setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 //                        CommonUtils.updateApp(this);
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dismissDialog(0);
-                            }
-                        })
-                        .show();
-                break;
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dismissDialog(0);
+                                }
+                            })
+                            .show();
+                    break;
+                }
         }
-
-    }
-
+//    }
 
     private void showPopWindow() {
         LayoutInflater inflater = getLayoutInflater();
@@ -2548,7 +2548,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
 
     }
-
+}
 //    private void showDialog() {
 //        new AlertDialog.Builder(this)
 //                .setTitle("红树林管家版本更新")
@@ -2568,4 +2568,3 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                })
 //                .show();
 //    }
-}
