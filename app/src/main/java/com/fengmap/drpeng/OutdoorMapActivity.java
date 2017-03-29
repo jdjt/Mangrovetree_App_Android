@@ -123,6 +123,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.fengmap.android.wrapmv.Tools.OUTSIDE_MAP_ID;
 import static com.fengmap.drpeng.FMAPI.TARGET_ADD_MARKER;
@@ -241,6 +243,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private String selectDetailsCode = "";
     private Handler mapHandler;
     private PopupWindow popupWindow;
+
+    private boolean isInHotel = false;
+    private boolean isShowMarker = false;
 
     @Init
     protected void initView() {
@@ -649,21 +654,46 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         processingView.getStopNaviButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FMLocationService.instance().setInNavigationMode(false);
-                FMAPI.instance().isInLocating = false;
-                mLocationView.setBackgroundResource(R.drawable.fm_green_normal_button);
 
-                clearWalkedTemporaryValue();
-                clearCalculatedPathResults();
-                clearStartAndEndMarker();
-                clearCalculateRouteLineMarker();
-                dealViewChangedWhenOverNavigationMode();
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_dialog, null);
+                AlertDialog.Builder builder= new AlertDialog.Builder(mInstance);
+                builder.setView(layout);
+                TextView msg= (TextView) layout.findViewById(R.id.msg);
+                msg.setText("确认退出导航?");
+                final AlertDialog dialog = builder.show();
+                dialog.setCancelable(false);
+                TextView positiveBtn= (TextView) layout.findViewById(R.id.positive_button);
+                TextView negativeBtn= (TextView) layout.findViewById(R.id.negative_button);
+                positiveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FMLocationService.instance().setInNavigationMode(false);
+                        FMAPI.instance().isInLocating = false;
+                        mLocationView.setBackgroundResource(R.drawable.fm_green_normal_button);
 
-                mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
+                        clearWalkedTemporaryValue();
+                        clearCalculatedPathResults();
+                        clearStartAndEndMarker();
+                        clearCalculateRouteLineMarker();
+                        dealViewChangedWhenOverNavigationMode();
 
-                processingView.getStopNaviButton().setText("结束");
+                        mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
 
-                mOpenNaviProcessWindow.close();
+                        processingView.getStopNaviButton().setText("结束");
+
+                        mOpenNaviProcessWindow.close();
+                        dialog.dismiss();
+                    }
+                });
+
+                negativeBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
             }
         });
     }
@@ -997,14 +1027,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (!FMLocationService.instance().checkLocationValid(this)) {
                     return;
                 }
-
                 FMTotalMapCoord myLocatePos = FMLocationService.instance().getFirstMyLocatePosition();
+
                 if (myLocatePos == null) {
                     // 定位失败
                     needLocate(false);
                     return;
                 }
-
                 mNeedBackToMyLocation = true;
                 break;
 
@@ -1933,8 +1962,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMTotalMapCoord locatePosition = null;
 
                 while (isRun) {
-//                    locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
-                    locatePosition = getdefaultcoord();
+                    if(isInHotel){
+                        locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
+                    }else {
+                        locatePosition = getdefaultcoord();
+                    }
                     if (locatePosition != null) {
                         isRun = false;
                     }
@@ -1999,6 +2031,23 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     // 关闭定位
                     FMLocationService.instance().stop();
                     break;
+                case 23:   // 定位
+                    if (!isMapLoadCompleted) {
+                        return;
+                    }
+
+                    if (mLocationLayer == null) {
+                        return;
+                    }
+
+                    if(mMeLocationMarker != null) {
+                        Log.d("MMMMMMMM","刷新marker*************");
+                        mMeLocationMarker.setVisible(isShowMarker);
+                        isShowMarker = !isShowMarker;
+                    }
+                    mMap.updateMap();
+                    break;
+
             }
         }
     };
@@ -2127,13 +2176,29 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 mMeLocationMarker = FMAPI.instance().addLocationMarker(mLocationLayer, groupId, position);
             }
         }
+        //开启闪烁线程
+        mHandler.postDelayed(flashrun,500);
     }
+
+    /**
+    * @method  定时刷新位置图标线程
+    */
+    Runnable flashrun = new Runnable() {
+        @Override
+        public void run() {
+            Message msg = new Message();
+            msg.what = 23;
+            mHandler.sendMessage(msg);
+            mHandler.postDelayed(this,500);
+        }
+    };
+
 
     private void animateCenterWithZoom(int groupId, FMMapCoord initMapCoord) {
         mSceneAnimator.animateMoveToScreenCenter(initMapCoord)
-                .animateZoom(1.5)
+                .animateZoom(1.5,3)
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                .setDurationTime(1000)
+                .setDurationTime(500)
                 .start();
     }
 
@@ -2390,7 +2455,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setBackgroundColor(Color.WHITE);
-        toolbar.setAlpha(90);
+        toolbar.setAlpha(1);
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setTextColor(Color.parseColor("#666666"));
         textView.setText(getTitle());
@@ -2477,9 +2542,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
+        NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            view.showDetail(false);
+            popNaviView();
             return;
         }
         //解析返回的数据
@@ -2490,7 +2558,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
                 HashMap<String, Object> base_info = (HashMap<String, Object>) receive.get("base_info");
                 HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
-                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName("" + base_info.get("name"));
                 view.setComboDetails("" + base_info.get("abstracts"));
                 if (image.get("url") != null && !"".equals(image.get("url"))) {

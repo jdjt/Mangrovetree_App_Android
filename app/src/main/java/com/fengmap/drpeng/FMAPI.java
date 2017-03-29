@@ -229,8 +229,8 @@ public class FMAPI {
         FMLocationMarkerStyle locStyle = new FMLocationMarkerStyle();
         locStyle.setActiveImageFromAssets("fmr/pointer.png");
         locStyle.setStaticImageFromAssets("fmr/dome.png");
-        locStyle.setWidth(45);
-        locStyle.setHeight(45);
+        locStyle.setWidth(50);
+        locStyle.setHeight(50);
         FMLocationMarker marker = new FMLocationMarker(groupId, position, locStyle);
         layer.addMarker(marker);
         return marker;
@@ -248,8 +248,8 @@ public class FMAPI {
         FMLocationMarkerStyle locStyle = new FMLocationMarkerStyle();
         locStyle.setActiveImageFromAssets("fmr/pointer.png");
         locStyle.setStaticImageFromAssets("fmr/dome.png");
-        locStyle.setWidth(45);
-        locStyle.setHeight(45);
+        locStyle.setWidth(50);
+        locStyle.setHeight(50);
         FMLocationMarker marker = new FMLocationMarker(groupId, position, locStyle);
         return marker;
     }
