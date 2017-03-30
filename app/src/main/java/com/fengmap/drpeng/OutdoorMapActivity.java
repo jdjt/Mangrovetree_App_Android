@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -2684,15 +2685,23 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
         }
 //    }
+ AlertDialog dialog;
 
     private void showPopWindow() {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.main_dialog, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setView(layout);
-        final AlertDialog dialog = builder.show();
+        dialog = new AlertDialog.Builder(this,R.style.CustomAlertDialogBackground).create();
+        dialog.show();
+//        final AlertDialog dialog = builder.show();
+        WindowManager.LayoutParams layoutParams=dialog.getWindow().getAttributes();
+        layoutParams.width= ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(layoutParams);
+        dialog.setContentView(R.layout.main_dialog);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false);
-        Button btn = (Button) layout.findViewById(R.id.affirm);
+        Button btn = (Button) dialog.findViewById(R.id.affirm);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2706,7 +2715,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                dialogInterface.dismiss();
 //            }
 //        });
-
 
     }
 }

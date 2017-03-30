@@ -155,5 +155,8 @@
         <item name="android:textColor">@drawable/text_color_selector</item>
         <item name="android:background">@drawable/background_selector</item>
     </style>
-
+    <style name="CustomAlertDialogBackground" parent="@android:style/Theme.Dialog">
+        <item name="android:background">@color/half_full</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>
