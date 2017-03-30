@@ -146,10 +146,11 @@ public class LoginFragment extends Fragment implements ValidationListener {
                 //判断当前请求返回是否 有错误，OK 和 ERR
                 Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
                 if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
-                   if("0".equals( data.get("result"))){
-                       Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
+                   if("1".equals( data.get("result"))){
+
+                     Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
                    }else {
-                       login();
+                     login();
                    }
                 }else {
                     Toast.makeText(getActivity(), "网络请求失败，请稍后再试", Toast.LENGTH_LONG).show();

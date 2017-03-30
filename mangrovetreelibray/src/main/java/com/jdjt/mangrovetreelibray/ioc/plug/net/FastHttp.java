@@ -348,9 +348,9 @@ public class FastHttp {
 			responseEntity.setContent(inputStreamToString(inStream, config.getCharset()), config.isSave());
 
 			responseEntity.setStatus(result_ok);
-			if (responseEntity.getContentAsString().length() == 0) {
-				responseEntity.setStatus(result_net_err);
-			}
+//			if (responseEntity.getContentAsString().length() == 0) {
+//				responseEntity.setStatus(result_net_err);
+//			}
 			conn.disconnect();
 			return responseEntity;
 		} catch (Exception e) {

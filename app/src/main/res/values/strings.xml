@@ -22,7 +22,7 @@
     <string name="app_change_phone">修改手机号</string>
     <string name="app_change_name">编辑姓名</string>
     <string name="txt_send_check">发送验证</string>
-    <string name="txt_code">验 证 码</string>
+    <string name="txt_code">验证码</string>
     <string name="valid_6_number">6位数字</string>
     <string name="text_login_pwd">登录密码</string>
     <string name="valid_6_to_18_number">6-18位数字或字母</string>
@@ -117,5 +117,9 @@
     <string name="soft_update_updatebtn">更新</string>
     <string name="soft_update_later">稍后更新</string>
     <string name="title_activity_test">TestActivity</string>
+
+    <string name="button_confirm_txt">确定</string>
+    <string name="button_cancel_txt">取消</string>
+    <string name="about_mangrove_navigation">红树林导航，是集红树林全球度假平台、园区导航服务、呼叫服务、红树林一卡通系统于一体的综合性平台。功能涵盖酒店搜索、酒店展示、度假资讯、客房预订、度假产品销售，以及红树林自营酒店的地图导航、呼叫服务、一卡通消费等功能。</string>
 
 </resources>
