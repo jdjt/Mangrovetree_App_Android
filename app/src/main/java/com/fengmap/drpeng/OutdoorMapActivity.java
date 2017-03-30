@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -34,8 +35,11 @@ import com.fengmap.android.map.FMViewMode;
 import com.fengmap.android.map.animator.FMInterpolator;
 import com.fengmap.android.map.animator.FMLinearInterpolator;
 import com.fengmap.android.map.animator.FMSceneAnimator;
+import com.fengmap.android.map.event.FMGesture;
+import com.fengmap.android.map.event.FMGestureHandler;
 import com.fengmap.android.map.event.OnFMMapClickListener;
 import com.fengmap.android.map.event.OnFMMapInitListener;
+import com.fengmap.android.map.event.OnFMMapUpdateEvent;
 import com.fengmap.android.map.event.OnFMNodeListener;
 import com.fengmap.android.map.geometry.FMMapCoord;
 import com.fengmap.android.map.geometry.FMTotalMapCoord;
@@ -143,6 +147,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         ButtonGroup.OnButtonGroupListener,
         OnFMMapInitListener,
         OnFMMapClickListener,
+        GestureDetector.OnGestureListener,
         CustomPopupWindow.OnWindowCloseListener, OnFMReceivePositionInCallServiceListener {
     public static OutdoorMapActivity mInstance = null;
 
@@ -495,7 +500,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void initNewModelWindow() {
         NewModelView modelView = new NewModelView(this);
         mOpenModelInfoWindow = new CustomPopupWindow(this, modelView);
-        mOpenModelInfoWindow.setOutsideTouchable(true);
+//        mOpenModelInfoWindow.setOutsideTouchable(true);
         mOpenModelInfoWindow.setAnimationStyle(R.style.PopupPullFromBottomAnimation);
         mOpenModelInfoWindow.openSwipeDownGesture();  //开启下滑关闭手势
         modelView.getSmallArriveButton().setOnClickListener(new View.OnClickListener() {
@@ -842,6 +847,91 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             content = null;
             buffer = null;
         }
+    }
+
+    /**
+    * @method 以下为用户手势的监听方法
+    */
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Log.d("Gesture","Gesture onDown");
+        if (header_first_tv.getVisibility() == View.VISIBLE) {
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    header_first_tv.setVisibility(View.GONE);
+                }
+            });
+        }
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        Log.d("Gesture","Gesture onShowPress");
+        if (header_first_tv.getVisibility() == View.VISIBLE) {
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    header_first_tv.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Log.d("Gesture","Gesture onDown");
+        if (header_first_tv.getVisibility() == View.VISIBLE) {
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    header_first_tv.setVisibility(View.GONE);
+                }
+            });
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Log.d("Gesture","Gesture onScroll");
+        if (header_first_tv.getVisibility() == View.VISIBLE) {
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    header_first_tv.setVisibility(View.GONE);
+                }
+            });
+        }
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Log.d("Gesture","Gesture onLongPress");
+        if (header_first_tv.getVisibility() == View.VISIBLE) {
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    header_first_tv.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.d("Gesture","Gesture onFling");
+        if (header_first_tv.getVisibility() == View.VISIBLE) {
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    header_first_tv.setVisibility(View.GONE);
+                }
+            });
+        }
+        return false;
     }
 
     static class CoordCollection {
@@ -1463,6 +1553,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
+                if(mOpenModelInfoWindow.isShowing()){
+                    mOpenModelInfoWindow.close();
+                }
+
                 if (header_first_tv.getVisibility() == View.VISIBLE) {
                     UiHandler.post(new Runnable() {
                         @Override
@@ -2031,22 +2125,22 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     // 关闭定位
                     FMLocationService.instance().stop();
                     break;
-                case 23:   // 定位
-                    if (!isMapLoadCompleted) {
-                        return;
-                    }
-
-                    if (mLocationLayer == null) {
-                        return;
-                    }
-
-                    if(mMeLocationMarker != null) {
-                        Log.d("MMMMMMMM","刷新marker*************");
-                        mMeLocationMarker.setVisible(isShowMarker);
-                        isShowMarker = !isShowMarker;
-                    }
-                    mMap.updateMap();
-                    break;
+//                case 23:   // 定位
+//                    if (!isMapLoadCompleted) {
+//                        return;
+//                    }
+//
+//                    if (mLocationLayer == null) {
+//                        return;
+//                    }
+//
+//                    if(mMeLocationMarker != null) {
+//                        Log.d("MMMMMMMM","刷新marker*************");
+//                        mMeLocationMarker.setVisible(isShowMarker);
+//                        isShowMarker = !isShowMarker;
+//                    }
+//                    mMap.updateMap();
+//                    break;
 
             }
         }
@@ -2177,7 +2271,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         }
         //开启闪烁线程
-        mHandler.postDelayed(flashrun,500);
+//        mHandler.postDelayed(flashrun,500);
     }
 
     /**
@@ -2196,7 +2290,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     private void animateCenterWithZoom(int groupId, FMMapCoord initMapCoord) {
         mSceneAnimator.animateMoveToScreenCenter(initMapCoord)
-                .animateZoom(1.5,3)
+                .animateZoom(1.5,5)
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(500)
                 .start();

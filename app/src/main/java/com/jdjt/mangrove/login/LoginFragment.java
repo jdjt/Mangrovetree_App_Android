@@ -147,9 +147,9 @@ public class LoginFragment extends Fragment implements ValidationListener {
                 Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
                 if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
                    if("0".equals( data.get("result"))){
-                       login();
+                     Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
                    }else {
-                       Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
+                     login();
                    }
                 }else {
                     Toast.makeText(getActivity(), "网络请求失败，请稍后再试", Toast.LENGTH_LONG).show();
