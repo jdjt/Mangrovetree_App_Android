@@ -538,10 +538,12 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         mLayerProxy = mMap.getFMLayerProxy();
 
         List<Floor> floors = new ArrayList<>();
+        if( mMapInfo.getGroups()==null){
+            return;
+        }
         ArrayList<FMGroupInfo> groupInfos = mMapInfo.getGroups();
         for (FMGroupInfo info : groupInfos) {
             floors.add(new Floor(info.getGroupId(), info.getGroupName().toUpperCase()));
-
             FMModelLayer modelLayer = mLayerProxy.getFMModelLayer(info.getGroupId());
 
             if (modelLayer == null) {
@@ -2225,9 +2227,12 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     public void result(ResponseEntity entity) {
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET","网络请求的数据："+entity.getContentAsString());
+        NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            view.showDetail(false);
+            showNaviPopWinidow();
             return;
         }
         //解析返回的数据
@@ -2241,7 +2246,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
 //                HashMap<String, String> image = (HashMap<String, String>) Handler_Json.JsonToHashMap(base_info.get("first_image"));
                 Log.d("NETNETNET","image Url="+image.get("url"));
-                NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
                 if(image.get("url")!=null&&!"".equals(image.get("url"))){

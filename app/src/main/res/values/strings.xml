@@ -117,4 +117,7 @@
     <string name="soft_update_updatebtn">更新</string>
     <string name="soft_update_later">稍后更新</string>
 
+    <string name="button_confirm_txt">确定</string>
+    <string name="button_cancel_txt">取消</string>
+
 </resources>

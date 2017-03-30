@@ -25,8 +25,7 @@ public class StringUtils {
 
     public static String fixedInitTime(float initTime) {
 //        if (initTime <= 2) {
-            initTime *= 60;
-            return String.format("%d秒", (int)initTime);
+            return String.format("%d分", (int)initTime);
 //        }
 //        else {
 //            return String.format("%d分钟", (int) (initTime+0.5));

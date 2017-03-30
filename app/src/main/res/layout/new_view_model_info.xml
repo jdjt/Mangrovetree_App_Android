@@ -36,8 +36,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="5dp"
                         android:textColor="@color/location_text_color"
-                        android:textSize="@dimen/t_l"
-                        android:layout_toLeftOf="@+id/group_open_icon" />
+                        android:textSize="@dimen/t_l" />
 
                     <TextView
                         android:id="@+id/combo_details"
