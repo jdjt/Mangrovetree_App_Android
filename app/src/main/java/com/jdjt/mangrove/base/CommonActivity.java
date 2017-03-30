@@ -124,15 +124,34 @@ public class CommonActivity extends AppCompatActivity {
         if (getActionBarToolbar() == null) {
             return;
         }
-        mActionBarToolbar.setNavigationIcon(R.mipmap.icon_back);
+        mActionBarToolbar.findViewById(R.id.app_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        String title = getIntent().getStringExtra(EXTRA_TITLE);
+//        mActionBarToolbar.setNavigationIcon(R.mipmap.icon_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //给左上角图标的左边加上一个返回的图标 。对应ActionBar.DISPLAY_HOME_AS_UP
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //使自定义的普通View能在title栏显示，即actionBar.setCustomView能起作用，对应ActionBar.DISPLAY_SHOW_CUSTOM
+        getSupportActionBar().setDisplayShowCustomEnabled(false);
+        //这个小于4.0版本的默认值为true的。但是在4.0及其以上是false,决定左上角的图标是否可以点击。。
+        getSupportActionBar().setHomeButtonEnabled(true);
+        //使左上角图标是否显示，如果设成false，则没有程序图标，仅仅就个标题，否则，显示应用程序图标，
+        // 对应id为android.R.id.home，对应ActionBar.DISPLAY_SHOW_HOME
+        //其中setHomeButtonEnabled和setDisplayShowHomeEnabled共同起作用，
+        //如果setHomeButtonEnabled设成false，即使setDisplayShowHomeEnabled设成true，图标也不能点击
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //对应ActionBar.DISPLAY_SHOW_TITLE。
+                getSupportActionBar().setDisplayUseLogoEnabled(false);
         StatusBarUtil.StatusBarLightMode(this);
         if (mActionBarToolbar != null) {
             TextView textView = (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
@@ -143,8 +162,15 @@ public class CommonActivity extends AppCompatActivity {
     protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
             mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+
+            mActionBarToolbar.setNavigationIcon(getDrawable(R.mipmap.icon_back));
+            String title = getIntent().getStringExtra(EXTRA_TITLE);
+
+
             if (mActionBarToolbar != null) {
                 setSupportActionBar(mActionBarToolbar);
+//
+
             }
         }
         return mActionBarToolbar;

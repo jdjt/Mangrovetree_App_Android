@@ -1,9 +1,9 @@
 package com.jdjt.mangrove.activity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.text.Spannable;
@@ -11,19 +11,18 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fengmap.android.FMDevice;
 import com.fengmap.android.wrapmv.Tools;
@@ -36,9 +35,11 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.adapter.SearchListAdapter;
 import com.jdjt.mangrove.adapter.TabFragmentAdapter;
+import com.jdjt.mangrove.adapter.TagsAdapter;
 import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.SearchFragment;
+import com.jdjt.mangrove.view.FlowLayout;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
@@ -46,16 +47,23 @@ import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @InLayer(value = R.layout.activity_map_search_acitivity, parent = R.id.center_common)
-public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
+public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
     String[] titles = {"本酒店度假设施", "本酒店服务设施"}; //, "本酒店服务设施"
     @InView
     ViewPager container;
     @InView
     SegmentTabLayout tabs;
     SearchView searchView;
+
+    @InView
+    FlowLayout title_tags;
+    @InView
+    ImageButton search_submit;
     private ListView search_listView;
     private TextView mMoreView;
     private SearchListAdapter mAdapter = null;
@@ -68,66 +76,91 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     public static int SEARCHTYPE_SUBNAME = 1;//查询类别 1 按subtypname 查询
     int type = 0;//默认为0 按名字检索，1 为按subtypename 检索
     public int countmax = 10; //最大条数
+    TagsAdapter tagsAdapter;
+    List<Map<String, String>> getData = null;
+    InputMethodManager inputMethodManager;
+    SearchView.SearchAutoComplete mSearchSrcTextView;
+    FlowLayout gl_tags=null;
+    /**
+     * 设置标签组
+     */
+    private void initTags(String name) {
+        Map map = new HashMap();
+        map.put("title", name);
+        map.put("isClose", "true");
+        getData.add(map);
+        //新建适配器
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_map_search_acitivity, menu);
-        MenuItem menuItem = menu.findItem(R.id.menu_item_search);//在菜单中找到对应控件的item
-        initSearchView(menu);
-        MenuItemCompat.setOnActionExpandListener(menuItem, this);
-        return super.onCreateOptionsMenu(menu);
+         gl_tags = (FlowLayout) findViewById(R.id.title_tags);
+
+        tagsAdapter = new TagsAdapter(this);
+//        gl_tags.setHorizontalSpacing();
+        gl_tags.setVerticalSpacing(10);
+
+        tagsAdapter.setDataSource(getData);
+        gl_tags.setAdapter(tagsAdapter);
     }
 
-    private void initSearchView(Menu menu) {
+    /**
+     * 删除标签
+     */
+    public void removeTag(String data) {
+        for (int i = 0; i < getData.size(); i++) {
+            if (data.equals(getData.get(i).get("title") + "")) {
+                gl_tags.removeViewAt(i);
+                getData.remove(i);
+            }
+        }
+        mSearchSrcTextView.setText("");
+        mSearchSrcTextView.clearFocus();
+    }
+
+
+
+    private void initSearchView() {
+
+        findViewById(R.id.search_layout).setVisibility(View.VISIBLE);
+
         //获得searchView对象
-        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_item_search));
+        searchView = (SearchView) findViewById(R.id.searchView);
+        mSearchSrcTextView = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
         // 设置该SearchView默认是否自动缩小为图标
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(true);
-//        ImageView search_button = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
-//        search_button.setImageIcon(Icon.createWithResource(this, R.mipmap.icon_searcher_white));
-        ImageView go_button = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_go_btn);
-        go_button.setImageResource(R.mipmap.icon_seach_text);
+        searchView.onActionViewExpanded();
+
         // 为该SearchView组件设置事件监听器
         searchView.setOnQueryTextListener(this);
         // 设置该SearchView显示搜索按钮
-        searchView.setSubmitButtonEnabled(true);
+        searchView.setSubmitButtonEnabled(false);
 
-        searchView.clearFocus();
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+        searchView.setOnCloseListener(this);
+        search_submit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onSuggestionSelect(int position) {
-                return false;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int position) {
-                Toast.makeText(MapSearchAcitivity.this, "position", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                searchView.clearFocus();
-                return true;
+            public void onClick(View v) {
+                if(getData.size()>0){
+                    gl_tags.removeViewAt(0);
+                    getData.remove(0);
+                }
+                searchView.setQuery(searchView.getQuery(), true);
             }
         });
         SpannableString spanText = new SpannableString("请输入您要去的地方");
-
         // 设置字体大小
         spanText.setSpan(new AbsoluteSizeSpan(15, true), 0, spanText.length(),
                 Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         // 设置字体颜色
         spanText.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         searchView.setQueryHint(spanText);
+        searchView.clearFocus();
     }
 
     @Init
     private void initView() {
         list = new ArrayList<>(0);
+        getData = new ArrayList<>();
         fbd = new FMDBMapElementOveridDao();
+        initSearchView();
         initList();
         initViewGroup();
     }
@@ -222,6 +255,10 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     @Override
     public boolean onQueryTextSubmit(String query) {
         Ioc.getIoc().getLogger().e("onQueryTextSubmit 当前查询条件 " + type);
+        if(TextUtils.isEmpty(query)){
+            clearData();
+
+        }
         getData(query);
         return true;
     }
@@ -235,6 +272,11 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     public void search(String content, int type) {
         clearData();
         this.type = type;
+        initTags(content);
+        SpannableString spanText = new SpannableString(content);
+        // 设置字体大小
+        spanText.setSpan(new ImageSpan(getDrawable(R.mipmap.text_bg)), 0, spanText.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         searchView.setQuery(content, true);
     }
 
@@ -243,23 +285,29 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         Ioc.getIoc().getLogger().e("onQueryTextChange  当前查询条件 " + type);
         if (TextUtils.isEmpty(newText)) {
             clearData();
+            hideSoftInput();
         } else {
+            getData(newText);
             search_listView.setVisibility(View.VISIBLE);
         }
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(MenuItem item) {
-        Toast.makeText(this, "onExpand", Toast.LENGTH_LONG).show();
         return false;
     }
 
-    @Override
-    public boolean onMenuItemActionCollapse(MenuItem item) {
-        Toast.makeText(this, "onExpand", Toast.LENGTH_LONG).show();
-        return false;
+
+    private void hideSoftInput() {
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            View v = this.getCurrentFocus();
+            if (v == null) {
+                return;
+            }
+
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+            searchView.clearFocus();
+        }
     }
+
 
     /**
      * 获取查询数据
@@ -273,6 +321,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         } else if (type == SEARCHTYPE_SUBNAME) {
             dataList = fbd.queryPrioritySubTypename(mMapId, mGroupId, subtypename, index * countmax);
         }
+
         Ioc.getIoc().getLogger().e("查询条数 ：" + dataList.size());
         ++index;
         if (dataList.isEmpty()) {
@@ -311,12 +360,16 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         type = SEARCHTYPE_NAME;
         index = 0;//还原指针
         list.clear();
+        if(getData.size()>0){
+            getData.remove(0);
+            gl_tags.removeViewAt(0);
+        }
         search_listView.clearTextFilter();
         search_listView.setVisibility(View.GONE);
-
         isLoadCompleted = false;
         mAdapter.setDataSource(list);
-        searchView.clearFocus();
+        searchView.setFocusable(false);
+
     }
 
     /**
@@ -342,4 +395,26 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         }
         this.finish();
     }
+
+    @Override
+    public boolean onClose() {
+
+        clearData();
+        return true;
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            //返回事件
+            if(getData.size()>0){
+                getData.remove(0);
+                gl_tags.removeViewAt(0);
+                mSearchSrcTextView.setText("");
+                mSearchSrcTextView.clearFocus();
+            }
+
+        }
+        return true;
+    }
+
 }

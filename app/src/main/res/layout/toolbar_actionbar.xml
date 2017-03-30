@@ -1,39 +1,77 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar_actionbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     android:titleTextColor="?attr/titleTextColor"
     app:contentInsetLeft="0dp"
-    android:minHeight="?attr/actionBarSize"
-    android:fitsSystemWindows="true"
-    app:layout_collapseMode="pin"
-    app:layout_scrollFlags="scroll|enterAlways"
-    app:popupTheme="@style/AppTheme.PopupOverlay"
-    app:theme="@style/AppTheme.AppBarOverlay"
-    app:contentInsetStart="0dp"
-    app:titleTextAppearance="@style/ActionBar.TitleText">
+    app:contentInsetStart="0dp">
 
+    <ImageButton
+        android:id="@+id/app_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:background="@mipmap/icon_back"
+        android:clickable="true" />
 
     <!--android:background="@drawable/shape_search"-->
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
+        android:gravity="center_horizontal">
 
-    <!--<SearchView-->
-        <!--android:id="@+id/searchView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:iconifiedByDefault="true"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:inputType="textCapWords"-->
-        <!--android:imeOptions="actionSearch"-->
-    <!--/>-->
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_marginBottom="10dp"
+
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
+            android:backgroundTintMode="src_in"
+            android:iconifiedByDefault="true"
+            android:imeOptions="actionSearch"
+            app:divider="@color/white"
+            app:dividerPadding="2dp"
+            app:searchHintIcon="@mipmap/icon_searcher_white"
+            app:searchIcon="@mipmap/icon_searcher_white"
+            android:layout_toStartOf="@+id/search_submit" />
+
+        <ImageButton
+            android:id="@+id/search_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/icon_seach_text"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+        <com.jdjt.mangrove.view.FlowLayout
+            android:id="@+id/title_tags"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"></com.jdjt.mangrove.view.FlowLayout>
+
+    </RelativeLayout>
+
     <TextView
+        android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:id="@+id/toolbar_title"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
+
 </android.support.v7.widget.Toolbar>

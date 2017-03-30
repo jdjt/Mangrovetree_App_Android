@@ -106,7 +106,14 @@
 
 
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">25dp</item>
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -129,11 +136,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/white</item>
 
-        <!--<item name="android:toolbarStyle">-->
-            <!--@style/AppTheme.Toolbar-->
-        <!--</item>-->
+        <item name="android:toolbarStyle">
+            @style/AppTheme.Toolbar
+        </item>
     </style>
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -144,7 +151,12 @@
     <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <!--<item name="tabBackground">@drawable/tab_selected_bg</item>-->
         <!--<item name="tabIndicatorColor">@color/half_full</item>-->
-        <item name="contentInsetStart">2dp</item>
+        <item name="android:contentInsetStart">0dp</item>
+        <item name="android:contentInsetLeft">0dp</item>
+        <item name="android:contentInsetStartWithNavigation">0dp</item>
+        <item name="android:paddingLeft">@dimen/abc_action_bar_default_padding_start_material</item>
+        <item name="android:paddingRight">@dimen/abc_action_bar_default_padding_end_material</item>
+
     </style>
     <style name="statusBarStyle" parent="@android:style/Theme.DeviceDefault.Light">
         <item name="android:statusBarColor">@color/status_bar_color</item>

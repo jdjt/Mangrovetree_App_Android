@@ -2400,7 +2400,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         menu.setShadowDrawable(R.drawable.shadow);
         // 设置滑动菜单视图的宽度
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        menu.setFadeEnabled(true);
+        menu.setFadeEnabled(false);
         menu.setBehindScrollScale(0.333f);// 设置滑动时拖拽效果
         // 设置渐入渐出效果的值
         menu.setFadeDegree(0.35f);
