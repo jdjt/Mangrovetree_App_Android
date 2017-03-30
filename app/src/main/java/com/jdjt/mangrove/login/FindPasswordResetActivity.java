@@ -24,6 +24,7 @@ import com.jdjt.mangrovetreelibray.ioc.util.CommonUtils;
 import com.jdjt.mangrovetreelibray.ioc.verification.Rule;
 import com.jdjt.mangrovetreelibray.ioc.verification.Validator;
 import com.jdjt.mangrovetreelibray.ioc.verification.annotation.ConfirmPassword;
+import com.jdjt.mangrovetreelibray.ioc.verification.annotation.Password;
 import com.jdjt.mangrovetreelibray.ioc.verification.annotation.TextRule;
 
 import java.util.HashMap;
@@ -35,12 +36,12 @@ import java.util.Map;
  */
 @InLayer(value = R.layout.mem_find__password_reset,parent = R.id.center_common,isTitle = true)
 public class FindPasswordResetActivity extends CommonActivity implements Validator.ValidationListener {
-    @TextRule(maxLength = 18, minLength = 6, message = "请输入6-18位的原密码", order = 1)
-    @InView
-    private EditText find_reset_account;
-    @ConfirmPassword(messageResId = R.string.err, order = 2)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 2)
     @InView
     private EditText find_reset_password;
+    @ConfirmPassword(messageResId = R.string.err, order = 2)
+    @InView
+    private EditText find_reset_password_cm;
     //验证
     Validator validator;
 
@@ -69,7 +70,7 @@ public class FindPasswordResetActivity extends CommonActivity implements Validat
         JsonObject json = new JsonObject();
         json.addProperty("account", account);
         json.addProperty("code", code);
-        json.addProperty("password",find_reset_account.getText().toString());
+        json.addProperty("password",find_reset_password.getText().toString());
         json.addProperty("uuid", uuid);
         MangrovetreeApplication.instance.http.u(this).resetPassword(json.toString());
     }

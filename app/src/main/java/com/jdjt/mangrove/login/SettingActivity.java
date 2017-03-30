@@ -40,6 +40,8 @@ public class SettingActivity extends CommonActivity {
     Button account_logout;
     @InView(value = R.id.app_cache)
     TextView app_cache;
+    @InView(value = R.id.about_mangrove)
+    TextView about_mangrove;
     @Init
     public void init() {
 //        try {
@@ -51,7 +53,7 @@ public class SettingActivity extends CommonActivity {
 
     }
 
-    @InListener(ids = {R.id.account_logout,R.id.app_cache}, listeners = OnClick.class)
+    @InListener(ids = {R.id.account_logout,R.id.app_cache,R.id.about_mangrove}, listeners = OnClick.class)
     private void click(View view) {
         switch (view.getId()) {
             case R.id.account_logout:
@@ -59,6 +61,9 @@ public class SettingActivity extends CommonActivity {
                 break;
             case R.id.app_cache:
                 show();
+                break;
+            case R.id.about_mangrove:
+                startActivity(new Intent(this,AboutMangroveActivity.class));
                 break;
         }
     }

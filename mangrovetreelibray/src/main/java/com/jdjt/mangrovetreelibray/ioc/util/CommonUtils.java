@@ -118,14 +118,15 @@ public class CommonUtils {
 	 * @param context
 	 */
 	public static void onErrorToast(View failedView, String failureMessage, Context context) {
-		if (failedView instanceof EditText) {
-			failedView.requestFocus();
-			Handler_TextStyle handler_TextStyle = new Handler_TextStyle();
-			handler_TextStyle.setString(failureMessage);
-			((EditText) failedView).setError(handler_TextStyle.getSpannableString());
-		} else {
-			Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show();
-		}
+		Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show();
+//		if (failedView instanceof EditText) {
+//			failedView.requestFocus();
+//			Handler_TextStyle handler_TextStyle = new Handler_TextStyle();
+//			handler_TextStyle.setString(failureMessage);
+//			((EditText) failedView).setError(handler_TextStyle.getSpannableString());
+//		} else {
+//			Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show();
+//		}
     }
 
 	/**

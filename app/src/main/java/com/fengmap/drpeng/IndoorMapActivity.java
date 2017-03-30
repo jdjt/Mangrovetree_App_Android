@@ -538,10 +538,12 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         mLayerProxy = mMap.getFMLayerProxy();
 
         List<Floor> floors = new ArrayList<>();
+        if( mMapInfo.getGroups()==null){
+            return;
+        }
         ArrayList<FMGroupInfo> groupInfos = mMapInfo.getGroups();
         for (FMGroupInfo info : groupInfos) {
             floors.add(new Floor(info.getGroupId(), info.getGroupName().toUpperCase()));
-
             FMModelLayer modelLayer = mLayerProxy.getFMModelLayer(info.getGroupId());
 
             if (modelLayer == null) {
@@ -553,6 +555,9 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 public boolean onClick(FMNode pFMNode) {
                     if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                         return false;
+                    }
+                    if(mOpenModelInfoWindow.isShowing()){
+                        mOpenModelInfoWindow.close();
                     }
                     mCurrentModel = (FMModel) pFMNode;
                     //这里查询activity_code
@@ -1300,7 +1305,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private void initModelInfoWindow() {
         NewInsideModelView modelView = new NewInsideModelView(this);
         mOpenModelInfoWindow = new CustomPopupWindow(this, modelView);
-        mOpenModelInfoWindow.setOutsideTouchable(true);
+//        mOpenModelInfoWindow.setOutsideTouchable(true);
         mOpenModelInfoWindow.openSwipeDownGesture();
         mOpenModelInfoWindow.setOnWindowCloseListener(this);
         mOpenModelInfoWindow.setAnimationStyle(R.style.PopupPullFromBottomAnimation);
@@ -2209,6 +2214,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         if (code==null || code.equals("")) {
             return;
         }
+        mProgressDialog.setTitle("请求中，请稍后!");
         HashMap<String, Object> mapBase = new HashMap<>();
         HashMap<String, Object> map = new HashMap<>();
         mapBase.put("id", uuid);
@@ -2225,9 +2231,13 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     public void result(ResponseEntity entity) {
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET","网络请求的数据："+entity.getContentAsString());
+        NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            view.showDetail(false);
+            mProgressDialog.dismiss();
+            showNaviPopWinidow();
             return;
         }
         //解析返回的数据
@@ -2241,7 +2251,6 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
 //                HashMap<String, String> image = (HashMap<String, String>) Handler_Json.JsonToHashMap(base_info.get("first_image"));
                 Log.d("NETNETNET","image Url="+image.get("url"));
-                NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName(""+base_info.get("name"));
                 view.setComboDetails(""+base_info.get("abstracts"));
                 if(image.get("url")!=null&&!"".equals(image.get("url"))){
@@ -2249,6 +2258,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     imageLoader.clearMemoryCache();
                     view.downloadImage(imageLoader,image.get("url"));
                 }
+                mProgressDialog.dismiss();
                 showNaviPopWinidow();
                 break;
         }

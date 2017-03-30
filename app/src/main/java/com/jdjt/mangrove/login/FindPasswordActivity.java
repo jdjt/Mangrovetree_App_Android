@@ -132,7 +132,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
     @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKCAPTCHA_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
-            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
         //解析返回的数据
@@ -156,19 +156,21 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
                         intent.putExtra("uuid", uuid);
                         startActivity(intent);
                         finish();
+                    }else {
+                        CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
                     }
-                    else if(result.equals("1")){
-                        //验证码不存在
-                        Toast.makeText(this, "验证码不存在", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(result.equals("2")){
-                        //无效的验证码（超时原因）
-                        Toast.makeText(this, "验证码无效,已超时", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(result.equals("9")){
-                        //无效的验证码（其他原因）
-                        Toast.makeText(this, "验证码无效", Toast.LENGTH_SHORT).show();
-                    }
+//                    else if(result.equals("1")){
+//                        //验证码不存在
+//                        Toast.makeText(this, "验证码不存在", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else if(result.equals("2")){
+//                        //无效的验证码（超时原因）
+//                        Toast.makeText(this, "验证码无效,已超时", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else if(result.equals("9")){
+//                        //无效的验证码（其他原因）
+//                        Toast.makeText(this, "验证码无效", Toast.LENGTH_SHORT).show();
+//                    }
                     break;
             }
         }

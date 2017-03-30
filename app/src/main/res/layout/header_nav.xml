@@ -86,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="11dp"
+
                 android:layout_weight="1"
                 android:text="设置"
                 android:textColor="@drawable/text_mem_content_selector"

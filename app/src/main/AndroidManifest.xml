@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:versionName="V 1.0"
     package="com.jdjt.mangrove">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -100,6 +101,10 @@
         <activity
             android:name=".login.UserAgreementWebActivity"
             android:label="@string/app_xy_wv"
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".login.AboutMangroveActivity"
+            android:label="关于红树林导航"
             android:theme="@style/AppTheme.Base" />
 
         <service
