@@ -1058,6 +1058,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
                 break;
             case R.id.search_dest_btn:
+                //导航模式下禁止搜索
                 if(FMLocationService.instance().isInNavigationMode()){
                    ToastUtils.showToast(this,"导航中，该功能不可用！");
                    return;
