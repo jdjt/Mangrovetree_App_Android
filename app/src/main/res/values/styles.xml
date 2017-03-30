@@ -48,14 +48,13 @@
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
 
-    <style name="custom_checkbox"
-        parent="@android:style/Widget.CompoundButton.CheckBox">
+    <style name="custom_checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/check_style</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">40dp</item>
     </style>
-    <style name="read_checkbox"
-        parent="@android:style/Widget.CompoundButton.CheckBox">
+
+    <style name="read_checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/read_check_style</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">40dp</item>
@@ -73,7 +72,6 @@
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
     </style>
-
 
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -103,7 +101,6 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-
 
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -140,6 +137,7 @@
             @style/AppTheme.Toolbar
         </item>
     </style>
+
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -148,6 +146,7 @@
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <!--<item name="tabBackground">@drawable/tab_selected_bg</item>-->
         <!--<item name="tabIndicatorColor">@color/half_full</item>-->
@@ -158,6 +157,7 @@
         <item name="android:paddingRight">@dimen/abc_action_bar_default_padding_end_material</item>
 
     </style>
+
     <style name="statusBarStyle" parent="@android:style/Theme.DeviceDefault.Light">
         <item name="android:statusBarColor">@color/status_bar_color</item>
         <item name="android:windowLightStatusBar">false</item>

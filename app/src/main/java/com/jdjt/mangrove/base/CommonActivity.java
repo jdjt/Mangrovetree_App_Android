@@ -13,9 +13,10 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jdjt.mangrove.R;
-import com.jdjt.mangrove.util.StatusBarUtil;
+import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -62,7 +63,20 @@ public class CommonActivity extends AppCompatActivity {
                 }).setConfirmClickListener(listener)
                 .show();
     }
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+//        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+//            View decorView = getWindow().getDecorView();
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+////                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+////                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+////                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+////                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        }
+    }
     /**
      * activity销毁时 同时销毁
      */
@@ -81,7 +95,7 @@ public class CommonActivity extends AppCompatActivity {
      * @param on
      */
     @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
+    public void setTranslucentStatus(boolean on) {
         Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
@@ -124,6 +138,7 @@ public class CommonActivity extends AppCompatActivity {
         if (getActionBarToolbar() == null) {
             return;
         }
+//        mActionBarToolbar.setNavigationIcon(getDrawable(R.mipmap.icon_back));
         mActionBarToolbar.findViewById(R.id.app_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +167,7 @@ public class CommonActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //对应ActionBar.DISPLAY_SHOW_TITLE。
                 getSupportActionBar().setDisplayUseLogoEnabled(false);
-        StatusBarUtil.StatusBarLightMode(this);
+
         if (mActionBarToolbar != null) {
             TextView textView = (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
             textView.setText(getTitle());
@@ -162,23 +177,18 @@ public class CommonActivity extends AppCompatActivity {
     protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
             mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-
-            mActionBarToolbar.setNavigationIcon(getDrawable(R.mipmap.icon_back));
-            String title = getIntent().getStringExtra(EXTRA_TITLE);
-
-
             if (mActionBarToolbar != null) {
                 setSupportActionBar(mActionBarToolbar);
-//
-
             }
         }
         return mActionBarToolbar;
     }
 
     protected void setStatusBar() {
-        setTranslucentStatus( R.color.title_bg);
-//        StatusBarUtil.setColor(this, getResources().getColor(R.color.title_bg), 0);
+//        setTranslucentStatus( R.color.title_bg);
+//        StatusBarUtil.setStatusBarColor(this, getColor(R.color.title_bg));
+        StatusUtil.StatusBarLightMode(this);
+        StatusBarUtil.setColor(this,getResources().getColor(R.color.title_bg,null),0);
     }
 
     @Override
@@ -200,6 +210,10 @@ public class CommonActivity extends AppCompatActivity {
 
     @Init
     private void initActivity() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         initActionBar();
         setStatusBar();
     }

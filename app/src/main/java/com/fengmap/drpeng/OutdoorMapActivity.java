@@ -1,6 +1,5 @@
 package com.fengmap.drpeng;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -99,6 +96,7 @@ import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrove.util.MapVo;
+import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
@@ -2356,20 +2354,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     protected void setStatusBar() {
 //        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-        setTranslucentStatus(R.color.white);
-    }
 
-    /**
-     * 设置沉浸式状态栏
-     */
-    @TargetApi(19)
-    public void setStatus() {
-        Window window = this.getWindow();
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        window.setAttributes(layoutParams);
+//        setTranslucentStatus(R.color.transparent);
+//        initTranslucentStatus();
+        StatusUtil.StatusBarLightMode(this);
+        setTranslucentStatus(R.color.transparent);
     }
-
     ImageLoader imageLoader = null;
 
     private void initSlidingMenu() {
@@ -2392,6 +2382,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         textView.setTextColor(Color.parseColor("#666666"));
         textView.setText(getTitle());
         toolbar.setNavigationIcon(R.mipmap.ic_person);
+        toolbar.setFitsSystemWindows(true);
+        toolbar.setClipToPadding(true);
         menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
@@ -2427,7 +2419,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
-
     public void isShow() {
         menu.toggle();
     }

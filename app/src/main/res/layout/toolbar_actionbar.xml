@@ -6,6 +6,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     android:titleTextColor="?attr/titleTextColor"
+    android:fitsSystemWindows="true"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp">
 

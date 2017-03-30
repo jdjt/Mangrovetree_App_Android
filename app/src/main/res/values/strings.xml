@@ -116,5 +116,6 @@
     <string name="soft_update_info">检测到最新版本立即更新吗</string>
     <string name="soft_update_updatebtn">更新</string>
     <string name="soft_update_later">稍后更新</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/gray_light"
-    android:fitsSystemWindows="true">
+  >
     <com.fengmap.drpeng.widget.ButtonGroup
         android:id="@+id/fm_btgroup"
         android:layout_alignParentRight="true"
