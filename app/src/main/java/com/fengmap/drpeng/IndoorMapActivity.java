@@ -556,6 +556,9 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                         return false;
                     }
+                    if(mOpenModelInfoWindow.isShowing()){
+                        mOpenModelInfoWindow.close();
+                    }
                     mCurrentModel = (FMModel) pFMNode;
                     //这里查询activity_code
                     ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
@@ -1302,7 +1305,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private void initModelInfoWindow() {
         NewInsideModelView modelView = new NewInsideModelView(this);
         mOpenModelInfoWindow = new CustomPopupWindow(this, modelView);
-        mOpenModelInfoWindow.setOutsideTouchable(true);
+//        mOpenModelInfoWindow.setOutsideTouchable(true);
         mOpenModelInfoWindow.openSwipeDownGesture();
         mOpenModelInfoWindow.setOnWindowCloseListener(this);
         mOpenModelInfoWindow.setAnimationStyle(R.style.PopupPullFromBottomAnimation);
@@ -2211,6 +2214,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         if (code==null || code.equals("")) {
             return;
         }
+        mProgressDialog.setTitle("请求中，请稍后!");
         HashMap<String, Object> mapBase = new HashMap<>();
         HashMap<String, Object> map = new HashMap<>();
         mapBase.put("id", uuid);
@@ -2232,6 +2236,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             view.showDetail(false);
+            mProgressDialog.dismiss();
             showNaviPopWinidow();
             return;
         }
@@ -2253,6 +2258,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     imageLoader.clearMemoryCache();
                     view.downloadImage(imageLoader,image.get("url"));
                 }
+                mProgressDialog.dismiss();
                 showNaviPopWinidow();
                 break;
         }

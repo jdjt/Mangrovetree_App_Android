@@ -92,6 +92,7 @@ import com.fengmap.drpeng.widget.NaviProcessingView;
 import com.fengmap.drpeng.widget.NaviView;
 import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.RouteView;
+import com.fengmap.drpeng.widget.ToastUtils;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
@@ -147,7 +148,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         ButtonGroup.OnButtonGroupListener,
         OnFMMapInitListener,
         OnFMMapClickListener,
-        GestureDetector.OnGestureListener,
         CustomPopupWindow.OnWindowCloseListener, OnFMReceivePositionInCallServiceListener {
     public static OutdoorMapActivity mInstance = null;
 
@@ -326,6 +326,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mMapView.setManager(FMAPI.instance().mActivityManager,
                 FMAPI.instance().mRouteManager,
                 FMAPI.instance().mZoneManager);
+        mMapView.setOnTouchListener(this);
 
         fbd = new FMDBMapElementOveridDao();
     }
@@ -849,91 +850,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
     }
 
-    /**
-    * @method 以下为用户手势的监听方法
-    */
-    @Override
-    public boolean onDown(MotionEvent e) {
-        Log.d("Gesture","Gesture onDown");
-        if (header_first_tv.getVisibility() == View.VISIBLE) {
-            UiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    header_first_tv.setVisibility(View.GONE);
-                }
-            });
-        }
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        Log.d("Gesture","Gesture onShowPress");
-        if (header_first_tv.getVisibility() == View.VISIBLE) {
-            UiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    header_first_tv.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        Log.d("Gesture","Gesture onDown");
-        if (header_first_tv.getVisibility() == View.VISIBLE) {
-            UiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    header_first_tv.setVisibility(View.GONE);
-                }
-            });
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.d("Gesture","Gesture onScroll");
-        if (header_first_tv.getVisibility() == View.VISIBLE) {
-            UiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    header_first_tv.setVisibility(View.GONE);
-                }
-            });
-        }
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        Log.d("Gesture","Gesture onLongPress");
-        if (header_first_tv.getVisibility() == View.VISIBLE) {
-            UiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    header_first_tv.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.d("Gesture","Gesture onFling");
-        if (header_first_tv.getVisibility() == View.VISIBLE) {
-            UiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    header_first_tv.setVisibility(View.GONE);
-                }
-            });
-        }
-        return false;
-    }
-
     static class CoordCollection {
         double[][] coordinates;
     }
@@ -1050,10 +966,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         mMap.onResume();
-
         FMLocationService.instance().registerListener(mLocationListener);
         FMCallService.instance().registerCallServiceListener(this);
-
 //        if (!checkIpThread.isAlive()) {
 //            checkIpThread.start();
 //        }
@@ -1144,6 +1058,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
                 break;
             case R.id.search_dest_btn:
+                if(FMLocationService.instance().isInNavigationMode()){
+                   ToastUtils.showToast(this,"导航中，该功能不可用！");
+                   return;
+                }
                 Bundle b = new Bundle();
                 OutdoorMapActivity.mInstance.clearSpecialMarker();
                 OutdoorMapActivity.mInstance.clearCalculateRouteLineMarker();
@@ -1246,6 +1164,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                         }
                     });
 
+                }
+                break;
+            case  R.id.mapview:
+                Log.d("GGGGGGGG","地图当前缩放量"+  mMap.getFMMapView());
+                if (header_first_tv.getVisibility() == View.VISIBLE) {
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            header_first_tv.setVisibility(View.GONE);
+                        }
+                    });
                 }
                 break;
             default:
@@ -1697,6 +1626,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         view.setEnterMapIdByModelFid(mCurrentModel.getFid());
         if (activitycode != null && !"".equals(activitycode) && !"NULL".equals(activitycode)) {
             view.showDetail(true);
+            mProgressDialog.setTitle("加载中，请稍后!");
             getActivityDetail(activitycode);
             ActivityCodeList.clear();
         } else {
@@ -2287,13 +2217,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
     };
 
-
+    int i = 2;
     private void animateCenterWithZoom(int groupId, FMMapCoord initMapCoord) {
         mSceneAnimator.animateMoveToScreenCenter(initMapCoord)
-                .animateZoom(1.5,5)
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                .setDurationTime(500)
-                .start();
+                .setDurationTime(500);
+        if(i>=0){
+            mSceneAnimator.animateZoom(1.5);
+            i--;
+        }
+        ToastUtils.showToast(this,"地图已显示当前位置");
+        mSceneAnimator.start();
     }
 
     @Override
@@ -2640,6 +2574,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             view.showDetail(false);
+            mProgressDialog.dismiss();
             popNaviView();
             return;
         }
@@ -2658,6 +2593,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     imageLoader.clearMemoryCache();
                     view.downloadImage(imageLoader, image.get("url"));
                 }
+                mProgressDialog.dismiss();
                 popNaviView();
                 break;
             case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
@@ -2729,3 +2665,5 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                })
 //                .show();
 //    }
+
+
