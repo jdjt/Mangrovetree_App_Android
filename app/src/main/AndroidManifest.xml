@@ -103,6 +103,10 @@
             android:name=".login.UserAgreementWebActivity"
             android:label="@string/app_xy_wv"
             android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".login.AboutMangroveActivity"
+            android:label="关于红树林导航"
+            android:theme="@style/AppTheme.Base" />
 
         <service android:name=".service.DownloadService" android:enabled="true"/>
     </application>

@@ -28,6 +28,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -178,7 +179,9 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         mc = new CountTimer(60000, 1000, register_valitation, "register_valitation");
         mc.start();
     }
-
+    /**
+     * 注册方法
+     */
     private void register(){
         JsonObject json = new JsonObject();
         String account = register_account.getText().toString() ;
@@ -188,7 +191,19 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         json.addProperty("uuid", uuid);
         MangrovetreeApplication.instance.http.u(this).register(json.toString());
     }
-    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY,Constant.HttpUrl.REGISTER_KEY,Constant.HttpUrl.LOGIN_KEY})
+
+    /**
+     * 登录方法
+     */
+    private void login(){
+        Ioc.getIoc().getLogger().e("登录接口");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("account", register_account.getText().toString());
+        jsonObject.addProperty("password", register_password.getText().toString());
+        MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
+    }
+
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY,Constant.HttpUrl.LOGIN_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -205,6 +220,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         //判断当前请求返回是否 有错误，OK 和 ERR
         Map<String, Object> heads = entity.getHeaders();
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+
             switch (entity.getKey()) {
                 case Constant.HttpUrl.GETCODE_KEY:
 
@@ -219,27 +235,36 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                         return;
                     }
                     getCode();
-                case Constant.HttpUrl.REGISTER_KEY:
-                    login();
-
                     break;
+//                case Constant.HttpUrl.REGISTER_KEY:
+//
+//                    login();
+//
+//                    break;
                 case Constant.HttpUrl.LOGIN_KEY:
-                    startActivity();
+                    if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+                        //存储用户名密码到本地
+                        Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", register_account.getText().toString());
+                        Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", register_password.getText().toString());
+                        Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
+                        startActivity();
+                    }
                     break;
             }
         }
         //------------------------------------------------------------
     }
 
-    /**
-     * 登录方法
-     */
-    private void login(){
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("account", register_account.getText().toString());
-        jsonObject.addProperty("password", register_password.getText().toString());
-        MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
+    @InHttp(Constant.HttpUrl.REGISTER_KEY)
+    public void result1(ResponseEntity entity) {
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        login();
     }
+
+
     /**
      * 跳转到首页
      */
@@ -254,7 +279,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
 
     @Override
     public void onValidationSucceeded() {
-        showLoading();
+//        showLoading();
         register();
     }
 
