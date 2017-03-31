@@ -1,6 +1,5 @@
 package com.fengmap.drpeng;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,12 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,11 +33,8 @@ import com.fengmap.android.map.FMViewMode;
 import com.fengmap.android.map.animator.FMInterpolator;
 import com.fengmap.android.map.animator.FMLinearInterpolator;
 import com.fengmap.android.map.animator.FMSceneAnimator;
-import com.fengmap.android.map.event.FMGesture;
-import com.fengmap.android.map.event.FMGestureHandler;
 import com.fengmap.android.map.event.OnFMMapClickListener;
 import com.fengmap.android.map.event.OnFMMapInitListener;
-import com.fengmap.android.map.event.OnFMMapUpdateEvent;
 import com.fengmap.android.map.event.OnFMNodeListener;
 import com.fengmap.android.map.geometry.FMMapCoord;
 import com.fengmap.android.map.geometry.FMTotalMapCoord;
@@ -105,6 +100,7 @@ import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
 import com.jdjt.mangrove.util.CommonUtils;
 import com.jdjt.mangrove.util.MapVo;
+import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
@@ -2453,20 +2449,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     protected void setStatusBar() {
 //        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-        setTranslucentStatus(R.color.white);
-    }
 
-    /**
-     * 设置沉浸式状态栏
-     */
-    @TargetApi(19)
-    public void setStatus() {
-        Window window = this.getWindow();
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        window.setAttributes(layoutParams);
+//        setTranslucentStatus(R.color.transparent);
+//        initTranslucentStatus();
+        StatusUtil.StatusBarLightMode(this);
+        setTranslucentStatus(R.color.transparent);
     }
-
     ImageLoader imageLoader = null;
 
     private void initSlidingMenu() {
@@ -2489,6 +2477,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         textView.setTextColor(Color.parseColor("#666666"));
         textView.setText(getTitle());
         toolbar.setNavigationIcon(R.mipmap.ic_person);
+        toolbar.setFitsSystemWindows(true);
+        toolbar.setClipToPadding(true);
         menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
@@ -2497,7 +2487,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         menu.setShadowDrawable(R.drawable.shadow);
         // 设置滑动菜单视图的宽度
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        menu.setFadeEnabled(true);
+        menu.setFadeEnabled(false);
         menu.setBehindScrollScale(0.333f);// 设置滑动时拖拽效果
         // 设置渐入渐出效果的值
         menu.setFadeDegree(0.35f);
@@ -2524,7 +2514,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
-
     public void isShow() {
         menu.toggle();
     }
@@ -2621,15 +2610,23 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
         }
 //    }
+ AlertDialog dialog;
 
     private void showPopWindow() {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.main_dialog, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("").setView(layout);
-        final AlertDialog dialog = builder.show();
+        dialog = new AlertDialog.Builder(this,R.style.CustomAlertDialogBackground).create();
+        dialog.show();
+//        final AlertDialog dialog = builder.show();
+        WindowManager.LayoutParams layoutParams=dialog.getWindow().getAttributes();
+        layoutParams.width= ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(layoutParams);
+        dialog.setContentView(R.layout.main_dialog);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false);
-        Button btn = (Button) layout.findViewById(R.id.affirm);
+        Button btn = (Button) dialog.findViewById(R.id.affirm);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2643,7 +2640,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                dialogInterface.dismiss();
 //            }
 //        });
-
 
     }
 }

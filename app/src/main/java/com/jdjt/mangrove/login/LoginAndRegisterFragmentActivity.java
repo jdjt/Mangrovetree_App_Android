@@ -35,7 +35,6 @@ public class LoginAndRegisterFragmentActivity extends CommonActivity {
     }
 //
 
-
     @Override
     public void onBackPressed() {
         showConfirm("是否确定退出？", new SweetAlertDialog.OnSweetClickListener() {

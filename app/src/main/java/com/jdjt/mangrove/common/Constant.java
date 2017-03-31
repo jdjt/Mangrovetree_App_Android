@@ -14,9 +14,9 @@ public class Constant {
          **/
 
         public static final String DATA_USER = "User";
-//        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
+        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
         public static final String SYW_PROJECTMANAGER = "http://syw.mymhotel.com/";
-        public static final String BASE = "http://rc-ws.mymhotel.com/";
+//        public static final String BASE = "http://rc-ws.mymhotel.com/";
         public static final String LOGIN = BASE + "uum/mem/sso/login.json";
         //获取会员信息
         public static final String GETUSERINFO = BASE + "uum/mem/account/member_info.json";

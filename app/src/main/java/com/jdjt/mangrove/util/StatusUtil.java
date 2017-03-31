@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 /**
  * Created by 赵晨璞
  */
-public class StatusBarUtil {
+public class StatusUtil {
 
     /**
      * 修改状态栏为全透明

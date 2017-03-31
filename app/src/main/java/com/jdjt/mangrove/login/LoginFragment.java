@@ -28,7 +28,6 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
-import com.jdjt.mangrovetreelibray.ioc.handler.Handler_TextStyle;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -146,7 +145,8 @@ public class LoginFragment extends Fragment implements ValidationListener {
                 //判断当前请求返回是否 有错误，OK 和 ERR
                 Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
                 if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
-                   if("0".equals( data.get("result"))){
+                   if("1".equals( data.get("result"))){
+
                      Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
                    }else {
                      login();
@@ -200,14 +200,15 @@ public class LoginFragment extends Fragment implements ValidationListener {
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         String message = failedRule.getFailureMessage();
-        if (failedView instanceof EditText) {
-            failedView.requestFocus();
-            Handler_TextStyle handler_TextStyle = new Handler_TextStyle();
-            handler_TextStyle.setString(message);
-//            handler_TextStyle.setBackgroundColor(Color.RED, 0, message.length());
-            ((EditText) failedView).setError(handler_TextStyle.getSpannableString());
-        } else {
-            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        if (failedView instanceof EditText) {
+//            failedView.requestFocus();
+//            Handler_TextStyle handler_TextStyle = new Handler_TextStyle();
+//            handler_TextStyle.setString(message);
+////            handler_TextStyle.setBackgroundColor(Color.RED, 0, message.length());
+//            ((EditText) failedView).setError(handler_TextStyle.getSpannableString());
+//        } else {
+//            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        }
     }
 }

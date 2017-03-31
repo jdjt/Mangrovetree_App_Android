@@ -34,6 +34,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
     <!-- tools:ignore="HardcodedDebugMode" -->
     <application
         android:name=".application.MangrovetreeApplication"
@@ -47,8 +48,7 @@
             android:name="com.fengmap.mapapi.appkey"
             android:value="586474d3190f48f1974777a7a847b063" />
 
-        <activity android:name=".WelcomeActivity"
-          >
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,7 +97,6 @@
             android:label="@string/app_find_password_activity" />
         <activity
             android:name=".activity.MapSearchAcitivity"
-            android:label="@string/title_activity_map_search_acitivity"
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".login.UserAgreementWebActivity"
@@ -108,7 +107,10 @@
             android:label="关于红树林导航"
             android:theme="@style/AppTheme.Base" />
 
-        <service android:name=".service.DownloadService" android:enabled="true"/>
+        <service
+            android:name=".service.DownloadService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>
