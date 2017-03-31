@@ -188,7 +188,7 @@ public class NewInsideModelView extends RelativeLayout {
     }
 
     public void setNaviNeedDistance(String needDistance) {
-        fm_navi_need_distance.setText(needDistance);
+        fm_navi_need_distance.setText("步行"+needDistance);
     }
 
     public void setNaviNeedCalorie(String needCalorie) {
