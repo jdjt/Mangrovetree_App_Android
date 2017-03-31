@@ -11,7 +11,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -275,9 +274,12 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         initTags(content);
         SpannableString spanText = new SpannableString(content);
         // 设置字体大小
-        spanText.setSpan(new ImageSpan(getDrawable(R.mipmap.text_bg)), 0, spanText.length(),
+        // 设置字体大小
+        spanText.setSpan(new AbsoluteSizeSpan(2, true), 0, spanText.length(),
                 Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        searchView.setQuery(content, true);
+        // 设置字体颜色
+        spanText.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        searchView.setQuery(spanText, true);
     }
 
     @Override
@@ -411,9 +413,10 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
                 gl_tags.removeViewAt(0);
                 mSearchSrcTextView.setText("");
                 mSearchSrcTextView.clearFocus();
+                return true;
             }
-
         }
+        super.onKeyDown(keyCode,event);
         return true;
     }
 

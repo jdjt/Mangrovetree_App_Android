@@ -98,7 +98,6 @@ import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
-import com.jdjt.mangrove.util.CommonUtils;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
@@ -106,7 +105,6 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
-import com.jdjt.mangrovetreelibray.ioc.handler.Handler_File;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -122,10 +120,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.fengmap.android.wrapmv.Tools.OUTSIDE_MAP_ID;
 import static com.fengmap.drpeng.FMAPI.TARGET_ADD_MARKER;
@@ -2469,7 +2464,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        setStatus();
 //      CommonUtils.updateApp(this);
         showPopWindow();
+
         Toolbar toolbar = getActionBarToolbar();
+        toolbar.findViewById(R.id.app_back).setVisibility(View.GONE);
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setAlpha(1);
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);

@@ -50,8 +50,10 @@
             android:id="@+id/search_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/icon_seach_text"
+            android:background="@drawable/selector_button_bg"
+            android:src="@mipmap/icon_seach_text"
             android:clickable="true"
+            android:foreground="@drawable/selector_button_bg"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
         <com.jdjt.mangrove.view.FlowLayout
@@ -59,7 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-
             android:layout_marginTop="10dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"></com.jdjt.mangrove.view.FlowLayout>
 
