@@ -472,7 +472,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     private void showNaviPopWinidow(){
         main_bottom_bar.measure(0,0);
         mOpenModelInfoWindow.getConvertView().measure(0,0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight()-1);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight()-main_bottom_bar.getMeasuredHeight());
 
         mLastModel = mCurrentModel;
 
@@ -1598,7 +1598,11 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 FMTotalMapCoord locatePosition = null;
                 while (isRun) {
                     synchronized (FMLocationService.instance()) {
-                        locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
+                        if(isInHotel){
+                            locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
+                        }else {
+                            locatePosition = getdefaultcoord();
+                        }
                         FMLocationService.instance().clearFirstMyLocatePosition();
                     }
                     if (locatePosition != null) {

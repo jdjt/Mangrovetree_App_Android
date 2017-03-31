@@ -245,7 +245,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private Handler mapHandler;
     private PopupWindow popupWindow;
 
-    private boolean isInHotel = false;
     private boolean isShowMarker = false;
 
     @Init
@@ -1642,7 +1641,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
         Log.d("TAGTAGTAG", "底部高度=" + main_bottom_bar.getMeasuredHeight() + " 内容高度：" + mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
 //        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.NO_GRAVITY, 0, 0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight() - 1);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(800)
@@ -1656,17 +1655,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     public void onMapInitFailure(String mapPath, int code) {
 
-    }
-
-    /**
-     * @method 设置默认位置坐标点为主大堂
-     */
-    private FMTotalMapCoord getdefaultcoord() {
-        //默认位置坐标点
-        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7, 2071275.90186538, 0.0);
-        defaultPosition.setGroupId(1);
-        defaultPosition.setMapId("79980");
-        return defaultPosition;
     }
 
     @Override
@@ -1933,7 +1921,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         if (pIndex <= points.size() - 2) {
             float currLineAngle = (float) FMAPI.calcuAngle(pCurrCoord, points.get(pIndex + 1));
             if (mLastLineAngle != -1 && Math.abs(currLineAngle - mLastLineAngle) > 0) {
-                mMap.setRotate(-(float) FMMath.degreeToRad(currLineAngle));
+//                mMap.setRotate(-(float) FMMath.degreeToRad(currLineAngle));
                 mMap.updateMap();
             }
             mLastLineAngle = currLineAngle;
