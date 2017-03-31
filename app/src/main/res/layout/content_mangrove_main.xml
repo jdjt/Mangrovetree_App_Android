@@ -86,6 +86,10 @@
             android:layout_height="30dp" />
 
     </com.fengmap.android.wrapmv.FMMangroveMapView>
+    <TextView
+        android:id="@+id/map_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <include
         layout="@layout/main_bottom_bar"/>
