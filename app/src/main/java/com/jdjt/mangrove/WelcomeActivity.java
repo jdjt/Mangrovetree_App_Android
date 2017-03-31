@@ -87,7 +87,7 @@ public class WelcomeActivity extends AppCompatActivity {
     };
 
     protected void init() throws InterruptedException {
-        isNetworkConneted(this);
+
         PackageManager pm = getPackageManager();
         PackageInfo pi = null;
         try {
@@ -105,22 +105,22 @@ public class WelcomeActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
+        isNetworkConneted(this);
     }
 
     /**
-     * 判断是否有网络连接
-     * @param context
-     * @return
+     *  判断是否有网络连接
+     *  @param context
+     *  @return
      */
-    public boolean isNetworkConneted(Context context){
+    public boolean isNetworkConneted(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isAvailable()){
-
-        }
+        if (networkInfo != null && networkInfo.isAvailable()) {
+        } else {
 //        Toast.makeText(this,"网络连接断开，请检查网络设置",Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class));
+            startActivity(new Intent(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class));
+        }
         return false;
     }
 //
