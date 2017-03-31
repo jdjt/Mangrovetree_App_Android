@@ -55,7 +55,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     @InView(value = R.id.binding_validate)
     private Button binding_validate;//验证码按钮
     @InView(value = R.id.binding_submit)
-    private Button binding_submit;  //注册按钮
+    private Button binding_submit;  //保存按钮
     //验证
     Validator validator;
 

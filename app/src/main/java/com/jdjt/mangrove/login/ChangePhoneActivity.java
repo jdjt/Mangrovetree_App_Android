@@ -53,7 +53,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
     @InView(value = R.id.find_validation)
     private Button find_validation;//验证码按钮
     @InView(value = R.id.find_next_button)
-    private Button find_next_button;  //注册按钮
+    private Button find_next_button;  //下一步按钮
     //验证
     Validator validator;
 
