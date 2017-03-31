@@ -227,7 +227,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LinearLayout main_bottom_bar;
     private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
     private TextView call_button_text, search_button_text, globle_plateform_button_text;
-    private TextView header_first_tv;
+    private TextView header_first_tv,map_cover;
 
     //    导航菜单
     private SlidingMenu menu = null;
@@ -322,7 +322,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMAPI.instance().mRouteManager,
                 FMAPI.instance().mZoneManager);
         mMapView.setOnTouchListener(this);
-
+        map_cover = (TextView) findViewById(R.id.map_cover);
+        map_cover.setOnClickListener(this);
         fbd = new FMDBMapElementOveridDao();
     }
 
@@ -992,6 +993,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        if(!isMapLoadCompleted){
+            return;
+        }
         switch (v.getId()) {
             case R.id.fm_bt_route:    //打开路线
                 if (!isMapLoadCompleted) {
@@ -1071,16 +1075,19 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMAPI.instance().gotoActivity(this, MapSearchAcitivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
-                Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, "全球度假");
                 break;
             case R.id.call_service_btn:
-                Toast.makeText(this, "呼叫服务", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, "呼叫服务");
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){
 //                    dismiss();
 //                }
 //                break;
+            case R.id.map_cover:
+                ToastUtils.showToast(this,"map loading!");
+                break;
             default:
                 break;
         }
@@ -1089,6 +1096,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     // 按钮触摸事件
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(!isMapLoadCompleted){
+            return false;
+        }
         switch (v.getId()) {
             //搜索
             case R.id.search_dest_btn:
@@ -1475,6 +1485,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         eml.setOnFMNodeListener(new OnFMNodeListener() {
             @Override
             public boolean onClick(FMNode pFMNode) {
+                if(!isMapLoadCompleted){
+                    return false;
+                }
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
@@ -1540,6 +1553,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         isMapLoadCompleted = true;
 
         mProgressDialog.dismiss();
+        if(isMapLoadCompleted){
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    map_cover.setVisibility(View.GONE);
+                }
+            });
+        }
 
         FMMapSDK.setLocateServiceState(true);
 //        FMMapSDK.setCallServiceState(true);
