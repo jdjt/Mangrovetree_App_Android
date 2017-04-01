@@ -1,16 +1,16 @@
 package com.jdjt.mangrove.application;
 
 import android.app.Application;
+import android.support.annotation.Keep;
 
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.http.HttpInterFace;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.net.IocHttpListener;
 import com.jdjt.mangrovetreelibray.ioc.net.IocListener;
 import com.jdjt.mangrovetreelibray.ioc.net.NetConfig;
-import com.jdjt.mangrovetreelibray.ioc.plug.PlugConstants;
-import com.jdjt.mangrovetreelibray.ioc.plug.login.LoginParameter;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.InternetConfig;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
@@ -30,7 +30,8 @@ import java.util.HashMap;
 public class MangrovetreeApplication extends Application {
     public static MangrovetreeApplication instance;
     public Http<HttpInterFace> http;
-
+    //全局拦截器
+    public IocHttpListener<ResponseEntity> listener =null;
 
     @Override
     public void onCreate() {
@@ -43,58 +44,52 @@ public class MangrovetreeApplication extends Application {
     }
 
     // 增加一个自动获取照片的第三方库
+    @Keep
     public void plugLoad() {
         // ------------------------------------------------------------------
         // 从本地或者摄像头获取照片模块
 //        PlugConstants.setPlugIn(new PhotoParameter());
         // 登录模块
-        PlugConstants.setPlugIn(new LoginParameter());
+//        PlugConstants.setPlugIn(new LoginParameter());
         // ------------------------------------------------------------------
         // 框架只是实现了分发，具体核心请求模块还必须用自己或者第三方网络请求框架
         // 网络请求的统一拦截处 异步请求 请返回 请求的值 异步 手动分发
         http = new Http<HttpInterFace>(HttpInterFace.class);
         IocListener.newInstance().setHttpListener(listener);
-    }
-
-    //全局拦截器
-    public IocHttpListener<ResponseEntity> listener = new IocHttpListener<ResponseEntity>() {
-
-        @Override
-        public ResponseEntity netCore(NetConfig config) {
-            System.out.println("拦截请求：" + config);
+        listener= new IocHttpListener<ResponseEntity>() {
+            @Override
+            public ResponseEntity netCore(NetConfig config) {
+                Ioc.getIoc().getLogger().i("拦截请求：" + config);
 //            config.setHead(HeaderConst.inHeaders());
-            InternetConfig netConfig = InternetConfig.defaultConfig();
-            netConfig.setHead(HeaderConst.inHeaders());
-            netConfig.setKey(config.getCode());
-            ResponseEntity reslut = null;
+                InternetConfig netConfig = InternetConfig.defaultConfig();
+                netConfig.setHead(HeaderConst.inHeaders());
+                netConfig.setKey(config.getCode());
+                ResponseEntity reslut = null;
 //
-            try {
-                switch (config.getType()) {
-                    case GET:
-                        reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
-                        break;
-                    case POST:
-                        reslut = FastHttp.postString(config.getUrl(), config.getParam(), netConfig);
-                        break;
-                    case FORM:
-                        reslut = FastHttp.form(config.getUrl(), config.getParams(), new HashMap<String, File>(), netConfig);
-                        break;
-                    case WEB:
-                        netConfig.setMethod(config.getMethod());
-                        netConfig.setName_space(config.getName_space());
-                        reslut = FastHttp.webServer(config.getUrl(), config.getParams(), netConfig, "post");
-                        break;
+                try {
+                    switch (config.getType()) {
+                        case GET:
+                            reslut = FastHttp.get(config.getUrl(), config.getParams(), netConfig);
+                            break;
+                        case POST:
+                            reslut = FastHttp.postString(config.getUrl(), config.getParam(), netConfig);
+                            break;
+                        case FORM:
+                            reslut = FastHttp.form(config.getUrl(), config.getParams(), new HashMap<String, File>(), netConfig);
+                            break;
+                        case WEB:
+                            netConfig.setMethod(config.getMethod());
+                            netConfig.setName_space(config.getName_space());
+                            reslut = FastHttp.webServer(config.getUrl(), config.getParams(), netConfig, "post");
+                            break;
+                    }
+                    Ioc.getIoc().getLogger().i("拦截结果：" + reslut);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    Ioc.getIoc().getLogger().i("请求超时：" + reslut);
                 }
-                System.out.println("拦截结果：" + reslut);
-
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                System.out.println("请求超时：" + reslut);
-
+                return reslut;
             }
-            return reslut;
-        }
-    };
-
-
+        };
+    }
 }

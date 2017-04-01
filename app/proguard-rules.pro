@@ -15,74 +15,81 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
 -keep public class * extends com.sanders.db.IDColumn
 
-#指定代码的压缩级别
--optimizationpasses 5
-
-#包明不混合大小写
--dontusemixedcaseclassnames
-
-#不去忽略非公共的库类
--dontskipnonpubliclibraryclasses
-
- #优化  不优化输入的类文件
--dontoptimize
-
- #预校验
--dontpreverify
-
- #混淆时是否记录日志
--verbose
-
- # 混淆时所采用的算法
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-#保持 Parcelable 不被混淆
--keep class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator *;
-}
-
-#如果有引用v4包可以添加下面这行
--keep public class * extends android.support.v4.app.Fragment
-#保持 Serializable 不被混淆
--keepnames class * implements java.io.Serializable
-#保持 Serializable 不被混淆并且enum 类也不被混淆
--keepclassmembers class * implements java.io.Serializable {
-    static final long serialVersionUID;
-    private static final java.io.ObjectStreamField[] serialPersistentFields;
-    !static !transient <fields>;
-    !private <fields>;
-    !private <methods>;
-    private void writeObject(java.io.ObjectOutputStream);
-    private void readObject(java.io.ObjectInputStream);
-    java.lang.Object writeReplace();
-    java.lang.Object readResolve();
-}
-#保持枚举 enum 类不被混淆
--keepclassmembers enum * {
-  public static **[] values();
-  public static ** valueOf(java.lang.String);
-}
-#不混淆资源类
--keepclassmembers class **.R$* {
-    public static <fields>;
-}
-#############################################################################################
-########################                 以上通用           ##################################
-#############################################################################################
+# http client
+-keep class org.apache.http.** {*; }
 #gson
 #如果用用到Gson解析包的，直接添加下面这几行就能成功混淆，不然会报错。
 -keepattributes Signature
+-keepattributes *Annotation*
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.google.gson.** { *; }
 -keep class com.google.gson.stream.** { *; }
-
+-keep class com.google.gson.examples.android.model.** { *; }
 # 如果使用了Gson之类的工具要使被它解析的JavaBean类即实体类不被混淆。
 -keep class com.matrix.app.entity.json.** { *; }
 -keep class com.matrix.appsdk.network.model.** { *; }
 #mangrovetreelibray
--keep class com.jdjt.mangrovetreelibray.ioc.** { *; }
--keep class com.jdjt.mangrovetreelibray.utils.** { *; }
--keep class com.jdjt.mangrovetreelibray.views.** { *; }
+#######
+# 其它第三方库
+#-libraryjars libs/fengmap-2.0.60.jar
+
+#universalimageloader图片加载框架不混淆
+-keep class com.nostra13.universalimageloader.** { *; }
+-dontwarn com.nostra13.universalimageloader.**
+
+
+-keep class **$DatabaeField
+-keep class **$DatabaseTable
+#OrmLite uses reflection
+#第三方Tab
+-keep class com.flyco.tablayout.** {
+   *;
+}
+#######
+-keep class java.lang.** {*;}
+-keep class java..** {*;}
+-keep class org.** {*;}
+-keep class  java.util.** {*;}
+#--------------------------------------------#
+#Warning:library class android.webkit.WebView depends on program class android.net.http.SslCertificate
+
+-dontwarn android.net.http.**
+-keep class android.net.http.** { *;}
+#Warning:library class org.apache.http.conn.ssl.SSLSocketFactory depends on program class org.apache.http.conn.scheme.HostNameResolver
+-dontwarn org.apache.http.**
+-keep class org.apache.http.** { *;}
+
+-dontwarn  com.jdjt.mangrovetreelibray.**
+-keep class com.jdjt.mangrovetreelibray.** { *;}
+#-keep class com.jdjt.mangrovetreelibray.ioc.** { *; }
+#-keep class com.jdjt.mangrovetreelibray.utils.** { *; }
+#-keep class com.jdjt.mangrovetreelibray.views.** { *; }
+-keep class  com.jdjt.mangrove.http.** {*;}
+#-keepnames class com.jdjt.mangrove$* {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keepclassmembers class * extends android.app.Application {
+#    public void *();
+#}
+-keepnames class com.jdjt.mangrovetreelibray.ioc.net$IocHttp {
+    public <fields>;
+    public <methods>;
+}
+#-keep class **$$InView{*;}
+
+# # -------------------------------------------
+# #  ######## 内部类混淆配置  ##########
+# # -------------------------------------------
+-keepclassmembers class com.jdjt.mangrove.application.MangrovetreeApplication$*{*;}
+
+-keep class com.jdjt.mangrove.fragment.SearchFragment$*{
+        public <fields>;
+        public <methods>;
+}

@@ -1,5 +1,8 @@
 package com.jdjt.mangrove.common;
 
+
+import com.jdjt.mangrove.BuildConfig;
+
 /*
  * Author: wmy
  * Description:
@@ -14,7 +17,7 @@ public class Constant {
          **/
 
         public static final String DATA_USER = "User";
-        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
+        public static final String BASE = BuildConfig.API_SERVER_URL;// 服务器 外网
         public static final String SYW_PROJECTMANAGER = "http://syw.mymhotel.com/";
 //        public static final String BASE = "http://rc-ws.mymhotel.com/";
         public static final String LOGIN = BASE + "uum/mem/sso/login.json";

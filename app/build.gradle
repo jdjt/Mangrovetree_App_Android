@@ -10,6 +10,8 @@ android {
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.jdjt.mangrove"
+        buildConfigField 'String','API_SERVER_URL','"http://mws.mymhotel.com/"'
+//        buildConfigField 'String','API_SERVER_URL','"http://mws.mymhotel.com/"'
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -18,6 +20,17 @@ android {
 //            abiFilters 'armeabi', 'x86'// 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'mips', 'mips64'
 //        }
         vectorDrawables.useSupportLibrary = true
+    }
+
+    //aapt配置
+    aaptOptions {
+        //不用压缩的文件
+        noCompress 'pak', 'dat', 'bin', 'notice'
+        //打包时候要忽略的文件
+        ignoreAssetsPattern "!.svn:!.git"
+        //分包
+        //--extra-packages是为资源文件设置别名：意思是通过该应用包名+R，com.android.test1.R和com.android.test2.R都可以访问到资源
+//        additionalParameters '--extra-packages', 'com.android.test1','--extra-packages','com.android.test2'
     }
     //签名
     signingConfigs {
@@ -36,15 +49,15 @@ android {
             // 显示Log
             buildConfigField "boolean", "LOG_DEBUG", "true"
             versionNameSuffix "-debug"
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
         }
 
         release {
-            // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
+            // true
+            buildConfigField "boolean", "LOG_DEBUG", "true"
             //混淆
             minifyEnabled true
             //Zipalign优化
@@ -54,6 +67,8 @@ android {
             shrinkResources true
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            proguardFile 'common.pro'
             //签名
             signingConfig signingConfigs.release
             //设置release版本只包含armeabi和armeabi-v7a的so包
@@ -78,6 +93,25 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+    // lint配置
+    lintOptions {
+        //移除lint检查的error
+        abortOnError false
+        //禁止掉某些lint检查
+        disable 'NewApi'
+    }
+
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'src/main/AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['assets']
+//            jniLibs.srcDirs=['libs']
+//        }
+//    }
+
 }
 
 dependencies {

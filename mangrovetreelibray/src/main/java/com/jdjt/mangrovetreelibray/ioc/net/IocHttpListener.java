@@ -2,6 +2,7 @@ package com.jdjt.mangrovetreelibray.ioc.net;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.support.annotation.Keep;
 
 import com.jdjt.mangrovetreelibray.ioc.core.AnalysisManager;
 import com.jdjt.mangrovetreelibray.ioc.entity.CommonEntity;
@@ -28,6 +29,7 @@ import java.util.HashMap;
  *
  * @author gdpancheng@gmail.com 2014年12月26日 上午12:12:01
  */
+@Keep
 public abstract class IocHttpListener<T> {
 
 	/**
