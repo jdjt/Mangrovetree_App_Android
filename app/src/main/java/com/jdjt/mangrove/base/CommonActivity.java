@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.fengmap.android.map.geometry.FMTotalMapCoord;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
@@ -39,7 +38,6 @@ public class CommonActivity extends AppCompatActivity {
     public static final String EXTRA_TITLE = "title";
 
     SweetAlertDialog pDialog = null;
-    public boolean isInHotel = false;
 
     public void showLoading() {
         if (pDialog == null)
@@ -186,13 +184,12 @@ public class CommonActivity extends AppCompatActivity {
         return mActionBarToolbar;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     protected void setStatusBar() {
 //        setTranslucentStatus( R.color.title_bg);
 //        StatusBarUtil.setStatusBarColor(this, getColor(R.color.title_bg));
         StatusUtil.StatusBarLightMode(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            StatusBarUtil.setColor(this,getResources().getColor(R.color.title_bg,null),0);
-        }
+//        StatusBarUtil.setColor(this,getColor(R.color.title_bg),0);
     }
 
     @Override
@@ -229,16 +226,5 @@ public class CommonActivity extends AppCompatActivity {
         String code = "";
 
         return code;
-    }
-
-    /**
-     * @method 设置默认位置坐标点为主大堂
-     */
-    public FMTotalMapCoord getdefaultcoord() {
-        //默认位置坐标点
-        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7, 2071275.90186538, 0.0);
-        defaultPosition.setGroupId(1);
-        defaultPosition.setMapId("79980");
-        return defaultPosition;
     }
 }

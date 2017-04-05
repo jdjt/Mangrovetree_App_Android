@@ -79,7 +79,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         }
     }
 
-    @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
+    @InListener(ids = {R.id.binding_validate, R.id.binding_submit}, listeners = OnClick.class)
     private void click(View view) {
         account = banding_tel_phone.getText().toString();
         Ioc.getIoc().getLogger().e("当前注册手机号：" + account);
@@ -94,13 +94,13 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
             return;
         }
         switch (view.getId()) {
-            case R.id.find_next_button:
+            case R.id.binding_submit:
                 //验证
                 validator = new Validator(this);
                 validator.setValidationListener(this);
                 validator.validate();
                 break;
-            case R.id.find_validation:
+            case R.id.binding_validate:
                 uuid = Uuid.getUuid();//用于参数的uuid
                 MapVo.set("find_validation", uuid);
                 checkAccount();
@@ -137,12 +137,12 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     private void rebindPhone(){
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
         String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
-        JsonObject json = new JsonObject();
-        json.addProperty("password",password);
-        json.addProperty("bindingType", "1");
-        json.addProperty("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
-        json.addProperty("newBindingInfo", new Gson().toJson(setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString())));
-        MangrovetreeApplication.instance.http.u(this).reBindingPhone(json.toString());
+        HashMap json = new HashMap();
+        json.put("password",password);
+        json.put("bindingType", "1");
+        json.put("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
+        json.put("newBindingInfo", new Gson().toJson(setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString())));
+        MangrovetreeApplication.instance.http.u(this).reBindingPhone(new Gson().toJson(json));
     }
 
     /**
@@ -154,7 +154,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         HashMap  bandingMap  = new HashMap<String, Object>();
         bandingMap.put("targ",targ);//手机号
         bandingMap.put("code",code);//验证码
-        bandingMap.put("uuid", Uuid.getUuid());//客户端uuid
+        bandingMap.put("uuid", uuid);//客户端uuid
         return bandingMap;
     }
     /**
@@ -187,7 +187,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
             return;
         }
         //解析返回的数据
-        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+//        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
