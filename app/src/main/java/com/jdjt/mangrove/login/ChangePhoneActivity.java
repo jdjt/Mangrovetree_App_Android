@@ -46,7 +46,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
     @InView(value = R.id.find_account)
     private EditText find_account;//账号
 
-    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
+    @TextRule(maxLength = 6, minLength = 6, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.find_security_code)
     private EditText find_security_code;//验证码
 
@@ -131,7 +131,6 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
             return;
         }
         //解析返回的数据
-        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
@@ -142,6 +141,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
 
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
+
                     startActivity(new Intent(this,AccountBandingResetActivity.class).putExtra("code",find_security_code.getText().toString()));
                     this.finish();
                     break;

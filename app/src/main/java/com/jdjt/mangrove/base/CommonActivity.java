@@ -184,11 +184,12 @@ public class CommonActivity extends AppCompatActivity {
         return mActionBarToolbar;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     protected void setStatusBar() {
 //        setTranslucentStatus( R.color.title_bg);
 //        StatusBarUtil.setStatusBarColor(this, getColor(R.color.title_bg));
         StatusUtil.StatusBarLightMode(this);
-        StatusBarUtil.setColor(this,getResources().getColor(R.color.title_bg,null),0);
+//        StatusBarUtil.setColor(this,getColor(R.color.title_bg),0);
     }
 
     @Override
