@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -490,7 +491,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (mInitLocatePosition != null) {
                     dealAddLocateMarker(mInitLocatePosition.getGroupId(), mInitLocatePosition.getMapCoord(), mLocationLayer);
                 }
-                mLocationView.setBackgroundResource(R.drawable.fm_green_press_button);
+//                mLocationView.setBackgroundResource(R.drawable.fm_green_press_button);
             }
         }
 
@@ -2571,6 +2572,34 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        view.setLayoutParams(params);
         //或者可以设置padding
         //v.setPadding(0,height,0,0);
+        menu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+            @Override
+            public void onClose() {
+                Log.d("SSSSSSSSSSSS","setOnCloseListener");
+                if(mCurrentModel!=null){
+                    if(!isMapLoadCompleted){
+                        return;
+                    }
+                    //这里需要添加查询模型activity_code的逻辑
+                    String activitycode = "";
+                    ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
+                    if (ActivityCodeList.size() > 0) {
+                        activitycode = ActivityCodeList.get(0).getActivitycode();
+                    }
+                    ShowPopModelView(mCurrentModel, activitycode);
+                }
+            }
+        });
+
+        menu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+            @Override
+            public void onOpen() {
+                Log.d("SSSSSSSSSSSS","setOnOpenListener");
+                if(mOpenModelInfoWindow.isShowing()){
+                    mOpenModelInfoWindow.close();
+                }
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
