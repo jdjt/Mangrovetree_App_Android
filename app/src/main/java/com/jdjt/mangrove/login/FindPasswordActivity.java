@@ -74,8 +74,9 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         } else {
             uuid = Uuid.getUuid();//给初始值
         }
-        callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
-        find_account.setText(callPhone);
+//        callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
+//        find_account.setText(callPhone);
+
     }
 
     @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)

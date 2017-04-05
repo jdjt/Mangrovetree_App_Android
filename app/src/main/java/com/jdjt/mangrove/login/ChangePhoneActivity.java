@@ -73,6 +73,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
         }
         callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
         find_account.setText(callPhone);
+        find_account.setFocusable(false);
     }
 
     @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
@@ -135,6 +136,8 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
             return;
         }
         //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        //解析返回的数据
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
@@ -149,8 +152,28 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
                     startActivity(new Intent(this,AccountBandingResetActivity.class).putExtra("code",find_security_code.getText().toString()));
                     this.finish();
                     break;
+                case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
+                    String result = data.get("result") + "";
+                    Ioc.getIoc().getLogger().e(result);
+                    //账号重复
+                    if (result.equals("1")) {
+                        Ioc.getIoc().getLogger().e( "该手机号已注册");
+                        CommonUtils.onErrorToast(find_account, "该账号已注册", this);
+                        return;
+                    }
+                    getCode();
+                    break;
             }
         }
+    }
+    /**
+     * 验证手机是否重复
+     */
+    private void checkAccount() {
+        JsonObject json = new JsonObject();
+        String account = find_account.getText() + "";
+        json.addProperty("account", account);
+        MangrovetreeApplication.instance.http.u(this).checkAccount(json.toString());
     }
 
     @Override
