@@ -210,7 +210,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
 
     @Override
     public void onValidationSucceeded() {
-        showLoading();
+//        showLoading();
         rebindPhone();
     }
 

@@ -21,6 +21,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -63,6 +64,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
     CountTimer mc;
     String uuid;
     String account;
+    String callPhone;
 
     @InResume
     private void resume() {
@@ -72,6 +74,8 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         } else {
             uuid = Uuid.getUuid();//给初始值
         }
+        callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
+        find_account.setText(callPhone);
     }
 
     @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
