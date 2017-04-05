@@ -67,7 +67,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     @InView(value = R.id.register_password)
     private EditText register_password;//密码
 
-    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
+    @TextRule(maxLength = 6, minLength = 6, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.register_security_code)
     private EditText register_security_code;//验证码
 
@@ -203,7 +203,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
     }
 
-    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY,Constant.HttpUrl.LOGIN_KEY})
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY,Constant.HttpUrl.LOGIN_KEY,Constant.HttpUrl.CHECKCAPTCHA_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -236,11 +236,15 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                     }
                     getCode();
                     break;
-//                case Constant.HttpUrl.REGISTER_KEY:
-//
-//                    login();
-//
-//                    break;
+                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
+                    String r =  data.get("result")+"";
+                     if(r.equals("1")){
+                         Toast.makeText(getContext(),"验证码不正确请重新输入",Toast.LENGTH_SHORT).show();
+//                         CommonUtils.onErrorToast(register_security_code, "验证码不正确请重新输入", this);
+                     }
+                    login();
+
+                    break;
                 case Constant.HttpUrl.LOGIN_KEY:
                     if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
                         //存储用户名密码到本地
@@ -257,10 +261,14 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
 
     @InHttp(Constant.HttpUrl.REGISTER_KEY)
     public void result1(ResponseEntity entity) {
+        uuid = Uuid.getUuid();//用于参数的uuid
+        MapVo.set("register_valitation", uuid);
+        checkAccount();
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
+
         login();
     }
 
@@ -287,22 +295,24 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         CommonUtils.onErrorToast(failedView, failedRule.getFailureMessage(), getActivity());
     }
-    SweetAlertDialog pDialog=null;
-    public void showLoading(){
-        if(pDialog==null)
-            pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("加载中...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
+
+//    注释掉dialog提示
+//    SweetAlertDialog pDialog=null;
+//    public void showLoading(){
+//        if(pDialog==null)
+//            pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//        pDialog.setTitleText("加载中...");
+//        pDialog.setCancelable(false);
+//        pDialog.show();
+//    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(pDialog!=null){
-            pDialog.dismiss();
-            pDialog=null;
-        }
+//        if(pDialog!=null){
+//            pDialog.dismiss();
+//            pDialog=null;
+//        }
     }
 }

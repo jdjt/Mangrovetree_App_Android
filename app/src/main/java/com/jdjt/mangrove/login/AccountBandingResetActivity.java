@@ -48,7 +48,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     @InView(value = R.id.banding_tel_phone)
     private EditText banding_tel_phone;//账号
 
-    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
+    @TextRule(maxLength = 6, minLength = 6, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.binding_security_code)
     private EditText binding_security_code;//验证码
 
