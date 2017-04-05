@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.fengmap.android.map.geometry.FMTotalMapCoord;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
@@ -34,6 +35,7 @@ public class CommonActivity extends AppCompatActivity {
     private Toolbar mActionBarToolbar;
 
     protected ProgressDialog dialog = null;
+    public boolean isInHotel = false;
 
     public static final String EXTRA_TITLE = "title";
 
@@ -226,5 +228,15 @@ public class CommonActivity extends AppCompatActivity {
         String code = "";
 
         return code;
+    }
+    /**
+     * @method 设置默认位置坐标点为主大堂
+     */
+    public FMTotalMapCoord getdefaultcoord() {
+        //默认位置坐标点
+        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7, 2071275.90186538, 0.0);
+        defaultPosition.setGroupId(1);
+        defaultPosition.setMapId("79980");
+        return defaultPosition;
     }
 }

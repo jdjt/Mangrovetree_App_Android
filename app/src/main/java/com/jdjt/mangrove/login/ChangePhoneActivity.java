@@ -20,6 +20,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -61,6 +62,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
     CountTimer mc;
     String uuid;
     String account;
+    String callPhone;
     @InResume
     private void resume() {
         //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
@@ -69,11 +71,14 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
         } else {
             uuid = Uuid.getUuid();//给初始值
         }
+        callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
+        find_account.setText(callPhone);
     }
 
     @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
     private void click(View view) {
-        account = find_account.getText().toString();
+
+        account = callPhone;
         Ioc.getIoc().getLogger().e("当前注册手机号：" + account);
         //验证账号 邮箱,手机
         if (!account.matches(Rules.REGEX_TELPHONE)) {
@@ -116,7 +121,6 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
      */
     private void getCode() {
         JsonObject json = new JsonObject();
-        String account = find_account.getText() + "";
         json.addProperty("account", account);
         json.addProperty("logicFlag", "1");
         json.addProperty("uuid", uuid);

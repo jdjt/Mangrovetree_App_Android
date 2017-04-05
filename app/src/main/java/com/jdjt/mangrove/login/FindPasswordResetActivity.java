@@ -36,16 +36,17 @@ import java.util.Map;
  */
 @InLayer(value = R.layout.mem_find__password_reset,parent = R.id.center_common,isTitle = true)
 public class FindPasswordResetActivity extends CommonActivity implements Validator.ValidationListener {
-    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 2)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 1)
     @InView
     private EditText find_reset_password;
+
     @ConfirmPassword(messageResId = R.string.err, order = 2)
     @InView
     private EditText find_reset_password_cm;
     //验证
     Validator validator;
 
-    @InListener(ids = R.id.password_submit_btn, listeners = OnClick.class)
+    @InListener(ids = R.id.find_reset_button, listeners = OnClick.class)
     private void click(View v) {
         //验证
         validator = new Validator(this);
@@ -85,7 +86,7 @@ public class FindPasswordResetActivity extends CommonActivity implements Validat
             return;
         }
         //解析返回的数据
-        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+//        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
