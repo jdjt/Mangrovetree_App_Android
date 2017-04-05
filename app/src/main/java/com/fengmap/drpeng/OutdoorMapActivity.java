@@ -711,12 +711,15 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                         clearStartAndEndMarker();
                         clearCalculateRouteLineMarker();
                         dealViewChangedWhenOverNavigationMode();
+//                        mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
 
-                        mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
-
-                        processingView.getStopNaviButton().setText("结束");
+                        processingView.getStopNaviButton().setText("结束导航");
 
                         mOpenNaviProcessWindow.close();
+                        if (mLastModel != null) {
+                            mMapView.setHighlight(mLastModel, false);
+                        }
+                        mMap.updateMap();
                         dialog.dismiss();
                     }
                 });

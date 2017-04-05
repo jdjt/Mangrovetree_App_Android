@@ -1210,7 +1210,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                 clearCalculateRouteLineMarker();
                 clearStartAndEndMarker();
 
-                processingView.getStopNaviButton().setText("结束");
+                processingView.getStopNaviButton().setText("结束导航");
 
                 mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
 
