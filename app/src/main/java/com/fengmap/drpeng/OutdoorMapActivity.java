@@ -343,7 +343,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             public void onGlobalLayout() {
                 slidingWidth = logo_view.getWidth();
                 logoWidth = map_logo.getWidth();
-                textWidth = map_logo_text.getRight()-map_logo_text.getLeft();
+                textWidth = map_logo_text.getWidth();
                 ViewHelper.setTranslationX(logo_view,textWidth);
             }
         });
