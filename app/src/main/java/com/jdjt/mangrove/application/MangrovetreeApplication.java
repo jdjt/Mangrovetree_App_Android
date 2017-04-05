@@ -7,6 +7,7 @@ import com.fengmap.android.FMMapSDK;
 import com.fengmap.drpeng.common.ResourcesUtils;
 import com.jdjt.mangrove.common.HeaderConst;
 import com.jdjt.mangrove.http.HttpInterFace;
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.net.IocHttpListener;
 import com.jdjt.mangrovetreelibray.ioc.net.IocListener;
@@ -36,7 +37,6 @@ public class MangrovetreeApplication extends Application {
     @Override
     public void onCreate() {
         instance = this;
-
         plugLoad();
 
         FMMapSDK.init(this, ResourcesUtils.getSDPath() + "/fm_drpeng");
@@ -56,8 +56,10 @@ public class MangrovetreeApplication extends Application {
         // 网络请求的统一拦截处 异步请求 请返回 请求的值 异步 手动分发
         http = new Http<HttpInterFace>(HttpInterFace.class);
         IocListener.newInstance().setHttpListener(listener);
+
         listener= new IocHttpListener<ResponseEntity>() {
             @Override
+            @NotProguard
             public ResponseEntity netCore(NetConfig config) {
                 Ioc.getIoc().getLogger().i("拦截请求：" + config);
 //            config.setHead(HeaderConst.inHeaders());
@@ -83,10 +85,10 @@ public class MangrovetreeApplication extends Application {
                             reslut = FastHttp.webServer(config.getUrl(), config.getParams(), netConfig, "post");
                             break;
                     }
-                    Ioc.getIoc().getLogger().i("拦截结果：" + reslut);
+//                    Ioc.getIoc().getLogger().i("拦截结果：" + reslut);
                 } catch (Exception exception) {
                     exception.printStackTrace();
-                    Ioc.getIoc().getLogger().i("请求超时：" + reslut);
+//                    Ioc.getIoc().getLogger().i("请求超时：" + reslut);
                 }
                 return reslut;
             }

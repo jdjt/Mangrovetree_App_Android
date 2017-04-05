@@ -2,8 +2,11 @@ package com.jdjt.mangrovetreelibray.ioc.handler;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.io.BufferedInputStream;
@@ -50,6 +53,7 @@ import java.util.List;
  *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2012-5-12
  */
+@NotProguard
 public class Handler_File {
 
 	public final static String FILE_EXTENSION_SEPARATOR = ".";
@@ -62,6 +66,7 @@ public class Handler_File {
 	 * @throws IOException
 	 *             if an error occurs while operator BufferedReader
 	 */
+	@NotProguard
 	public static StringBuilder readFile(String filePath) {
 		File file = new File(filePath);
 		StringBuilder fileContent = new StringBuilder("");
@@ -105,6 +110,7 @@ public class Handler_File {
 	 * @throws IOException
 	 *             if an error occurs while operator FileWriter
 	 */
+	@NotProguard
 	public static boolean writeFile(String filePath, String content, boolean append) {
 		FileWriter fileWriter = null;
 		try {
@@ -134,6 +140,7 @@ public class Handler_File {
 	 * @throws IOException
 	 *             if an error occurs while operator FileWriter
 	 */
+	@NotProguard
 	public static boolean writeFile(String filePath, InputStream stream) {
 		OutputStream o = null;
 		try {
@@ -169,6 +176,7 @@ public class Handler_File {
 	 * @throws IOException
 	 *             if an error occurs while operator BufferedReader
 	 */
+	@NotProguard
 	public static List<String> readFileToList(String filePath) {
 		File file = new File(filePath);
 		List<String> fileContent = new ArrayList<String>();
@@ -220,6 +228,7 @@ public class Handler_File {
 	 * @return file name from path, not include suffix
 	 * @see
 	 */
+	@NotProguard
 	public static String getFileNameWithoutExtension(String filePath) {
 		if (Handler_String.isEmpty(filePath)) {
 			return filePath;
@@ -257,6 +266,7 @@ public class Handler_File {
 	 * @param filePath
 	 * @return file name from path, include suffix
 	 */
+	@NotProguard
 	public static String getFileName(String filePath) {
 		if (Handler_String.isEmpty(filePath)) {
 			return filePath;
@@ -288,6 +298,7 @@ public class Handler_File {
 	 * @param filePath
 	 * @return
 	 */
+	@NotProguard
 	public static String getFolderName(String filePath) {
 
 		if (Handler_String.isEmpty(filePath)) {
@@ -320,6 +331,7 @@ public class Handler_File {
 	 * @param filePath
 	 * @return
 	 */
+	@NotProguard
 	public static String getFileExtension(String filePath) {
 		if (Handler_String.isBlank(filePath)) {
 			return filePath;
@@ -350,6 +362,7 @@ public class Handler_File {
 	 *         <li>return {@link java.io.File#makeFolder}</li>
 	 *         </ul>
 	 */
+	@NotProguard
 	public static boolean makeDirs(String filePath) {
 		String folderName = getFolderName(filePath);
 		if (Handler_String.isEmpty(folderName)) {
@@ -375,6 +388,7 @@ public class Handler_File {
 	 * @param filePath
 	 * @return
 	 */
+	@NotProguard
 	public static boolean isFileExist(String filePath) {
 		if (Handler_String.isBlank(filePath)) {
 			return false;
@@ -390,6 +404,7 @@ public class Handler_File {
 	 * @param directoryPath
 	 * @return
 	 */
+	@NotProguard
 	public static boolean isFolderExist(String directoryPath) {
 		if (Handler_String.isBlank(directoryPath)) {
 			return false;
@@ -410,6 +425,7 @@ public class Handler_File {
 	 * @param path
 	 * @return
 	 */
+	@NotProguard
 	public static boolean deleteFile(String path) {
 		if (Handler_String.isBlank(path)) {
 			return true;
@@ -445,6 +461,7 @@ public class Handler_File {
 	 * @param path
 	 * @return
 	 */
+	@NotProguard
 	public static long getFileSize(String path) {
 		if (Handler_String.isBlank(path)) {
 			return -1;
@@ -463,6 +480,7 @@ public class Handler_File {
 	 * @throws IOException
 	 * @return void
 	 */
+	@NotProguard
 	public static void copyFile(File sourceFile, File targetFile) {
 		BufferedInputStream inBuff = null;
 		BufferedOutputStream outBuff = null;
@@ -494,7 +512,7 @@ public class Handler_File {
 			}
 		}
 	}
-
+	@NotProguard
 	public static File getExternalCacheDir(Context context, String dirs_name) {
 		File dataDir = new File(new File(Environment.getExternalStorageDirectory(), "Android"), "data");
 		File appCacheDir = new File(new File(new File(dataDir, context.getPackageName()), "cache"), dirs_name);
@@ -511,7 +529,7 @@ public class Handler_File {
 		}
 		return appCacheDir;
 	}
-
+	@NotProguard
 	public static void write(File file, String data) {
 		BufferedWriter out = null;
 		try {
@@ -531,7 +549,7 @@ public class Handler_File {
 			}
 		}
 	}
-
+	@NotProguard
 	public static String getAsString(InputStream file) {
 		try {
 			ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -555,7 +573,8 @@ public class Handler_File {
 			}
 		}
 	}
-
+	@Nullable
+	@NotProguard
 	public static String getAsString(File file) {
 		if (!file.exists())
 			return null;
@@ -581,7 +600,7 @@ public class Handler_File {
 			}
 		}
 	}
-
+	@NotProguard
 	public static void setObject(String fileName, Serializable object) {
 		long time = System.currentTimeMillis();
 		FileOutputStream fos = null;
@@ -607,6 +626,8 @@ public class Handler_File {
 		Ioc.getIoc().getLogger().d(fileName + " 序列化存储耗时为:" + (System.currentTimeMillis() - time));
 	}
 
+	@Nullable
+	@NotProguard
 	public static <T> T getObject(String fileName) {
 		long time = System.currentTimeMillis();
 		FileInputStream fis = null;
@@ -632,6 +653,8 @@ public class Handler_File {
 		return null;
 	}
 
+	@NonNull
+	@NotProguard
 	public static String getCacheDirs(String dirs) {
 		File cacheDir = null;
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
@@ -644,6 +667,7 @@ public class Handler_File {
 		}
 		return cacheDir.getPath();
 	}
+	@NotProguard
 	public static File getCacheDirF(String dirs) {
 		File cacheDir = null;
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {

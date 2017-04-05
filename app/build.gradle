@@ -69,6 +69,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             proguardFile 'common.pro'
+            proguardFile 'java.pro'
+
             //签名
             signingConfig signingConfigs.release
             //设置release版本只包含armeabi和armeabi-v7a的so包

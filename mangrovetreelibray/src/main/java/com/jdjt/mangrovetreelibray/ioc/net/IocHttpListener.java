@@ -2,8 +2,8 @@ package com.jdjt.mangrovetreelibray.ioc.net;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.support.annotation.Keep;
 
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.core.AnalysisManager;
 import com.jdjt.mangrovetreelibray.ioc.entity.CommonEntity;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
@@ -29,7 +29,7 @@ import java.util.HashMap;
  *
  * @author gdpancheng@gmail.com 2014年12月26日 上午12:12:01
  */
-@Keep
+@NotProguard
 public abstract class IocHttpListener<T> {
 
 	/**
@@ -190,6 +190,7 @@ public abstract class IocHttpListener<T> {
 	}
 
 	Handler handler = new Handler() {
+		@NotProguard
 		public void handleMessage(android.os.Message msg) {
 		};
 	};

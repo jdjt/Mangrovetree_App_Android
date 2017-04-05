@@ -16,14 +16,15 @@
 #   public *;
 #}
 #1.基本指令区
+-ignorewarnings
 -dontwarn
--optimizationpasses 5
+-optimizationpasses 1
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
 -dontpreverify
 -verbose
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-
+#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-optimizations !code/simplification/cast,!field/*,!class/merging/*
 -keep public class * extends Android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
@@ -56,7 +57,7 @@
 
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
-  
+
 }
 
 -keepnames class * implements java.io.Serializable #需要序列化和反序列化的类不能被混淆（注：Java反射用到的类也不能被混淆）
@@ -69,6 +70,10 @@
     private void readObject(java.io.ObjectInputStream);
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
+}
+-keepclassmembers class * {
+    void *(**On*Event);
+    void *(**On*Listener);
 }
 
 -keepattributes Signature  #过滤泛型（不写可能会出现类型转换错误，一般情况把这个加上就是了）

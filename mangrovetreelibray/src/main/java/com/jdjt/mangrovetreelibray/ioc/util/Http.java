@@ -15,6 +15,7 @@ import java.lang.reflect.Proxy;
  *
  * History:
  */
+
 public class Http<T> {
 
 	private Class<T> clazz;

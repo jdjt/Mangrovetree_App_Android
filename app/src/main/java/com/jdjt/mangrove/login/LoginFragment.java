@@ -26,6 +26,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
@@ -45,25 +46,28 @@ import java.util.Map;
  * Created by huyanan on 2017/3/9.
  */
 @InLayer(R.layout.login)
+@NotProguard
 public class LoginFragment extends Fragment implements ValidationListener {
     //    @InAll
 //    Views v;
+    @NotProguard
     @Telphone(empty = false, message = "请输入正确的手机号", order = 1)
     @InView
     EditText login_account;//账号
-
+    @NotProguard
     @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 2)
     @InView
     EditText login_password;//密码
-
+    @NotProguard
     @InView(value = R.id.password_visible)
     CheckBox password_visible;//密码显示隐藏的checkbox
-
+    @NotProguard
     @InView(binder = @InBinder(listener = OnClick.class, method = "click"))
     Button login_button;//登录按钮
-
+    @NotProguard
     @InView(binder = @InBinder(listener = OnClick.class, method = "click"))
     TextView login_findpwd_button;//忘记密码
+    @NotProguard
     Validator validator;
 
 
@@ -71,7 +75,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
     /**
      * 当点击登陆按钮，会自动获取输入框内的用户名和密码，对其进行验证
      */
-    private void click(View view) {
+    public void click(View view) {
 
         switch (view.getId()){
             case R.id.login_findpwd_button:
@@ -88,6 +92,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
 
     @Init
+    @NotProguard
     public void init() {
         Ioc.getIoc().getLogger().i("初始化登录页面");
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
@@ -112,8 +117,9 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
 
     @InHttp({Constant.HttpUrl.LOGIN_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
+    @NotProguard
     public void result(ResponseEntity entity) {
-
+        Toast.makeText(getActivity(), "进入了返回结果", Toast.LENGTH_SHORT).show();
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
@@ -164,7 +170,8 @@ public class LoginFragment extends Fragment implements ValidationListener {
         Bundle b = new Bundle();
         b.putString(FMAPI.ACTIVITY_WHERE, getActivity().getClass().getName());
         b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
-        FMAPI.instance().gotoActivity(getActivity(), OutdoorMapActivity.class, b);
+        Intent intent = new Intent(getActivity(), OutdoorMapActivity.class);
+        startActivity(intent,b);
         getActivity().finish();
         return;
     }
@@ -176,6 +183,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @Override
     public void onValidationSucceeded() {
+
         checkAccount();
     }
 
@@ -193,6 +201,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
      * 验证账号是否存在
      */
     private void  checkAccount(){
+        Toast.makeText(getActivity(), "进入了checkAccount", Toast.LENGTH_SHORT).show();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("account", login_account.getText().toString());
         MangrovetreeApplication.instance.http.u(this).checkAccount(jsonObject.toString());

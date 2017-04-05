@@ -12,6 +12,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnRadioChecked;
 
@@ -20,12 +21,16 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by huyanan on 2017/3/9.
  */
+@NotProguard
 @InLayer(value = R.layout.activity_longin_and_register_fragment)
 public class LoginAndRegisterFragmentActivity extends CommonActivity {
+    @NotProguard
     @InBean
     private LoginFragment loginFragment;
+    @NotProguard
     @InBean
     private RegisterPhoneFragment registerPhoneFragment;
+    @NotProguard
     @InView
     RadioGroup radioGroup;
 
@@ -47,7 +52,7 @@ public class LoginAndRegisterFragmentActivity extends CommonActivity {
             }
         });
     }
-
+    @NotProguard
     @InListener(ids = {R.id.radioGroup}, listeners = {OnRadioChecked.class})
     public void checkedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
@@ -61,7 +66,7 @@ public class LoginAndRegisterFragmentActivity extends CommonActivity {
                 break;
         }
     }
-
+    @NotProguard
     public void startFragmentAdd(Fragment fragment) {
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

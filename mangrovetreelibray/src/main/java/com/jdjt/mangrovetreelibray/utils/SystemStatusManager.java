@@ -19,6 +19,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout.LayoutParams;
 
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -42,8 +44,15 @@ public class SystemStatusManager {
     private View mNavBarTintView;
     private static boolean sIsMiuiV6;
     private static String sNavBarOverride = null;
-
-    static {
+//
+//    static {
+//
+//    }
+    /**
+     * @param activity The host activity.
+     */
+    @TargetApi(19)
+    public SystemStatusManager(Activity activity) {
         Method methodGetter = null;
         try {
             Class<?> sysClass = Class.forName("android.os.SystemProperties");
@@ -62,13 +71,6 @@ public class SystemStatusManager {
                 }
             }
         }
-    }
-    /**
-     * @param activity The host activity.
-     */
-    @TargetApi(19)
-    public SystemStatusManager(Activity activity) {
-
 
         Window win = activity.getWindow();
         ViewGroup decorViewGroup = (ViewGroup) win.getDecorView();
@@ -336,6 +338,7 @@ public class SystemStatusManager {
      * device configuration.
      *
      */
+    @NotProguard
     public static class SystemBarConfig {
 
         private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";

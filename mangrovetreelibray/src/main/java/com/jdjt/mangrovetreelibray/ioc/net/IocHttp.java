@@ -1,13 +1,12 @@
 package com.jdjt.mangrovetreelibray.ioc.net;
 
-import android.support.annotation.Keep;
-
 import com.jdjt.mangrovetreelibray.ioc.annotation.InForm;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InGet;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InNet;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InParam;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPost;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InWeb;
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.core.IocAnalysis;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.util.LoonConstant;
@@ -24,22 +23,29 @@ import java.util.Map;
 import java.util.Set;
 
 public class IocHttp {
-
+    Class<?>[] inters;
+    Class<?> clazz;
     private String url;
     private int code = LoonConstant.Number.ID_NONE;
     private LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
     private String param = "";
     private NetConfig config;
+    IocHttpListener httpListener;
+    Annotation[][] paramAnnotations;
+    Class<?>[] types;
+    Type[] types2;
+    Annotation[] annotations;
 
-    @Keep
     public Object deal(Object proxy, Method method, Object[] args, Object object) {
+
         String urlField = method.getName().toUpperCase();
-        Class<?>[] inters = proxy.getClass().getInterfaces();
+        inters = proxy.getClass().getInterfaces();
         if (inters.length == 0) {
             Ioc.getIoc().getLogger().e(" 当前类不是网络请求接口无法使用 ");
             return null;
         }
-        Class<?> clazz = inters[0];
+        clazz = inters[0];
+
         InNet inNet = clazz.getAnnotation(InNet.class);
         if (inNet == null) {
             Ioc.getIoc().getLogger().e(" 当前类缺少网络URL注解 ");
@@ -73,7 +79,6 @@ public class IocHttp {
             type = Net.WEB;
             url = web.value().length() > 0 ? web.value() : url;
             config.setMethod(web.method());
-            ;
             config.setName_space(web.space());
         }
         Field field;
@@ -98,12 +103,12 @@ public class IocHttp {
         }
 
         // 获取所有注解
-        Annotation[][] paramAnnotations = method.getParameterAnnotations();
-        Class<?>[] types = method.getParameterTypes();
-        Type[] types2 = method.getGenericParameterTypes();
+        paramAnnotations = method.getParameterAnnotations();
+        types = method.getParameterTypes();
+        types2 = method.getGenericParameterTypes();
 
         for (int i = 0; i < paramAnnotations.length; i++) {
-            Annotation[] annotations = paramAnnotations[i];
+            annotations = paramAnnotations[i];
             InParam inParam = null;
             if (null != annotations && annotations.length > 0) {
                 if (annotations[0].annotationType() == InParam.class) {
@@ -179,18 +184,20 @@ public class IocHttp {
         config.setType(type);
         config.setObject(object);
         config.setParams(params);
-        final IocHttpListener httpListener = IocListener.newInstance().getHttpListener();
+        httpListener = IocListener.newInstance().getHttpListener();
         if (method.getReturnType() != void.class) {
             // 同步
             return httpListener.netCore(this.config);
         } else {
             // 异步
-            IocAnalysis.mAnalysisActivityPool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    httpListener.callback(config, httpListener.netCore(config));
-                }
-            });
+            IocAnalysis.mAnalysisActivityPool.execute(
+                    new Runnable() {
+                        @Override
+                        @NotProguard
+                        public void run() {
+                            httpListener.callback(config, httpListener.netCore(config));
+                        }
+                    });
             return null;
         }
     }
