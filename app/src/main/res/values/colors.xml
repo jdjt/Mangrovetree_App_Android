@@ -77,6 +77,7 @@
 
     <color name="btn_bg_green_80">#DBE1F6DB</color>
     <!-- 按钮背景色 绿色 -->
+    <color name="btn_bg_white_80">#DBFFFFFF</color>
     <color name="btn_bg_green">#7ab193</color>
     <!-- 文字颜色(重要突出字,强调字,白色背景装饰字,浅灰色背景装饰字) 绿色 -->
     <color name="text_color_green">#6fa78e</color>
@@ -181,6 +182,7 @@
     <color name="btn_bg">#C7EFC7</color>
     <color name="btn_stroke">#8DEFB2</color>
     <color name="action_bar_bg">#dfDDDDDD</color>
+    <color name="logo_text_color">#5a5a5a</color>
 
     <color name="dim_foreground_dark_inverse">#323232</color>
     <color name="colorPrimary">#3F51B5</color>

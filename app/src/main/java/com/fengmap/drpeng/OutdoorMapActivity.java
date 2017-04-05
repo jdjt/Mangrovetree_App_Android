@@ -14,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,6 +115,8 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
@@ -229,6 +233,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private TextView call_button_text, search_button_text, globle_plateform_button_text;
     private TextView header_first_tv,map_cover;
 
+    //侧滑logo
+    private TextView map_logo,map_logo_text;
+    private RelativeLayout logo_view;
+    private int slidingWidth,textWidth,logoWidth;
+    private boolean logoTextShow = true;//是否显示text
+
     //    导航菜单
     private SlidingMenu menu = null;
 
@@ -325,6 +335,28 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         map_cover = (TextView) findViewById(R.id.map_cover);
         map_cover.setOnClickListener(this);
         fbd = new FMDBMapElementOveridDao();
+        logo_view = (RelativeLayout) findViewById(R.id.logo_view);
+        map_logo = (TextView) findViewById(R.id.map_logo);
+        map_logo_text = (TextView) findViewById(R.id.map_logo_text);
+        logo_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                slidingWidth = logo_view.getWidth();
+                logoWidth = map_logo.getWidth();
+                textWidth = map_logo_text.getWidth();
+                ViewHelper.setTranslationX(logo_view,textWidth);
+            }
+        });
+        map_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(logoTextShow){
+                    phowAnimation();//显示
+                }else {
+                    phidAnimation();//隐藏
+                }
+            }
+        });
     }
 
 //
@@ -2411,6 +2443,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mDialog.setMessage(warnText);
         return mDialog;
     }
+    /**
+     * @method text隐藏动画
+     *
+     */
+    private void phidAnimation() {
+        logoTextShow = true;
+        ViewPropertyAnimator.animate(logo_view).translationXBy(textWidth)
+                .setDuration(500)
+                .start();
+    }
+
+    /**
+     * @method text显示动画
+     */
+    private void phowAnimation() {
+        logoTextShow = false;
+        ViewPropertyAnimator.animate(logo_view).translationXBy(-textWidth)
+                .setDuration(500)
+                .start();
+    }
+
 
 
     /**
