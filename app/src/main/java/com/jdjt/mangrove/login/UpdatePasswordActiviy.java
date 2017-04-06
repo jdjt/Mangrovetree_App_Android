@@ -3,6 +3,7 @@ package com.jdjt.mangrove.login;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
@@ -69,7 +70,7 @@ public class UpdatePasswordActiviy extends CommonActivity implements Validator.V
 
     @Override
     public void onValidationSucceeded() {
-        showLoading();
+//        showLoading();
         updatePwd();
     }
 
@@ -85,6 +86,8 @@ public class UpdatePasswordActiviy extends CommonActivity implements Validator.V
             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
             finish();
+        }else {
+            Toast.makeText(this,"原密码不正确，请重新填写",Toast.LENGTH_SHORT).show();
         }
 
     }
