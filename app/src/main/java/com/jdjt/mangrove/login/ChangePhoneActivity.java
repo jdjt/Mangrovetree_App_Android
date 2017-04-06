@@ -129,7 +129,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
         mc = new CountTimer(60000, 1000, find_validation, "find_validation");
         mc.start();
     }
-    @InHttp({Constant.HttpUrl.GETCODE_KEY,Constant.HttpUrl.CHECKCAPTCHA_KEY})
+    @InHttp({Constant.HttpUrl.GETCODE_KEY,Constant.HttpUrl.CHECKCAPTCHA_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -161,7 +161,6 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
                         CommonUtils.onErrorToast(find_account, "该账号已注册", this);
                         return;
                     }
-                    getCode();
                     break;
             }
         }
