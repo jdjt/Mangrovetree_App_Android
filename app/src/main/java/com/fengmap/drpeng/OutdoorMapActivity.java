@@ -705,7 +705,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     public void onClick(View view) {
                         FMLocationService.instance().setInNavigationMode(false);
                         FMAPI.instance().isInLocating = false;
-                        mLocationView.setBackgroundResource(R.drawable.fm_green_normal_button);
+//                        mLocationView.setBackgroundResource(R.drawable.fm_green_normal_button);
 
                         clearWalkedTemporaryValue();
                         clearCalculatedPathResults();
@@ -1099,10 +1099,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                    return;
                 }
                 Bundle b = new Bundle();
-                OutdoorMapActivity.mInstance.clearSpecialMarker();
-                OutdoorMapActivity.mInstance.clearCalculateRouteLineMarker();
-                OutdoorMapActivity.mInstance.clearStartAndEndMarker();
-                OutdoorMapActivity.mInstance.clearMeLocationMarker();
+//                OutdoorMapActivity.mInstance.clearSpecialMarker();
+//                OutdoorMapActivity.mInstance.clearCalculateRouteLineMarker();
+//                OutdoorMapActivity.mInstance.clearStartAndEndMarker();
+//                OutdoorMapActivity.mInstance.clearMeLocationMarker();
 
                 b.putString(FMAPI.ACTIVITY_WHERE, OutdoorMapActivity.class.getName());
                 b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
