@@ -2161,7 +2161,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         } else {
             // 添加定位标注
             dealAddLocateMarker(locatePosition.getGroupId(), locatePosition.getMapCoord(), mLocationLayer);
-            animateCenterWithZoom(locatePosition.getGroupId(), locatePosition.getMapCoord());
+            if(isFirstLoad){
+                isFirstLoad = false;
+            }else {
+                animateCenterWithZoom(locatePosition.getGroupId(), locatePosition.getMapCoord());
+            }
         }
 
         mMap.updateMap();

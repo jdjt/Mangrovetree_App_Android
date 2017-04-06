@@ -36,6 +36,7 @@ public class CommonActivity extends AppCompatActivity {
 
     protected ProgressDialog dialog = null;
     public boolean isInHotel = false;
+    public boolean isFirstLoad = true;
 
     public static final String EXTRA_TITLE = "title";
 
