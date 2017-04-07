@@ -26,7 +26,7 @@ public class NetConfig {
 	private String url;
 	private int code;
 	private Net type;
-	private WeakReference<Object> object;
+	private WeakReference<Object>  object;
 	private String method;
 	private String charset;
 	private HashMap<String, Object> head;
@@ -35,7 +35,7 @@ public class NetConfig {
 	private LinkedHashMap<String, Object> params;
 	private ArrayList<UploadFile> files = new ArrayList<UploadFile>();
 
-	protected void addFile(File file) {
+	public void addFile(File file) {
 		files.add(new UploadFile(null, file));
 	}
 
@@ -49,7 +49,7 @@ public class NetConfig {
 		return files;
 	}
 
-	protected void addFile(String key, File file) {
+	public void addFile(String key, File file) {
 		files.add(new UploadFile(key, file));
 	}
 
@@ -59,7 +59,7 @@ public class NetConfig {
 		}
 	}
 
-	protected void addFiles(Map<String, File> file) {
+	public void addFiles(Map<String, File> file) {
 		for (String key : file.keySet()) {
 			files.add(new UploadFile(key, file.get(key)));
 		}
@@ -77,7 +77,7 @@ public class NetConfig {
 		return url;
 	}
 
-	protected void setUrl(String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
@@ -117,7 +117,7 @@ public class NetConfig {
 		return param;
 	}
 
-	protected void setParam(String param) {
+	public void setParam(String param) {
 		this.param = param;
 	}
 
@@ -125,7 +125,7 @@ public class NetConfig {
 		return params;
 	}
 
-	protected void setParams(LinkedHashMap<String, Object> params) {
+	public void setParams(LinkedHashMap<String, Object> params) {
 		this.params = params;
 	}
 
@@ -149,8 +149,8 @@ public class NetConfig {
 
 	public Object getObject() {
 		if (object == null) {
-	        return null;
-        }
+			return null;
+		}
 		return object.get();
 	}
 
@@ -158,7 +158,7 @@ public class NetConfig {
 		this.object = new WeakReference<Object>(object);
 	}
 	@Override
-    public String toString() {
-	    return "NetConfig [url=" + url + ", code=" + code + ", type=" + type + ", object=" + object + ", method=" + method + ", charset=" + charset + ", head=" + head + ", param=" + param + ", name_space=" + name_space + ", params=" + params + ", files=" + files + "]";
-    }
+	public String toString() {
+		return "NetConfig [url=" + url + ", code=" + code + ", type=" + type + ", object=" + object + ", method=" + method + ", charset=" + charset + ", head=" + head + ", param=" + param + ", name_space=" + name_space + ", params=" + params + ", files=" + files + "]";
+	}
 }

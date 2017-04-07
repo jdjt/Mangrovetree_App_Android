@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fengmap.android.data.FMDataManager;
+import com.fengmap.drpeng.OutdoorMapActivity;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
@@ -93,6 +94,7 @@ public class SettingActivity extends CommonActivity {
             Intent it = new Intent(this, LoginAndRegisterFragmentActivity.class);
             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
+            OutdoorMapActivity.mInstance.finish();
             finish();
         }
     }

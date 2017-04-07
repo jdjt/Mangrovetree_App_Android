@@ -17,7 +17,6 @@ import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
-import com.jdjt.mangrovetreelibray.utils.StatusBarUtil;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -189,7 +188,7 @@ public class CommonActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.M)
     protected void setStatusBar() {
-//        setTranslucentStatus( R.color.title_bg);
+        setTranslucentStatus( R.color.title_bg);
 //        StatusBarUtil.setStatusBarColor(this, getColor(R.color.title_bg));
         StatusUtil.StatusBarLightMode(this);
 //        StatusBarUtil.setColor(this,getColor(R.color.title_bg),0);

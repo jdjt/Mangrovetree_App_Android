@@ -71,15 +71,14 @@ public class LoginFragment extends Fragment implements ValidationListener {
     Validator validator;
 
 
-
     /**
      * 当点击登陆按钮，会自动获取输入框内的用户名和密码，对其进行验证
      */
     public void click(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.login_findpwd_button:
-                startActivity(new Intent(getActivity(),FindPasswordActivity.class));
+                startActivity(new Intent(getActivity(), FindPasswordActivity.class));
                 break;
             case R.id.login_button:
                 //验证
@@ -90,6 +89,11 @@ public class LoginFragment extends Fragment implements ValidationListener {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 
     @Init
     @NotProguard
@@ -116,7 +120,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
     }
 
 
-    @InHttp({Constant.HttpUrl.LOGIN_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
+    @InHttp({Constant.HttpUrl.LOGIN_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY})
     @NotProguard
     public void result(ResponseEntity entity) {
         Toast.makeText(getActivity(), "进入了返回结果", Toast.LENGTH_SHORT).show();
@@ -131,33 +135,33 @@ public class LoginFragment extends Fragment implements ValidationListener {
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Map<String, Object> heads = entity.getHeaders();
-        switch (entity.getKey()){
+        switch (entity.getKey()) {
             case Constant.HttpUrl.LOGIN_KEY:
                 //------------------------------------------------------------
                 //判断当前请求返回是否 有错误，OK 和 ERR
-                Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
-                if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+                Ioc.getIoc().getLogger().e("ticket:" + data.get("ticket"));
+                if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
                     //存储用户名密码到本地
                     Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
                     Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
-                    Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
+                    Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket", data.get("ticket"));
                     startActivity();
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
                 }
                 break;
             case Constant.HttpUrl.CHECKACCOUNT_KEY:
                 //------------------------------------------------------------
                 //判断当前请求返回是否 有错误，OK 和 ERR
-                Ioc.getIoc().getLogger().e("ticket:"+data.get("ticket"));
-                if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
-                   if("0".equals( data.get("result"))){
+                Ioc.getIoc().getLogger().e("ticket:" + data.get("ticket"));
+                if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+                    if ("0".equals(data.get("result"))) {
 
-                     Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
-                   }else {
-                     login();
-                   }
-                }else {
+                        Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
+                    } else {
+                        login();
+                    }
+                } else {
                     Toast.makeText(getActivity(), "网络请求失败，请稍后再试", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -166,12 +170,14 @@ public class LoginFragment extends Fragment implements ValidationListener {
         //------------------------------------------------------------
     }
 
-    private void startActivity(){
+    private void startActivity() {
         Bundle b = new Bundle();
         b.putString(FMAPI.ACTIVITY_WHERE, getActivity().getClass().getName());
         b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
         Intent intent = new Intent(getActivity(), OutdoorMapActivity.class);
-        startActivity(intent,b);
+        intent.putExtras(b);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
         getActivity().finish();
         return;
     }
@@ -190,7 +196,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
     /**
      * 登陆
      */
-    private  void login(){
+    private void login() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("account", login_account.getText().toString());
         jsonObject.addProperty("password", login_password.getText().toString());
@@ -200,12 +206,12 @@ public class LoginFragment extends Fragment implements ValidationListener {
     /**
      * 验证账号是否存在
      */
-    private void  checkAccount(){
-        Toast.makeText(getActivity(), "进入了checkAccount", Toast.LENGTH_SHORT).show();
+    private void checkAccount() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("account", login_account.getText().toString());
         MangrovetreeApplication.instance.http.u(this).checkAccount(jsonObject.toString());
     }
+
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         String message = failedRule.getFailureMessage();

@@ -55,8 +55,6 @@ public class MangrovetreeApplication extends Application {
         // 框架只是实现了分发，具体核心请求模块还必须用自己或者第三方网络请求框架
         // 网络请求的统一拦截处 异步请求 请返回 请求的值 异步 手动分发
         http = new Http<HttpInterFace>(HttpInterFace.class);
-        IocListener.newInstance().setHttpListener(listener);
-
         listener= new IocHttpListener<ResponseEntity>() {
             @Override
             @NotProguard
@@ -93,5 +91,6 @@ public class MangrovetreeApplication extends Application {
                 return reslut;
             }
         };
+        IocListener.newInstance().setHttpListener(listener);
     }
 }
