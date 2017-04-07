@@ -101,8 +101,8 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
                 validator.validate();
                 break;
             case R.id.binding_validate:
-                uuid = Uuid.getUuid();//用于参数的uuid
-                MapVo.set("find_validation", uuid);
+//                uuid = Uuid.getUuid();//用于参数的uuid
+//                MapVo.set("find_validation", uuid);
                 checkAccount();
                 break;
         }
@@ -140,8 +140,10 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         HashMap json = new HashMap();
         json.put("password",password);
         json.put("bindingType", "1");
-        json.put("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
+//        json.put("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
         json.put("newBindingInfo", new Gson().toJson(setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString())));
+        json.put("code",code);
+        json.put("uuid",uuid);
         MangrovetreeApplication.instance.http.u(this).reBindingPhone(new Gson().toJson(json));
     }
 
@@ -186,12 +188,13 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-        //解析返回的数据
-//        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
         Map<String, Object> heads = entity.getHeaders();
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
             switch (entity.getKey()) {
                 case Constant.HttpUrl.GETCODE_KEY:
@@ -201,6 +204,15 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
                     finish();
                     break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY:
+                    String result = data.get("result") + "";
+                    Ioc.getIoc().getLogger().e(result);
+                    //账号重复
+                    if (result.equals("1")) {
+                        Ioc.getIoc().getLogger().e("该手机号已注册");
+//                        CommonUtils.onErrorToast(register_account, "该账号已注册，请直接登录", getActivity());
+                        Toast.makeText(this, "该账号已注册", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     getCode();
 
                     break;

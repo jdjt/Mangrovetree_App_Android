@@ -144,7 +144,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         if (!Handler_Network.isNetworkAvailable(getActivity())) {
             Toast.makeText(getActivity(), "手机未联网", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }checkAccount();
         switch (view.getId()) {
             case R.id.register_button:
                 //验证
@@ -154,7 +154,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                 break;
             case R.id.register_valitation:
 
-                checkAccount();
+
                 break;
         }
     }
