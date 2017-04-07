@@ -149,6 +149,11 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
 
+                    String r = data.get("result") + "";
+                    if (r.equals("1")) {
+                        Toast.makeText(this, "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     startActivity(new Intent(this,AccountBandingResetActivity.class).putExtra("code",find_security_code.getText().toString()));
                     this.finish();
                     break;

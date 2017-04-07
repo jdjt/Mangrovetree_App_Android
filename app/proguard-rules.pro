@@ -23,8 +23,6 @@
 -keep class org.apache.http.** {*; }
 #gson
 #如果用用到Gson解析包的，直接添加下面这几行就能成功混淆，不然会报错。
--keepattributes Signature
--keepattributes *Annotation*
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
 # Application classes that will be serialized/deserialized over Gson
@@ -52,7 +50,6 @@
 -keepclassmembers enum com.j256.** { *; }
 -keep interface com.j256.**
 -keepclassmembers interface com.j256.** { *; }
--keepattributes *Annotation*
 -keepclassmembers class com.package.bo.** { *; }
 -keepclassmembers class * {
 @com.j256.ormlite.field.DatabaseField *;
@@ -129,18 +126,12 @@
 
 -keep @com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard class * {*;}
 -keep class * {
-@com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard <fields>;
+    @com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard <fields>;
 }
 -keepclassmembers class * {
-@com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard <methods>;
-  public static <fields>;
-   public static class *;
-}
--keepclassmembers class com.fengmap.drpeng.** {
-        public <fields>;
-        public <methods>;
-        private <fields>;
-        private <methods>;
+    @com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard <methods>;
+    public static <fields>;
+    public static class *;
 }
 
 -keepclasseswithmembernames class com.jdjt.mangrovetreelibray.ioc.net.** {
@@ -224,3 +215,12 @@
  -keep class com.android.internal.http.multipart.**{*;}
  -keep class org.apache.commons.**{*;}
  -keep class org.apache.http.**{*;}
+
+#-keep class com.jeremyfeinstein.slidingmenu.lib.** { *; }
+#-keep interface com.jeremyfeinstein.slidingmenu.lib.** { *; }
+# 地图模块
+-keep class com.fengmap.** { *; }
+-keep class com.fengmap.android.**{*;}
+#-keepclassmembers class com.fengmap.drpeng.** {
+#     *;
+#}

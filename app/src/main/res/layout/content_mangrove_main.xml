@@ -38,6 +38,38 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_actionbar"
         android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:id="@+id/logo_view"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/map_logo_text"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="10dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="三亚湾红树林度假世界"
+                android:textSize="@dimen/t_l"
+                android:textColor="@color/logo_text_color"
+                android:background="@drawable/btn_corner_80_white"/>
+
+            <TextView
+                android:id="@+id/map_logo"
+                android:layout_marginRight="8dp"
+                android:layout_alignLeft="@+id/map_logo_text"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@mipmap/map_logo" />
+
+        </RelativeLayout>
+        
         <TextView
             android:id="@+id/header_first_tv"
             android:layout_width="match_parent"
@@ -48,36 +80,6 @@
             android:textSize="16sp"
             android:textColor="@color/white"
             android:background="@color/head_remind_bg"/>
-
-            <RelativeLayout
-                android:id="@+id/logo_view"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/header_first_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/map_logo"
-                    android:layout_toLeftOf="@+id/map_logo_text"
-                    android:layout_marginRight="8dp"
-                    android:layout_centerInParent="true"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@mipmap/map_logo" />
-
-                <TextView
-                    android:id="@+id/map_logo_text"
-                    android:layout_centerInParent="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:gravity="center"
-                    android:text="三亚湾红树林度假世界"
-                    android:textSize="@dimen/t_l"
-                    android:textColor="@color/logo_text_color"
-                    android:background="@drawable/btn_corner_80_white"/>
-            </RelativeLayout>
 
         <com.fengmap.drpeng.widget.DrawableCenterTextView
             android:text="呼叫"

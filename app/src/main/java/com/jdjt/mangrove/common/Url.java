@@ -1,5 +1,7 @@
 package com.jdjt.mangrove.common;
 
+import com.jdjt.mangrove.BuildConfig;
+
 /**
  * <p/>
  * Description: TODO

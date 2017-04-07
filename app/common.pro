@@ -16,15 +16,13 @@
 #   public *;
 #}
 #1.基本指令区
--ignorewarnings
--dontwarn
--optimizationpasses 1
+-optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
 -dontpreverify
 -verbose
-#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--optimizations !code/simplification/cast,!field/*,!class/merging/*
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#-optimizations !code/simplification/cast,!field/*,!class/merging/*
 -keep public class * extends Android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service

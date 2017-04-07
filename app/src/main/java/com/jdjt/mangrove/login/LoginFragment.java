@@ -123,7 +123,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @InHttp({Constant.HttpUrl.LOGIN_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
-        Toast.makeText(getActivity(), "进入了返回结果", Toast.LENGTH_SHORT).show();
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;

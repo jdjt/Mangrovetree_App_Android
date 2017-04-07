@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -339,8 +338,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             public void onGlobalLayout() {
                 slidingWidth = logo_view.getWidth();
                 logoWidth = map_logo.getWidth();
-                textWidth = map_logo_text.getWidth();
+                textWidth = map_logo_text.getWidth() - map_logo.getWidth();
                 ViewHelper.setTranslationX(logo_view,textWidth);
+                map_logo_text.setBackgroundResource(R.color.transparent);
             }
         });
         map_logo.setOnClickListener(new View.OnClickListener() {
@@ -2455,6 +2455,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         ViewPropertyAnimator.animate(logo_view).translationXBy(textWidth)
                 .setDuration(500)
                 .start();
+        map_logo_text.setBackgroundResource(R.color.transparent);
     }
 
     /**
@@ -2462,6 +2463,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
      */
     private void phowAnimation() {
         logoTextShow = false;
+        map_logo_text.setBackgroundResource(R.drawable.btn_corner_80_white);
         ViewPropertyAnimator.animate(logo_view).translationXBy(-textWidth)
                 .setDuration(500)
                 .start();
@@ -2596,7 +2598,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             @Override
             public void onOpen() {
                 Log.d("SSSSSSSSSSSS","setOnOpenListener");
-                if(mOpenModelInfoWindow.isShowing()){
+                if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
                     mOpenModelInfoWindow.close();
                 }
             }

@@ -134,16 +134,21 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
      3	唯一限制标识	uuid	String	N	客户端生成，新手机或邮箱获取验证码时所使用的标识。
 
      */
+
+    /**
+     * 绑定手机
+     */
     private void rebindPhone(){
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
         String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
         HashMap json = new HashMap();
-        json.put("password",password);
-        json.put("bindingType", "1");
-//        json.put("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
-        json.put("newBindingInfo", new Gson().toJson(setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString())));
+        json.put("password",password);//原用户名
+        json.put("bindingType", "1");//手机号
+        json.put("oldBindingInfo", setBandingParams(account,code));
+        json.put("newBindingInfo", setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString()));
         json.put("code",code);
         json.put("uuid",uuid);
+        System.out.println("hyn"+new Gson().toJson(json));
         MangrovetreeApplication.instance.http.u(this).reBindingPhone(new Gson().toJson(json));
     }
 
@@ -201,6 +206,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
 
                     break;
                 case Constant.HttpUrl.REBINDINGPHONE_KEY:
+
                     finish();
                     break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY:

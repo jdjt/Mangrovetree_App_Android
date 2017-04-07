@@ -10,8 +10,8 @@ android {
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.jdjt.mangrove"
-        buildConfigField 'String','API_SERVER_URL','"http://mws.mymhotel.com/"'
 //        buildConfigField 'String','API_SERVER_URL','"http://mws.mymhotel.com/"'
+        buildConfigField 'String','API_SERVER_URL','"http://syw.mymhotel.com/"'
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -69,7 +69,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //
             proguardFile 'common.pro'
-//            proguardFile 'java.pro'
 
             //签名
             signingConfig signingConfigs.release
