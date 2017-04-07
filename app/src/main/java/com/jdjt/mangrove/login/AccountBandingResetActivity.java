@@ -62,6 +62,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     //计时
     CountTimer mc;
     String uuid;
+    String reuuid;
     String account;
     String code;//原手机验证码
     @Init
@@ -69,8 +70,10 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         code=getIntent().getStringExtra("code");
 
     }
-    @InResume
-    private void resume() {
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
         if (MapVo.get("find_validation") != null) {
             uuid = MapVo.get("find_validation").toString();
@@ -78,6 +81,10 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
             uuid = Uuid.getUuid();//给初始值
         }
     }
+    //    @InResume
+//    private void resume() {
+//
+//    }
 
     @InListener(ids = {R.id.binding_validate, R.id.binding_submit}, listeners = OnClick.class)
     private void click(View view) {
@@ -101,8 +108,8 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
                 validator.validate();
                 break;
             case R.id.binding_validate:
-//                uuid = Uuid.getUuid();//用于参数的uuid
-//                MapVo.set("find_validation", uuid);
+//                reuuid = Uuid.getUuid();//用于参数的uuid
+//                MapVo.set("find_validation_re", reuuid);
                 checkAccount();
                 break;
         }
@@ -112,7 +119,6 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
      * 验证验证码
      */
     private  void checkCode(){
-
         JsonObject json = new JsonObject();
         json.addProperty("code", binding_security_code.getText().toString());
         json.addProperty("uuid", uuid);
@@ -146,8 +152,8 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         json.put("bindingType", "1");//手机号
         json.put("oldBindingInfo", setBandingParams(account,code));
         json.put("newBindingInfo", setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString()));
-        json.put("code",code);
-        json.put("uuid",uuid);
+//        json.put("code",code);
+//        json.put("uuid",uuid);
         System.out.println("hyn"+new Gson().toJson(json));
         MangrovetreeApplication.instance.http.u(this).reBindingPhone(new Gson().toJson(json));
     }
@@ -161,7 +167,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         HashMap  bandingMap  = new HashMap<String, Object>();
         bandingMap.put("targ",targ);//手机号
         bandingMap.put("code",code);//验证码
-        bandingMap.put("uuid", uuid);//客户端uuid
+        bandingMap.put("uuid",uuid);//客户端uuid
         return bandingMap;
     }
     /**
