@@ -2,6 +2,7 @@ package com.jdjt.mangrove.application;
 
 import android.app.Application;
 import android.support.annotation.Keep;
+import android.util.Log;
 
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.drpeng.common.ResourcesUtils;
@@ -60,6 +61,7 @@ public class MangrovetreeApplication extends Application {
             @NotProguard
             public ResponseEntity netCore(NetConfig config) {
                 Ioc.getIoc().getLogger().i("拦截请求：" + config);
+                Log.i("httpApi","拦截请求:" + config);
 //            config.setHead(HeaderConst.inHeaders());
                 InternetConfig netConfig = InternetConfig.defaultConfig();
                 netConfig.setHead(HeaderConst.inHeaders());
@@ -84,9 +86,11 @@ public class MangrovetreeApplication extends Application {
                             break;
                     }
 //                    Ioc.getIoc().getLogger().i("拦截结果：" + reslut);
+                    Log.i("httpApi","拦截结果:" + reslut);
                 } catch (Exception exception) {
                     exception.printStackTrace();
 //                    Ioc.getIoc().getLogger().i("请求超时：" + reslut);
+                    Log.i("httpApi","拦截结果:" + reslut);
                 }
                 return reslut;
             }

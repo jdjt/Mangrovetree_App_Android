@@ -1,12 +1,13 @@
 package com.jdjt.mangrovetreelibray.ioc.plug.net;
 
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_File;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.util.MD5;
 
 import java.io.File;
 import java.util.LinkedHashMap;
-
+@NotProguard
 public class HttpCache {
 
 	public static String getUrlCache(String url, LinkedHashMap<String, Object> params) {

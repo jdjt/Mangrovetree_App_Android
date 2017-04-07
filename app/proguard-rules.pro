@@ -133,6 +133,14 @@
 }
 -keepclassmembers class * {
 @com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard <methods>;
+  public static <fields>;
+   public static class *;
+}
+-keepclassmembers class com.fengmap.drpeng.** {
+        public <fields>;
+        public <methods>;
+        private <fields>;
+        private <methods>;
 }
 
 -keepclasseswithmembernames class com.jdjt.mangrovetreelibray.ioc.net.** {

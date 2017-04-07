@@ -31,6 +31,7 @@ import com.jdjt.mangrove.login.LoginAndRegisterFragmentActivity;
 import com.jdjt.mangrove.util.PermissionsChecker;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_String;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
@@ -222,6 +223,12 @@ public class WelcomeActivity extends AppCompatActivity {
      * 初始化登陆并加载 框架
      */
     private void login() {
+        if(!Handler_Network.isNetworkAvailable(this)){
+            Toast.makeText(this, "当前没有可用网络", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class));
+            WelcomeActivity.this.finish();
+            return;
+        }
         Ioc.getIoc().init(MangrovetreeApplication.instance);
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getAppExceptionHandler(this));
 

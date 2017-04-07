@@ -51,7 +51,7 @@ public class IocHttpInvocationHandler implements InvocationHandler {
 		this.object = new WeakReference<Object>(object);
 	}
 
-	@NotProguard
+//	@NotProguard
 	public static class IocHttp {
 
 		private String url;
@@ -103,6 +103,7 @@ public class IocHttpInvocationHandler implements InvocationHandler {
 				config.setMethod(web.method());;
 				config.setName_space(web.space());
 			}
+
 			Field field;
 			if (url == null) {
 				try {

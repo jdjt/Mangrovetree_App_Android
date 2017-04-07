@@ -1,10 +1,13 @@
 package com.jdjt.mangrovetreelibray.ioc.plug.net;
 
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
+
 /**
  * 异步请求回调类
  *
  * @author gdpancheng@gmail.com 2012-12-9 下午11:44:42
  */
+@NotProguard
 public interface AjaxCallBack extends CallBack {
 
 	/**

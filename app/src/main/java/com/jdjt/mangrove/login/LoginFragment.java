@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -121,7 +122,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
 
     @InHttp({Constant.HttpUrl.LOGIN_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY})
-    @NotProguard
     public void result(ResponseEntity entity) {
         Toast.makeText(getActivity(), "进入了返回结果", Toast.LENGTH_SHORT).show();
         if (entity.getStatus() == FastHttp.result_net_err) {
@@ -137,37 +137,39 @@ public class LoginFragment extends Fragment implements ValidationListener {
         Map<String, Object> heads = entity.getHeaders();
         switch (entity.getKey()) {
             case Constant.HttpUrl.LOGIN_KEY:
+                Log.i("LoginApi","ticket:" + data.get("ticket"));
+                Log.i("LoginApi","登录验证中。。。。" );
                 //------------------------------------------------------------
                 //判断当前请求返回是否 有错误，OK 和 ERR
                 Ioc.getIoc().getLogger().e("ticket:" + data.get("ticket"));
                 if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+                    Log.i("httpApi","登录验证成功" );
                     //存储用户名密码到本地
                     Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", login_account.getText().toString());
                     Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", login_password.getText().toString());
                     Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket", data.get("ticket"));
                     startActivity();
+                    return;
                 } else {
                     Toast.makeText(getActivity(), "用户名或密码错误", Toast.LENGTH_LONG).show();
                 }
-                break;
+                return;
             case Constant.HttpUrl.CHECKACCOUNT_KEY:
-                //------------------------------------------------------------
+                Log.i("LoginApi","帐号验证中...." );
                 //判断当前请求返回是否 有错误，OK 和 ERR
-                Ioc.getIoc().getLogger().e("ticket:" + data.get("ticket"));
                 if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
                     if ("0".equals(data.get("result"))) {
-
                         Toast.makeText(getActivity(), "该账户未注册,请先注册", Toast.LENGTH_LONG).show();
-                    } else {
-                        login();
+                        return;
                     }
+                    Log.i("LoginApi","验证成功" );
+                    login();
+
                 } else {
                     Toast.makeText(getActivity(), "网络请求失败，请稍后再试", Toast.LENGTH_LONG).show();
                 }
-                break;
+                return;
         }
-        //------------------------------------------------------------
-        //------------------------------------------------------------
     }
 
     private void startActivity() {
@@ -189,7 +191,6 @@ public class LoginFragment extends Fragment implements ValidationListener {
 
     @Override
     public void onValidationSucceeded() {
-
         checkAccount();
     }
 
@@ -216,14 +217,5 @@ public class LoginFragment extends Fragment implements ValidationListener {
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         String message = failedRule.getFailureMessage();
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//        if (failedView instanceof EditText) {
-//            failedView.requestFocus();
-//            Handler_TextStyle handler_TextStyle = new Handler_TextStyle();
-//            handler_TextStyle.setString(message);
-////            handler_TextStyle.setBackgroundColor(Color.RED, 0, message.length());
-//            ((EditText) failedView).setError(handler_TextStyle.getSpannableString());
-//        } else {
-//            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//        }
     }
 }

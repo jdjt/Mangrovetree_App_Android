@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Xml;
 
+import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
-import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.util.HeaderConst;
 
@@ -66,6 +66,7 @@ import javax.net.ssl.SSLSession;
  *
  * @author gdpancheng@gmail.com 2013-5-22 下午5:31:30
  */
+@NotProguard
 public class FastHttp {
 
 	public static final int result_ok = 0;
@@ -311,6 +312,7 @@ public class FastHttp {
 		Ioc.getIoc().getLogger().i("mssage转换后:"+msg);
 		return map;
 	}
+	@NotProguard
 	public static ResponseEntity postString(String url, String params, InternetConfig config) {
 		config.setRequest_type(InternetConfig.request_post);
 		config.setContent_type_web(InternetConfig.content_type_json);
@@ -1042,7 +1044,6 @@ public class FastHttp {
 	 *            请求连接
 	 * @param params
 	 *            请求参数
-	 * @param config
 	 *            请求配置
 	 * @param callBack
 	 *            回调函数

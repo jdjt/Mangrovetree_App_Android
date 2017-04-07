@@ -16,6 +16,7 @@ public class InjectDrawable extends InjectResouceType<Drawable> {
 
 	@Override
     protected Drawable getResouce(int id) {
-		return Ioc.getIoc().getApplication().getResources().getDrawable(id);
+//        getResources().
+		return Ioc.getIoc().getApplication().getApplicationContext().getDrawable(id);
     }
 }
