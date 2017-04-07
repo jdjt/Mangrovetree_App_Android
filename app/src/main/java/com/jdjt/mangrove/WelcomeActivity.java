@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -85,6 +87,7 @@ public class WelcomeActivity extends AppCompatActivity {
     };
 
     protected void init() throws InterruptedException {
+
         PackageManager pm = getPackageManager();
         PackageInfo pi = null;
         try {
@@ -102,7 +105,33 @@ public class WelcomeActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        isNetworkConneted(this);
     }
+
+    /**
+     *  判断是否有网络连接
+     *  @param context
+     *  @return
+     */
+    public boolean isNetworkConneted(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isAvailable()) {
+        } else {
+//        Toast.makeText(this,"网络连接断开，请检查网络设置",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class));
+        }
+        return false;
+    }
+//
+//    public boolean isNetworkConnected(Context context) {
+//        ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+//        if (mNetworkInfo != null && mNetworkInfo.isAvailable()){   //判断网络连接是否打开
+//            return  mNetworkInfo.isConnected();
+//        }
+//        return false;
+//    }
 
     /**
      * 初始化 图片加载配置

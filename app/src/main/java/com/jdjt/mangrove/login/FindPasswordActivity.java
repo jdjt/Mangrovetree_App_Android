@@ -21,6 +21,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -63,6 +64,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
     CountTimer mc;
     String uuid;
     String account;
+    String callPhone;
 
     @InResume
     private void resume() {
@@ -72,6 +74,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         } else {
             uuid = Uuid.getUuid();//给初始值
         }
+
     }
 
     @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
@@ -96,9 +99,10 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
                 validator.validate();
                 break;
             case R.id.find_validation:
-                uuid = Uuid.getUuid();//用于参数的uuid
-                MapVo.set("find_validation", uuid);
-                getCode();
+//                uuid = Uuid.getUuid();//用于参数的uuid
+//                MapVo.set("find_validation", uuid);
+//                getCode();
+                checkAccount();
                 break;
         }
     }
@@ -114,7 +118,15 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         MangrovetreeApplication.instance.http.u(this).checkCaptcha(json.toString());
 
     }
-
+    /**
+     * 验证手机是否重复
+     */
+    private void checkAccount() {
+        JsonObject json = new JsonObject();
+        String account = find_account.getText() + "";
+        json.addProperty("account", account);
+        MangrovetreeApplication.instance.http.u(this).checkAccount(json.toString());
+    }
     /**
      * 获取手机验证码
      */
@@ -129,7 +141,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         mc.start();
     }
 
-    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKCAPTCHA_KEY})
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKCAPTCHA_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
 //            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -171,6 +183,16 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
 //                        //无效的验证码（其他原因）
 //                        Toast.makeText(this, "验证码无效", Toast.LENGTH_SHORT).show();
 //                    }
+                    break;
+                case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
+                    String r = data.get("result") + "";
+                    Ioc.getIoc().getLogger().e(r);
+                    //账号重复
+                    if (r.equals("0")) {
+                        Toast.makeText(this, "该手机号未注册,请先注册", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    getCode();
                     break;
             }
         }

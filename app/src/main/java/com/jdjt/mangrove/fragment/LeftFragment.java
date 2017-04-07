@@ -20,6 +20,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InBack;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBinder;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InUI;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
@@ -93,9 +94,14 @@ public class LeftFragment extends Fragment {
             //存储用户名密码到本地
             Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "nickname", data.get("nickname"));
             Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "callPhone",data.get("callPhone"));
-            account_item_name.setText(data.get("callPhone")+"");
+
+            updateUi(data.get("callPhone")+"");
         }
         //------------------------------------------------------------
     }
 
+    @InUI
+    private void updateUi(String name){
+        account_item_name.setText(name);
+    }
 }

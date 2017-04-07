@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -67,7 +68,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     @InView(value = R.id.register_password)
     private EditText register_password;//密码
 
-    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
+    @TextRule(maxLength = 6, minLength = 6, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.register_security_code)
     private EditText register_security_code;//验证码
 
@@ -88,19 +89,23 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     String uuid;
     String account;
 
-    @InResume
     private void resume() {
+        Ioc.getIoc().getLogger().e(MapVo.get("register_valitation"));
         //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
         if (MapVo.get("register_valitation") != null) {
+
             uuid = MapVo.get("register_valitation").toString();
+
         } else {
             uuid = Uuid.getUuid();//给初始值
         }
+        Ioc.getIoc().getLogger().e(uuid);
     }
 
     @Init
     public void init() {
         Ioc.getIoc().getLogger().e("初始化注册页面");
+        resume();
         register_button.setEnabled(false);
         read_agreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -120,7 +125,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         register_agree_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(),UserAgreementWebActivity.class));
+                startActivity(new Intent(getActivity(), UserAgreementWebActivity.class));
             }
         });
 
@@ -139,7 +144,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         if (!Handler_Network.isNetworkAvailable(getActivity())) {
             Toast.makeText(getActivity(), "手机未联网", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }checkAccount();
         switch (view.getId()) {
             case R.id.register_button:
                 //验证
@@ -148,9 +153,8 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                 validator.validate();
                 break;
             case R.id.register_valitation:
-                uuid = Uuid.getUuid();//用于参数的uuid
-                MapVo.set("register_valitation", uuid);
-                checkAccount();
+
+
                 break;
         }
     }
@@ -179,12 +183,13 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         mc = new CountTimer(60000, 1000, register_valitation, "register_valitation");
         mc.start();
     }
+
     /**
      * 注册方法
      */
-    private void register(){
+    private void register() {
         JsonObject json = new JsonObject();
-        String account = register_account.getText().toString() ;
+        String account = register_account.getText().toString();
         json.addProperty("account", account);
         json.addProperty("code", register_security_code.getText().toString());
         json.addProperty("password", register_password.getText().toString());
@@ -195,7 +200,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     /**
      * 登录方法
      */
-    private void login(){
+    private void login() {
         Ioc.getIoc().getLogger().e("登录接口");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("account", register_account.getText().toString());
@@ -203,17 +208,16 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         MangrovetreeApplication.instance.http.u(this).login(jsonObject.toString());
     }
 
-    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY,Constant.HttpUrl.LOGIN_KEY})
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY, Constant.HttpUrl.LOGIN_KEY, Constant.HttpUrl.CHECKCAPTCHA_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-//        if (entity.getContentAsString() == null || entity.getContentAsString().length() == 0) {
-//            Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
         //解析返回的数据
+        if (TextUtils.isEmpty(entity.getContentAsString())) {
+            return;
+        }
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
@@ -230,23 +234,28 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                     Ioc.getIoc().getLogger().e(result);
                     //账号重复
                     if (result.equals("1")) {
-                        Ioc.getIoc().getLogger().e( "该手机号已注册");
-                        CommonUtils.onErrorToast(register_account, "该账号已注册，请直接登录", getActivity());
+                        Ioc.getIoc().getLogger().e("该手机号已注册");
+//                        CommonUtils.onErrorToast(register_account, "该账号已注册，请直接登录", getActivity());
+                        Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     getCode();
                     break;
-//                case Constant.HttpUrl.REGISTER_KEY:
-//
-//                    login();
-//
-//                    break;
+                case Constant.HttpUrl.CHECKCAPTCHA_KEY:
+                    String r = data.get("result") + "";
+                    if (r.equals("1")) {
+                        Toast.makeText(getContext(), "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
+//                         CommonUtils.onErrorToast(register_security_code, "验证码不正确请重新输入", this);
+                        return;
+                    }
+
+                    break;
                 case Constant.HttpUrl.LOGIN_KEY:
-                    if("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))){
+                    if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
                         //存储用户名密码到本地
                         Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", register_account.getText().toString());
                         Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "password", register_password.getText().toString());
-                        Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket",data.get("ticket"));
+                        Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "ticket", data.get("ticket"));
                         startActivity();
                     }
                     break;
@@ -257,18 +266,36 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
 
     @InHttp(Constant.HttpUrl.REGISTER_KEY)
     public void result1(ResponseEntity entity) {
+
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-        login();
+        //判断当前请求返回是否 有错误，OK 和 ERR
+        Map<String, Object> heads = entity.getHeaders();
+        if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+            HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+            MapVo.remove("register_valitation");
+            login();
+        }else {
+            String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
+//            if("EBA007".equals(message.split("|")[0])){
+//                Toast.makeText(getContext(), "验证码已失效，请重新获取", Toast.LENGTH_SHORT).show();
+//                return;
+//            }else if ("EBA005".equals(message.split("|")[0])){
+//                Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
+//            }
+            String b=message.substring(message.length()-12,message.length());
+
+            Toast.makeText(getContext(), b, Toast.LENGTH_SHORT).show();
+        }
     }
 
 
     /**
      * 跳转到首页
      */
-    private void startActivity(){
+    private void startActivity() {
         Bundle b = new Bundle();
         b.putString(FMAPI.ACTIVITY_WHERE, getActivity().getClass().getName());
         b.putString(FMAPI.ACTIVITY_MAP_ID, Tools.OUTSIDE_MAP_ID);
@@ -279,7 +306,6 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
 
     @Override
     public void onValidationSucceeded() {
-//        showLoading();
         register();
     }
 
@@ -287,22 +313,10 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         CommonUtils.onErrorToast(failedView, failedRule.getFailureMessage(), getActivity());
     }
-    SweetAlertDialog pDialog=null;
-    public void showLoading(){
-        if(pDialog==null)
-            pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("加载中...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(pDialog!=null){
-            pDialog.dismiss();
-            pDialog=null;
-        }
     }
 }

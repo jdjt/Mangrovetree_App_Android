@@ -3,6 +3,7 @@ package com.jdjt.mangrove.login;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
@@ -37,6 +38,7 @@ public class UpdatePasswordActiviy extends CommonActivity implements Validator.V
     @TextRule(maxLength = 18, minLength = 6, message = "请输入6-18位的原密码", order = 1)
     @InView
     private EditText password_old;
+
     @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 2)
     @InView
     private EditText password_new;
@@ -68,7 +70,7 @@ public class UpdatePasswordActiviy extends CommonActivity implements Validator.V
 
     @Override
     public void onValidationSucceeded() {
-        showLoading();
+//        showLoading();
         updatePwd();
     }
 
@@ -84,6 +86,8 @@ public class UpdatePasswordActiviy extends CommonActivity implements Validator.V
             it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
             finish();
+        }else {
+            Toast.makeText(this,"原密码不正确，请重新填写",Toast.LENGTH_SHORT).show();
         }
 
     }

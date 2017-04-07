@@ -20,6 +20,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.listener.OnClick;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
@@ -46,14 +47,14 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
     @InView(value = R.id.find_account)
     private EditText find_account;//账号
 
-    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
+    @TextRule(maxLength = 6, minLength = 6, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.find_security_code)
     private EditText find_security_code;//验证码
 
     @InView(value = R.id.find_validation)
     private Button find_validation;//验证码按钮
     @InView(value = R.id.find_next_button)
-    private Button find_next_button;  //注册按钮
+    private Button find_next_button;  //下一步按钮
     //验证
     Validator validator;
 
@@ -61,6 +62,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
     CountTimer mc;
     String uuid;
     String account;
+    String callPhone;
     @InResume
     private void resume() {
         //获取验证码60秒钟内的uuid,如果有则取,如果没有则重新生成
@@ -69,11 +71,15 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
         } else {
             uuid = Uuid.getUuid();//给初始值
         }
+        callPhone = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "callPhone", 0);
+        find_account.setText(callPhone);
+        find_account.setFocusable(false);
     }
 
     @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
     private void click(View view) {
-        account = find_account.getText().toString();
+
+        account = callPhone;
         Ioc.getIoc().getLogger().e("当前注册手机号：" + account);
         //验证账号 邮箱,手机
         if (!account.matches(Rules.REGEX_TELPHONE)) {
@@ -116,7 +122,6 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
      */
     private void getCode() {
         JsonObject json = new JsonObject();
-        String account = find_account.getText() + "";
         json.addProperty("account", account);
         json.addProperty("logicFlag", "1");
         json.addProperty("uuid", uuid);
@@ -124,7 +129,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
         mc = new CountTimer(60000, 1000, find_validation, "find_validation");
         mc.start();
     }
-    @InHttp({Constant.HttpUrl.GETCODE_KEY,Constant.HttpUrl.CHECKCAPTCHA_KEY})
+    @InHttp({Constant.HttpUrl.GETCODE_KEY,Constant.HttpUrl.CHECKCAPTCHA_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -132,6 +137,7 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
         }
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        //解析返回的数据
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
@@ -142,11 +148,31 @@ public class ChangePhoneActivity extends CommonActivity implements Validator.Val
 
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
+
                     startActivity(new Intent(this,AccountBandingResetActivity.class).putExtra("code",find_security_code.getText().toString()));
                     this.finish();
                     break;
+                case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
+                    String result = data.get("result") + "";
+                    Ioc.getIoc().getLogger().e(result);
+                    //账号重复
+                    if (result.equals("1")) {
+                        Ioc.getIoc().getLogger().e( "该手机号已注册");
+                        CommonUtils.onErrorToast(find_account, "该账号已注册", this);
+                        return;
+                    }
+                    break;
             }
         }
+    }
+    /**
+     * 验证手机是否重复
+     */
+    private void checkAccount() {
+        JsonObject json = new JsonObject();
+        String account = find_account.getText() + "";
+        json.addProperty("account", account);
+        MangrovetreeApplication.instance.http.u(this).checkAccount(json.toString());
     }
 
     @Override

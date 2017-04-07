@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +114,8 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
@@ -222,7 +227,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LinearLayout main_bottom_bar;
     private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
     private TextView call_button_text, search_button_text, globle_plateform_button_text;
-    private TextView header_first_tv;
+    private TextView header_first_tv,map_cover;
+
+    //侧滑logo
+    private TextView map_logo,map_logo_text;
+    private RelativeLayout logo_view;
+    private int slidingWidth,textWidth,logoWidth;
+    private boolean logoTextShow = true;//是否显示text
 
     //    导航菜单
     private SlidingMenu menu = null;
@@ -240,7 +251,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private Handler mapHandler;
     private PopupWindow popupWindow;
 
-    private boolean isInHotel = false;
     private boolean isShowMarker = false;
 
     @Init
@@ -318,8 +328,31 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMAPI.instance().mRouteManager,
                 FMAPI.instance().mZoneManager);
         mMapView.setOnTouchListener(this);
-
+        map_cover = (TextView) findViewById(R.id.map_cover);
+        map_cover.setOnClickListener(this);
         fbd = new FMDBMapElementOveridDao();
+        logo_view = (RelativeLayout) findViewById(R.id.logo_view);
+        map_logo = (TextView) findViewById(R.id.map_logo);
+        map_logo_text = (TextView) findViewById(R.id.map_logo_text);
+        logo_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                slidingWidth = logo_view.getWidth();
+                logoWidth = map_logo.getWidth();
+                textWidth = map_logo_text.getWidth();
+                ViewHelper.setTranslationX(logo_view,textWidth);
+            }
+        });
+        map_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(logoTextShow){
+                    phowAnimation();//显示
+                }else {
+                    phidAnimation();//隐藏
+                }
+            }
+        });
     }
 
 //
@@ -453,7 +486,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (mInitLocatePosition != null) {
                     dealAddLocateMarker(mInitLocatePosition.getGroupId(), mInitLocatePosition.getMapCoord(), mLocationLayer);
                 }
-                mLocationView.setBackgroundResource(R.drawable.fm_green_press_button);
+//                mLocationView.setBackgroundResource(R.drawable.fm_green_press_button);
             }
         }
 
@@ -667,19 +700,22 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     public void onClick(View view) {
                         FMLocationService.instance().setInNavigationMode(false);
                         FMAPI.instance().isInLocating = false;
-                        mLocationView.setBackgroundResource(R.drawable.fm_green_normal_button);
+//                        mLocationView.setBackgroundResource(R.drawable.fm_green_normal_button);
 
                         clearWalkedTemporaryValue();
                         clearCalculatedPathResults();
                         clearStartAndEndMarker();
                         clearCalculateRouteLineMarker();
                         dealViewChangedWhenOverNavigationMode();
+//                        mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
 
-                        mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_3D);
-
-                        processingView.getStopNaviButton().setText("结束");
+                        processingView.getStopNaviButton().setText("结束导航");
 
                         mOpenNaviProcessWindow.close();
+                        if (mLastModel != null) {
+                            mMapView.setHighlight(mLastModel, false);
+                        }
+                        mMap.updateMap();
                         dialog.dismiss();
                     }
                 });
@@ -988,6 +1024,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        if(!isMapLoadCompleted){
+            return;
+        }
         switch (v.getId()) {
             case R.id.fm_bt_route:    //打开路线
                 if (!isMapLoadCompleted) {
@@ -1049,15 +1088,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
                 break;
             case R.id.search_dest_btn:
+                //导航模式下禁止搜索
                 if(FMLocationService.instance().isInNavigationMode()){
                    ToastUtils.showToast(this,"导航中，该功能不可用！");
                    return;
                 }
                 Bundle b = new Bundle();
-                OutdoorMapActivity.mInstance.clearSpecialMarker();
-                OutdoorMapActivity.mInstance.clearCalculateRouteLineMarker();
-                OutdoorMapActivity.mInstance.clearStartAndEndMarker();
-                OutdoorMapActivity.mInstance.clearMeLocationMarker();
+//                OutdoorMapActivity.mInstance.clearSpecialMarker();
+//                OutdoorMapActivity.mInstance.clearCalculateRouteLineMarker();
+//                OutdoorMapActivity.mInstance.clearStartAndEndMarker();
+//                OutdoorMapActivity.mInstance.clearMeLocationMarker();
 
                 b.putString(FMAPI.ACTIVITY_WHERE, OutdoorMapActivity.class.getName());
                 b.putString(FMAPI.ACTIVITY_MAP_ID, OutdoorMapActivity.mInstance.getMap().currentMapId());
@@ -1066,16 +1106,19 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMAPI.instance().gotoActivity(this, MapSearchAcitivity.class, b);
                 break;
             case R.id.globle_plateform_btn:
-                Toast.makeText(this, "全球度假", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, "全球度假");
                 break;
             case R.id.call_service_btn:
-                Toast.makeText(this, "呼叫服务", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(this, "呼叫服务");
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){
 //                    dismiss();
 //                }
 //                break;
+            case R.id.map_cover:
+                ToastUtils.showToast(this,"map loading!");
+                break;
             default:
                 break;
         }
@@ -1084,6 +1127,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     // 按钮触摸事件
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(!isMapLoadCompleted){
+            return false;
+        }
         switch (v.getId()) {
             //搜索
             case R.id.search_dest_btn:
@@ -1470,6 +1516,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         eml.setOnFMNodeListener(new OnFMNodeListener() {
             @Override
             public boolean onClick(FMNode pFMNode) {
+                if(!isMapLoadCompleted){
+                    return false;
+                }
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
@@ -1535,6 +1584,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         isMapLoadCompleted = true;
 
         mProgressDialog.dismiss();
+        if(isMapLoadCompleted){
+            UiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    map_cover.setVisibility(View.GONE);
+                }
+            });
+        }
 
         FMMapSDK.setLocateServiceState(true);
 //        FMMapSDK.setCallServiceState(true);
@@ -1636,7 +1693,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.getConvertView().measure(0, 0);
         Log.d("TAGTAGTAG", "底部高度=" + main_bottom_bar.getMeasuredHeight() + " 内容高度：" + mOpenModelInfoWindow.getConvertView().getMeasuredHeight());
 //        mOpenModelInfoWindow.showAtLocation(main_bottom_bar, Gravity.NO_GRAVITY, 0, 0);
-        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight() - 1);
+        mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(800)
@@ -1650,17 +1707,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     @Override
     public void onMapInitFailure(String mapPath, int code) {
 
-    }
-
-    /**
-     * @method 设置默认位置坐标点为主大堂
-     */
-    private FMTotalMapCoord getdefaultcoord() {
-        //默认位置坐标点
-        FMTotalMapCoord defaultPosition = new FMTotalMapCoord(1.21884255544187E7, 2071275.90186538, 0.0);
-        defaultPosition.setGroupId(1);
-        defaultPosition.setMapId("79980");
-        return defaultPosition;
     }
 
     @Override
@@ -1927,7 +1973,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         if (pIndex <= points.size() - 2) {
             float currLineAngle = (float) FMAPI.calcuAngle(pCurrCoord, points.get(pIndex + 1));
             if (mLastLineAngle != -1 && Math.abs(currLineAngle - mLastLineAngle) > 0) {
-                mMap.setRotate(-(float) FMMath.degreeToRad(currLineAngle));
+//                mMap.setRotate(-(float) FMMath.degreeToRad(currLineAngle));
                 mMap.updateMap();
             }
             mLastLineAngle = currLineAngle;
@@ -2110,7 +2156,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         } else {
             // 添加定位标注
             dealAddLocateMarker(locatePosition.getGroupId(), locatePosition.getMapCoord(), mLocationLayer);
-            animateCenterWithZoom(locatePosition.getGroupId(), locatePosition.getMapCoord());
+            if(isFirstLoad){
+                isFirstLoad = false;
+            }else {
+                animateCenterWithZoom(locatePosition.getGroupId(), locatePosition.getMapCoord());
+            }
         }
 
         mMap.updateMap();
@@ -2396,6 +2446,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mDialog.setMessage(warnText);
         return mDialog;
     }
+    /**
+     * @method text隐藏动画
+     *
+     */
+    private void phidAnimation() {
+        logoTextShow = true;
+        ViewPropertyAnimator.animate(logo_view).translationXBy(textWidth)
+                .setDuration(500)
+                .start();
+    }
+
+    /**
+     * @method text显示动画
+     */
+    private void phowAnimation() {
+        logoTextShow = false;
+        ViewPropertyAnimator.animate(logo_view).translationXBy(-textWidth)
+                .setDuration(500)
+                .start();
+    }
+
 
 
     /**
@@ -2502,6 +2573,34 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        view.setLayoutParams(params);
         //或者可以设置padding
         //v.setPadding(0,height,0,0);
+        menu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+            @Override
+            public void onClose() {
+                Log.d("SSSSSSSSSSSS","setOnCloseListener");
+                if(mCurrentModel!=null){
+                    if(!isMapLoadCompleted){
+                        return;
+                    }
+                    //这里需要添加查询模型activity_code的逻辑
+                    String activitycode = "";
+                    ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
+                    if (ActivityCodeList.size() > 0) {
+                        activitycode = ActivityCodeList.get(0).getActivitycode();
+                    }
+                    ShowPopModelView(mCurrentModel, activitycode);
+                }
+            }
+        });
+
+        menu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+            @Override
+            public void onOpen() {
+                Log.d("SSSSSSSSSSSS","setOnOpenListener");
+                if(mOpenModelInfoWindow.isShowing()){
+                    mOpenModelInfoWindow.close();
+                }
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

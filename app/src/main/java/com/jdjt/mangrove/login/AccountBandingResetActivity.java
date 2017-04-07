@@ -48,14 +48,14 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     @InView(value = R.id.banding_tel_phone)
     private EditText banding_tel_phone;//账号
 
-    @TextRule(maxLength = 6, minLength = 4, message = "验证码不正确请重新输入", order = 2)
+    @TextRule(maxLength = 6, minLength = 6, message = "验证码不正确请重新输入", order = 2)
     @InView(value = R.id.binding_security_code)
     private EditText binding_security_code;//验证码
 
     @InView(value = R.id.binding_validate)
     private Button binding_validate;//验证码按钮
     @InView(value = R.id.binding_submit)
-    private Button binding_submit;  //注册按钮
+    private Button binding_submit;  //保存按钮
     //验证
     Validator validator;
 
@@ -79,7 +79,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         }
     }
 
-    @InListener(ids = {R.id.find_validation, R.id.find_next_button}, listeners = OnClick.class)
+    @InListener(ids = {R.id.binding_validate, R.id.binding_submit}, listeners = OnClick.class)
     private void click(View view) {
         account = banding_tel_phone.getText().toString();
         Ioc.getIoc().getLogger().e("当前注册手机号：" + account);
@@ -94,15 +94,15 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
             return;
         }
         switch (view.getId()) {
-            case R.id.find_next_button:
+            case R.id.binding_submit:
                 //验证
                 validator = new Validator(this);
                 validator.setValidationListener(this);
                 validator.validate();
                 break;
-            case R.id.find_validation:
-                uuid = Uuid.getUuid();//用于参数的uuid
-                MapVo.set("find_validation", uuid);
+            case R.id.binding_validate:
+//                uuid = Uuid.getUuid();//用于参数的uuid
+//                MapVo.set("find_validation", uuid);
                 checkAccount();
                 break;
         }
@@ -137,12 +137,14 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     private void rebindPhone(){
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
         String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
-        JsonObject json = new JsonObject();
-        json.addProperty("password",password);
-        json.addProperty("bindingType", "1");
-        json.addProperty("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
-        json.addProperty("newBindingInfo", new Gson().toJson(setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString())));
-        MangrovetreeApplication.instance.http.u(this).reBindingPhone(json.toString());
+        HashMap json = new HashMap();
+        json.put("password",password);
+        json.put("bindingType", "1");
+//        json.put("oldBindingInfo", new Gson().toJson(setBandingParams(account,code)));
+        json.put("newBindingInfo", new Gson().toJson(setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString())));
+        json.put("code",code);
+        json.put("uuid",uuid);
+        MangrovetreeApplication.instance.http.u(this).reBindingPhone(new Gson().toJson(json));
     }
 
     /**
@@ -154,7 +156,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         HashMap  bandingMap  = new HashMap<String, Object>();
         bandingMap.put("targ",targ);//手机号
         bandingMap.put("code",code);//验证码
-        bandingMap.put("uuid", Uuid.getUuid());//客户端uuid
+        bandingMap.put("uuid", uuid);//客户端uuid
         return bandingMap;
     }
     /**
@@ -186,12 +188,13 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-        //解析返回的数据
-        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         //------------------------------------------------------------
         //判断当前请求返回是否 有错误，OK 和 ERR
         Map<String, Object> heads = entity.getHeaders();
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
             switch (entity.getKey()) {
                 case Constant.HttpUrl.GETCODE_KEY:
@@ -201,6 +204,15 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
                     finish();
                     break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY:
+                    String result = data.get("result") + "";
+                    Ioc.getIoc().getLogger().e(result);
+                    //账号重复
+                    if (result.equals("1")) {
+                        Ioc.getIoc().getLogger().e("该手机号已注册");
+//                        CommonUtils.onErrorToast(register_account, "该账号已注册，请直接登录", getActivity());
+                        Toast.makeText(this, "该账号已注册", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     getCode();
 
                     break;
@@ -210,7 +222,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
 
     @Override
     public void onValidationSucceeded() {
-        showLoading();
+//        showLoading();
         rebindPhone();
     }
 
