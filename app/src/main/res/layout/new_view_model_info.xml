@@ -16,11 +16,19 @@
                 <!--title-->
                 <RelativeLayout
                     android:background="@color/white_90"
-                    android:layout_below="@+id/group_open_icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <ImageView
+                        android:layout_marginTop="3dp"
+                        android:id="@+id/group_open_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@mipmap/expand_icon" />
+
+                    <ImageView
                         android:id="@+id/combo_image"
+                        android:layout_below="@+id/group_open_icon"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="8dp"
                         android:layout_width="90dp"
@@ -29,6 +37,7 @@
                     <TextView
                         android:id="@+id/combo_name"
                         android:layout_toRightOf="@+id/combo_image"
+                        android:layout_below="@+id/group_open_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="行动书屋"
@@ -68,15 +77,6 @@
                         android:background="@color/divider_view_color"
                         android:layout_height="0.1dp"/>
                 </RelativeLayout>
-                <TextView
-                    android:id="@+id/group_open_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="-13dp"
-                    android:background="@mipmap/arrow_up"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true" />
-
             </RelativeLayout>
 
             <!--显示详情的布局-->
