@@ -56,7 +56,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
     @InView(value = R.id.find_validation)
     private Button find_validation;//验证码按钮
     @InView(value = R.id.find_next_button)
-    private Button find_next_button;  //注册按钮
+    private Button find_next_button;  //下一步
     //验证
     Validator validator;
 
@@ -93,6 +93,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         }
         switch (view.getId()) {
             case R.id.find_next_button:
+
                 //验证
                 validator = new Validator(this);
                 validator.setValidationListener(this);
@@ -118,6 +119,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         MangrovetreeApplication.instance.http.u(this).checkCaptcha(json.toString());
 
     }
+
     /**
      * 验证手机是否重复
      */
@@ -127,6 +129,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         json.addProperty("account", account);
         MangrovetreeApplication.instance.http.u(this).checkAccount(json.toString());
     }
+
     /**
      * 获取手机验证码
      */
@@ -141,7 +144,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         mc.start();
     }
 
-    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKCAPTCHA_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.CHECKCAPTCHA_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
 //            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -159,18 +162,28 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
 
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
-                    String result =  data.get("result")+"";
-                    if(result.equals("0")){
-                        //正常
-                        Intent intent = new Intent(this, FindPasswordResetActivity.class);
-                        intent.putExtra("account", find_account.getText().toString());
-                        intent.putExtra("code", find_security_code.getText().toString());
-                        intent.putExtra("uuid", uuid);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
-                    }
+                    String accout_err = find_account.getText().toString();
+                    System.out.println("hynhhh" + account);
+                    System.out.println("hyn" + accout_err);
+
+                    if (account != accout_err) {
+//                        System.out.println("hynhhh"+ account);
+                        Toast.makeText(this, "账号密码不匹配，请重新输入", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else if (account == accout_err){
+                        String result = data.get("result") + "";
+                        if (result.equals("0")) {
+                            //正常
+                            Intent intent = new Intent(this, FindPasswordResetActivity.class);
+                            intent.putExtra("account", find_account.getText().toString());
+                            intent.putExtra("code", find_security_code.getText().toString());
+                            intent.putExtra("uuid", uuid);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }else{
+                    CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
+                }
 //                    else if(result.equals("1")){
 //                        //验证码不存在
 //                        Toast.makeText(this, "验证码不存在", Toast.LENGTH_SHORT).show();
@@ -183,7 +196,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
 //                        //无效的验证码（其他原因）
 //                        Toast.makeText(this, "验证码无效", Toast.LENGTH_SHORT).show();
 //                    }
-                    break;
+                break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
                     String r = data.get("result") + "";
                     Ioc.getIoc().getLogger().e(r);
