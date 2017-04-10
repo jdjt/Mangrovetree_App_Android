@@ -49,7 +49,7 @@ android {
             // 显示Log
             buildConfigField "boolean", "LOG_DEBUG", "true"
             versionNameSuffix "-debug"
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug

@@ -144,7 +144,8 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         if (!Handler_Network.isNetworkAvailable(getActivity())) {
             Toast.makeText(getActivity(), "手机未联网", Toast.LENGTH_SHORT).show();
             return;
-        }checkAccount();
+        }
+        checkAccount();
         switch (view.getId()) {
             case R.id.register_button:
                 //验证
@@ -153,7 +154,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                 validator.validate();
                 break;
             case R.id.register_valitation:
-
+                getCode();
 
                 break;
         }
@@ -239,7 +240,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                         Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    getCode();
+//                    getCode();
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
                     String r = data.get("result") + "";
@@ -277,15 +278,15 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
             HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
             MapVo.remove("register_valitation");
             login();
-        }else {
-            String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
+        } else {
+            String message = (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
 //            if("EBA007".equals(message.split("|")[0])){
 //                Toast.makeText(getContext(), "验证码已失效，请重新获取", Toast.LENGTH_SHORT).show();
 //                return;
 //            }else if ("EBA005".equals(message.split("|")[0])){
 //                Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
 //            }
-            String b=message.substring(message.length()-12,message.length());
+            String b = message.substring(message.length() - 12, message.length());
 
             Toast.makeText(getContext(), b, Toast.LENGTH_SHORT).show();
         }
