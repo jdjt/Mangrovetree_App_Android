@@ -117,7 +117,6 @@ import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-import com.nostra13.universalimageloader.cache.disc.impl.ext.DiskLruCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
