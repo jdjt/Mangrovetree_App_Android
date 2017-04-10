@@ -3,6 +3,7 @@ package com.fengmap.drpeng;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -115,6 +116,7 @@ import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+import com.nostra13.universalimageloader.cache.disc.impl.ext.DiskLruCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
@@ -354,9 +356,37 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
+//方法写了，没写到init里面去
+    private void isFirst(){
+        SharedPreferences sp = getSharedPreferences("is",MODE_PRIVATE);
+        boolean is_first = sp.getBoolean("is_f irst",true);
+        SharedPreferences.Editor editor = sp.edit();
+        if(is_first){//如果是第一次
 
+        }else {//不是第一次
+
+        }
+    }
 //
-
+//    private void date() {  
+//        SharedPreferences shared=getSharedPreferences("is", MODE_PRIVATE);  
+//        boolean isfer=shared.getBoolean("isfer", true);  
+//        Editor editor=shared.edit();  
+//        if(isfer){  
+//            //第一次进入跳转  
+//            Intent in=new Intent(MainActivity.this,oneActivity.class);  
+//            startActivity(in);  
+//            finish();  
+//            editor.putBoolean("isfer", false);  
+//            editor.commit();  
+//        }else{  
+//            //第二次进入跳转  
+//            Intent in=new Intent(MainActivity.this,twoActivity.class);  
+//            startActivity(in);  
+//            finish();  
+//  
+//  
+//        }  
     public FMMap getMap() {
         return mMap;
     }
