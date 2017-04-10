@@ -116,7 +116,6 @@ import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-import com.nostra13.universalimageloader.cache.disc.impl.ext.DiskLruCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
@@ -133,6 +132,7 @@ import static com.fengmap.drpeng.FMAPI.TARGET_ADD_MARKER;
 import static com.fengmap.drpeng.FMAPI.TARGET_CALCULATE_ROUTE;
 import static com.fengmap.drpeng.FMAPI.TARGET_LOCATE;
 import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
+import android.content.SharedPreferences.Editor;
 
 /**
  * 室外地图。注意: 退出整个应用前,需要把查询数据库给关了FMDatabaseHelper.getDatabaseHelper().close();
@@ -256,6 +256,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Init
     protected void initView() {
+        isFirst();
         initSlidingMenu();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
@@ -358,13 +359,15 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 //方法写了，没写到init里面去
     private void isFirst(){
-        SharedPreferences sp = getSharedPreferences("is",MODE_PRIVATE);
-        boolean is_first = sp.getBoolean("is_f irst",true);
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences sp = this.getSharedPreferences("is",MODE_PRIVATE);
+        boolean is_first = sp.getBoolean("is_first",true);
+        Editor editor = sp.edit();
         if(is_first){//如果是第一次
-
+            editor.putBoolean("is_first",false);
+            editor.commit();
+            Toast.makeText(this,"第一次安装",Toast.LENGTH_SHORT).show();
         }else {//不是第一次
-
+            Toast.makeText(this,"第n次",Toast.LENGTH_SHORT).show();
         }
     }
 //
