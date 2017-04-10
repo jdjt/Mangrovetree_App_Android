@@ -216,11 +216,11 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
                 case Constant.HttpUrl.GETCODE_KEY:
 
                     break;
-                case Constant.HttpUrl.REBINDINGPHONE_KEY:
-                    Toast.makeText(this, "成功了", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this,PesonalInfoActivity.class));
-                    finish();
-                    break;
+//                case Constant.HttpUrl.REBINDINGPHONE_KEY:
+//                    Toast.makeText(this, "成功了", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(this,PesonalInfoActivity.class));
+//                    finish();
+//                    break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY:
                     String result = data.get("result") + "";
                     Ioc.getIoc().getLogger().e(result);
@@ -239,12 +239,26 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         else {//有错误
             String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
             String b=message.substring(message.length()-12,message.length());
-
             Toast.makeText(this, b, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,"hahahahahah", Toast.LENGTH_SHORT).show();
         }
     }
+    @InHttp(Constant.HttpUrl.REBINDINGPHONE_KEY)
+    public void result1(ResponseEntity entity) {
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Map<String, Object> heads = entity.getHeaders();
+        if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+            finish();
+        } else {
+            String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
+            String b=message.substring(message.length()-12,message.length());
+            Toast.makeText(this, b, Toast.LENGTH_SHORT).show();
+        }
 
+
+    }
     @Override
     public void onValidationSucceeded() {
 //        showLoading();
