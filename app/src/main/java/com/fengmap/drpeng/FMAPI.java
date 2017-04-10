@@ -229,8 +229,8 @@ public class FMAPI {
         FMLocationMarkerStyle locStyle = new FMLocationMarkerStyle();
         locStyle.setActiveImageFromAssets("fmr/pointer.png");
         locStyle.setStaticImageFromAssets("fmr/dome.png");
-        locStyle.setWidth(50);
-        locStyle.setHeight(50);
+        locStyle.setWidth(65);
+        locStyle.setHeight(65);
         FMLocationMarker marker = new FMLocationMarker(groupId, position, locStyle);
         layer.addMarker(marker);
         return marker;

@@ -49,6 +49,7 @@ import com.fengmap.android.map.layer.FMLocationLayer;
 import com.fengmap.android.map.layer.FMModelLayer;
 import com.fengmap.android.map.marker.FMExternalModel;
 import com.fengmap.android.map.marker.FMImageMarker;
+import com.fengmap.android.map.marker.FMLabel;
 import com.fengmap.android.map.marker.FMLineMarker;
 import com.fengmap.android.map.marker.FMLocationMarker;
 import com.fengmap.android.map.marker.FMNode;
@@ -423,7 +424,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     private void dealWhere(Bundle pB, String pWhere) {
         if (MapSearchAcitivity.class.getName().equals(pWhere)) {
-            // 从搜索结果界面而来
             // 从搜索结果界面而来
             Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
 
@@ -1511,7 +1511,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
 
         // 3D模型图层
-        FMExternalModelLayer eml = mLayerProxy.getFMExternalModelLayer(mMap.getDisplayGroupIds()[0]);
+        final FMExternalModelLayer eml = mLayerProxy.getFMExternalModelLayer(mMap.getDisplayGroupIds()[0]);
 
         eml.setOnFMNodeListener(new OnFMNodeListener() {
             @Override
@@ -1551,6 +1551,51 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
+                return false;
+            }
+        });
+
+        //标签点击逻辑
+        FMLabelLayer lableLayer = mLayerProxy.getFMLabelLayer(1);
+        lableLayer.setOnFMNodeListener(new OnFMNodeListener() {
+            @Override
+            public boolean onClick(FMNode fmNode) {
+                if(!isMapLoadCompleted){
+                    return false;
+                }
+                if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
+                    return false;
+                }
+                if(mOpenModelInfoWindow.isShowing()){
+                    mOpenModelInfoWindow.close();
+                }
+
+                if (header_first_tv.getVisibility() == View.VISIBLE) {
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            header_first_tv.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+                FMLabel l = (FMLabel)fmNode;
+                //获取标签对应的模型句柄
+                long modelHandle = mMapView.getAssociation().getAssociationNodeHandleWithLabel(l);
+
+                mCurrentModel = eml.getMarker(modelHandle) ;
+                //这里需要添加查询模型activity_code的逻辑
+                String activitycode = "";
+                ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
+                if (ActivityCodeList.size() > 0) {
+                    activitycode = ActivityCodeList.get(0).getActivitycode();
+                }
+                ShowPopModelView(mCurrentModel, activitycode);
+                return true;
+            }
+
+            @Override
+            public boolean onLongPress(FMNode fmNode) {
                 return false;
             }
         });
