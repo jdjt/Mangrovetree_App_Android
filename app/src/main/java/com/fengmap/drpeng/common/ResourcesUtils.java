@@ -58,7 +58,7 @@ public class ResourcesUtils {
      	   
      	   File ff = new File(dstDir,dstFileName);
      	   if(ff.exists()) {
-			   ff.delete();// 如果存在就删除
+//			   ff.delete();// 如果存在就删除
 			   return;
      	   }
      	   is = c.getAssets().open(srcAssetsPath);
