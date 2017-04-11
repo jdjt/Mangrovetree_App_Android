@@ -257,7 +257,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Init
     protected void initView() {
-        isFirst();
         initSlidingMenu();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
@@ -358,19 +357,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
-//方法写了，没写到init里面去
-    private void isFirst(){
-        SharedPreferences sp = this.getSharedPreferences("is",MODE_PRIVATE);
-        boolean is_first = sp.getBoolean("is_first",true);
-        Editor editor = sp.edit();
-        if(is_first){//如果是第一次
-            editor.putBoolean("is_first",false);
-            editor.commit();
-            Toast.makeText(this,"第一次安装",Toast.LENGTH_SHORT).show();
-        }else {//不是第一次
-            Toast.makeText(this,"第n次",Toast.LENGTH_SHORT).show();
-        }
-    }
+
 //
 //    private void date() {  
 //        SharedPreferences shared=getSharedPreferences("is", MODE_PRIVATE);  

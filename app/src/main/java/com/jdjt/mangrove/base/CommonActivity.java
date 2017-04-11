@@ -191,6 +191,15 @@ public class CommonActivity extends AppCompatActivity {
         return mActionBarToolbar;
     }
 
+
+    public void setActionBarTitle(String string) {
+        if (mActionBarToolbar == null) {
+            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        }
+        TextView title = (TextView) mActionBarToolbar.findViewById(R.id.toolbar_title);
+        title.setText(string);
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     protected void setStatusBar() {
         setTranslucentStatus( R.color.title_bg);
