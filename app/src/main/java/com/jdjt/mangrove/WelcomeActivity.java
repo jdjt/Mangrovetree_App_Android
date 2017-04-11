@@ -3,12 +3,14 @@ package com.jdjt.mangrove;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -64,7 +66,6 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_welcome);
         try {
             init();
@@ -197,6 +198,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     void copyMap() {
+        isFirst();
         FMMapSDK.initResource();
         writeMapFile("79980");
         writeMapFile("79981");
@@ -292,5 +294,49 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }, 500);
 
+    }
+
+
+    /**
+    * @method 验证首次安装  亚楠
+    */
+    private void isFirst(){
+        SharedPreferences sp = this.getSharedPreferences("is",MODE_PRIVATE);
+        boolean is_first = sp.getBoolean("is_first",true);
+        SharedPreferences.Editor editor = sp.edit();
+        if(is_first){//如果是第一次
+            editor.putBoolean("is_first",false);
+            editor.commit();
+            deleteAllFiles(new File(SDPATH));// 递规的方式删除文件夹
+        }else {//不是第一次
+//            Toast.makeText(this,"第n次",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+    *  删除文件夹和文件夹里面的文件
+    */
+    static  String SDPATH = ResourcesUtils.getSDPath()
+            + "/fm_drpeng";
+    public static void deleteAllFiles(File root) {
+        File files[] = root.listFiles();
+        if (files != null)
+            for (File f : files) {
+                if (f.isDirectory()) { // 判断是否为文件夹
+                    deleteAllFiles(f);
+                    try {
+                        f.delete();
+                    } catch (Exception e) {
+                    }
+                } else {
+                    if (f.exists()) { // 判断是否存在
+                        deleteAllFiles(f);
+                        try {
+                            f.delete();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            }
     }
 }
