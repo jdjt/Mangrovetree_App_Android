@@ -2,6 +2,7 @@ package com.jdjt.mangrove.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -26,8 +27,10 @@ import java.util.Map;
 public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdapter.BaseViewHolder> {
     int screenHeight;
     int screenWidth;
+    Context context;
     public TagsAdapter(Context context) {
         super(context);
+        this.context=context;
         DisplayMetrics dm = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
         screenHeight = dm.heightPixels;
@@ -57,7 +60,7 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
 //        txt.setLayoutParams(layoutParams);
         txt.setText(map);
         if((null != data.get("isClose")) && data.get("isClose").equals("true")){
-            Drawable rightDrawable = getContext().getDrawable(R.mipmap.icon_text_close);
+            Drawable rightDrawable = ContextCompat.getDrawable(context.getApplicationContext(),R.mipmap.icon_text_close);
             rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
             txt.setCompoundDrawables(null, null, rightDrawable, null);
             txt.setOnClickListener(new View.OnClickListener() {
