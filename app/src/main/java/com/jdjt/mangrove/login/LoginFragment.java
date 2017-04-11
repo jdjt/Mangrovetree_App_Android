@@ -3,6 +3,7 @@ package com.jdjt.mangrove.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -131,8 +132,10 @@ public class LoginFragment extends Fragment implements ValidationListener {
             Toast.makeText(getContext(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
+        HashMap<String, Object> data=null;
         //解析返回的数据
-        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        if(!TextUtils.isEmpty(entity.getContentAsString()))
+          data = Handler_Json.JsonToCollection(entity.getContentAsString());
         Map<String, Object> heads = entity.getHeaders();
         switch (entity.getKey()) {
             case Constant.HttpUrl.LOGIN_KEY:
