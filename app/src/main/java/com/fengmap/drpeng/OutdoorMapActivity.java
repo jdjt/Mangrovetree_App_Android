@@ -3,6 +3,7 @@ package com.fengmap.drpeng;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,6 +50,7 @@ import com.fengmap.android.map.layer.FMLocationLayer;
 import com.fengmap.android.map.layer.FMModelLayer;
 import com.fengmap.android.map.marker.FMExternalModel;
 import com.fengmap.android.map.marker.FMImageMarker;
+import com.fengmap.android.map.marker.FMLabel;
 import com.fengmap.android.map.marker.FMLineMarker;
 import com.fengmap.android.map.marker.FMLocationMarker;
 import com.fengmap.android.map.marker.FMNode;
@@ -131,6 +133,7 @@ import static com.fengmap.drpeng.FMAPI.TARGET_ADD_MARKER;
 import static com.fengmap.drpeng.FMAPI.TARGET_CALCULATE_ROUTE;
 import static com.fengmap.drpeng.FMAPI.TARGET_LOCATE;
 import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
+import android.content.SharedPreferences.Editor;
 
 /**
  * 室外地图。注意: 退出整个应用前,需要把查询数据库给关了FMDatabaseHelper.getDatabaseHelper().close();
@@ -254,6 +257,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Init
     protected void initView() {
+        isFirst();
         initSlidingMenu();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
@@ -354,9 +358,39 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
-
+//方法写了，没写到init里面去
+    private void isFirst(){
+        SharedPreferences sp = this.getSharedPreferences("is",MODE_PRIVATE);
+        boolean is_first = sp.getBoolean("is_first",true);
+        Editor editor = sp.edit();
+        if(is_first){//如果是第一次
+            editor.putBoolean("is_first",false);
+            editor.commit();
+            Toast.makeText(this,"第一次安装",Toast.LENGTH_SHORT).show();
+        }else {//不是第一次
+            Toast.makeText(this,"第n次",Toast.LENGTH_SHORT).show();
+        }
+    }
 //
-
+//    private void date() {  
+//        SharedPreferences shared=getSharedPreferences("is", MODE_PRIVATE);  
+//        boolean isfer=shared.getBoolean("isfer", true);  
+//        Editor editor=shared.edit();  
+//        if(isfer){  
+//            //第一次进入跳转  
+//            Intent in=new Intent(MainActivity.this,oneActivity.class);  
+//            startActivity(in);  
+//            finish();  
+//            editor.putBoolean("isfer", false);  
+//            editor.commit();  
+//        }else{  
+//            //第二次进入跳转  
+//            Intent in=new Intent(MainActivity.this,twoActivity.class);  
+//            startActivity(in);  
+//            finish();  
+//  
+//  
+//        }  
     public FMMap getMap() {
         return mMap;
     }
@@ -423,7 +457,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     private void dealWhere(Bundle pB, String pWhere) {
         if (MapSearchAcitivity.class.getName().equals(pWhere)) {
-            // 从搜索结果界面而来
             // 从搜索结果界面而来
             Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
 
@@ -1511,7 +1544,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
 
         // 3D模型图层
-        FMExternalModelLayer eml = mLayerProxy.getFMExternalModelLayer(mMap.getDisplayGroupIds()[0]);
+        final FMExternalModelLayer eml = mLayerProxy.getFMExternalModelLayer(mMap.getDisplayGroupIds()[0]);
 
         eml.setOnFMNodeListener(new OnFMNodeListener() {
             @Override
@@ -1551,6 +1584,51 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
+                return false;
+            }
+        });
+
+        //标签点击逻辑
+        FMLabelLayer lableLayer = mLayerProxy.getFMLabelLayer(1);
+        lableLayer.setOnFMNodeListener(new OnFMNodeListener() {
+            @Override
+            public boolean onClick(FMNode fmNode) {
+                if(!isMapLoadCompleted){
+                    return false;
+                }
+                if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
+                    return false;
+                }
+                if(mOpenModelInfoWindow.isShowing()){
+                    mOpenModelInfoWindow.close();
+                }
+
+                if (header_first_tv.getVisibility() == View.VISIBLE) {
+                    UiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            header_first_tv.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+                FMLabel l = (FMLabel)fmNode;
+                //获取标签对应的模型句柄
+                long modelHandle = mMapView.getAssociation().getAssociationNodeHandleWithLabel(l);
+
+                mCurrentModel = eml.getMarker(modelHandle) ;
+                //这里需要添加查询模型activity_code的逻辑
+                String activitycode = "";
+                ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
+                if (ActivityCodeList.size() > 0) {
+                    activitycode = ActivityCodeList.get(0).getActivitycode();
+                }
+                ShowPopModelView(mCurrentModel, activitycode);
+                return true;
+            }
+
+            @Override
+            public boolean onLongPress(FMNode fmNode) {
                 return false;
             }
         });

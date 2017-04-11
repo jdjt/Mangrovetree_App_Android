@@ -44,7 +44,7 @@ public class NewModelView extends RelativeLayout {
     private RelativeLayout navi_layout_x,navi_layout_xx;
     private ScrollView scroll;
     private Handler mHanler;
-    TextView combo_name, group_open_icon, combo_details;
+    TextView combo_name, combo_details;
     TextView fm_navi_start, fm_navi_end;
     TextView fm_open_navi_small,fm_enter_inside,fm_open_navi_big_x;
     TextView fm_navi_need_distance,fm_navi_need_time,fm_navi_need_calorie;
@@ -74,7 +74,6 @@ public class NewModelView extends RelativeLayout {
         view = View.inflate(mContext, R.layout.new_view_model_info,this);
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
-        group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
         fm_enter_inside = (TextView) view.findViewById(R.id.fm_enter_inside);
         fm_open_navi_small = (TextView) view.findViewById(R.id.fm_open_navi_small);
         fm_open_navi_big_x = (TextView) view.findViewById(R.id.fm_open_navi_big_x);
@@ -124,7 +123,6 @@ public class NewModelView extends RelativeLayout {
                         public void run() {
                             navi_layout.setVisibility(View.GONE);
                             divider_line.setVisibility(GONE);
-                            group_open_icon.setBackgroundResource(R.mipmap.arrow_up);
                         }
                     });
                     isExpand = false;
@@ -134,7 +132,6 @@ public class NewModelView extends RelativeLayout {
                         public void run() {
                             navi_layout.setVisibility(View.VISIBLE);
                             divider_line.setVisibility(VISIBLE);
-                            group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
                         }
                     });
                     isExpand = true;
@@ -170,7 +167,6 @@ public class NewModelView extends RelativeLayout {
         }
         isExpand = true;
         navi_layout.setVisibility(View.VISIBLE);
-        group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
         mEnterMapId = emr.getMapId();
     }
 

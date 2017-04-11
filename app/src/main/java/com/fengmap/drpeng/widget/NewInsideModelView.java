@@ -43,7 +43,7 @@ public class NewInsideModelView extends RelativeLayout {
     private LinearLayout content;
     private ScrollView scroll;
     private Handler mHanler;
-    TextView combo_name, group_open_icon, combo_details;
+    TextView combo_name,combo_details;
     TextView fm_navi_start, fm_navi_end;
     TextView fm_navi_need_time,fm_navi_need_calorie,fm_navi_need_distance;
     TextView fm_open_navi_big;
@@ -75,7 +75,6 @@ public class NewInsideModelView extends RelativeLayout {
         //业态详情
         combo_name = (TextView) view.findViewById(R.id.combo_name);
         combo_details = (TextView) view.findViewById(R.id.combo_details);
-        group_open_icon = (TextView) view.findViewById(R.id.group_open_icon);
         fm_open_navi_big = (TextView) view.findViewById(R.id.fm_open_navi_big);
         fm_navi_start = (TextView) view.findViewById(R.id.fm_navi_start);
         fm_navi_end = (TextView) view.findViewById(R.id.fm_navi_end);
@@ -95,7 +94,6 @@ public class NewInsideModelView extends RelativeLayout {
                         @Override
                         public void run() {
                             content.setVisibility(View.GONE);
-                            group_open_icon.setBackgroundResource(R.mipmap.arrow_up);
                         }
                     });
                     isExpand = false;
@@ -104,7 +102,6 @@ public class NewInsideModelView extends RelativeLayout {
                         @Override
                         public void run() {
                             content.setVisibility(View.VISIBLE);
-                            group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
                         }
                     });
                     isExpand = true;
@@ -152,7 +149,6 @@ public class NewInsideModelView extends RelativeLayout {
     public void setDetailOpen() {
         isExpand = true;
         content.setVisibility(View.VISIBLE);
-        group_open_icon.setBackgroundResource(R.mipmap.arrow_down);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.jdjt.mangrove.login;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +43,7 @@ import java.util.Map;
  * Created by huyanan on 2017/3/13.
  * 更换手机号
  */
-@InLayer(value = R.layout.mem_accountbanding_reset,parent = R.id.center_common)
+@InLayer(value = R.layout.mem_accountbanding_reset, parent = R.id.center_common)
 public class AccountBandingResetActivity extends CommonActivity implements Validator.ValidationListener {
     @Telphone(empty = false, message = "请输入正确的手机号", order = 1)
     @InView(value = R.id.banding_tel_phone)
@@ -65,9 +66,10 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     String reuuid;
     String account;
     String code;//原手机验证码
+
     @Init
-    private void init(){
-        code=getIntent().getStringExtra("code");
+    private void init() {
+        code = getIntent().getStringExtra("code");
 
     }
 
@@ -118,7 +120,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     /**
      * 验证验证码
      */
-    private  void checkCode(){
+    private void checkCode() {
         JsonObject json = new JsonObject();
         json.addProperty("code", binding_security_code.getText().toString());
         json.addProperty("uuid", uuid);
@@ -144,32 +146,34 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
     /**
      * 绑定手机
      */
-    private void rebindPhone(){
+    private void rebindPhone() {
         String account = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "account", 0);
         String password = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "password", 0);
         HashMap json = new HashMap();
-        json.put("password",password);//原用户名
+        json.put("password", password);//原用户名
         json.put("bindingType", "1");//手机号
-        json.put("oldBindingInfo", setBandingParams(account,code));
-        json.put("newBindingInfo", setBandingParams(banding_tel_phone.getText().toString(),binding_security_code.getText().toString()));
+        json.put("oldBindingInfo", setBandingParams(account, code));
+        json.put("newBindingInfo", setBandingParams(banding_tel_phone.getText().toString(), binding_security_code.getText().toString()));
 //        json.put("code",code);
 //        json.put("uuid",uuid);
-        System.out.println("hyn"+new Gson().toJson(json));
+        System.out.println("hyn" + new Gson().toJson(json));
         MangrovetreeApplication.instance.http.u(this).reBindingPhone(new Gson().toJson(json));
     }
 
     /**
      * targ 手机号
      * code 验证码
+     *
      * @return
      */
-    private HashMap setBandingParams(String targ,String code){
-        HashMap  bandingMap  = new HashMap<String, Object>();
-        bandingMap.put("targ",targ);//手机号
-        bandingMap.put("code",code);//验证码
-        bandingMap.put("uuid",uuid);//客户端uuid
+    private HashMap setBandingParams(String targ, String code) {
+        HashMap bandingMap = new HashMap<String, Object>();
+        bandingMap.put("targ", targ);//手机号
+        bandingMap.put("code", code);//验证码
+        bandingMap.put("uuid", uuid);//客户端uuid
         return bandingMap;
     }
+
     /**
      * 验证手机是否重复
      */
@@ -193,7 +197,8 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         mc = new CountTimer(60000, 1000, binding_validate, "find_validation");
         mc.start();
     }
-    @InHttp({Constant.HttpUrl.GETCODE_KEY,Constant.HttpUrl.REBINDINGPHONE_KEY,Constant.HttpUrl.CHECKACCOUNT_KEY})
+
+    @InHttp({Constant.HttpUrl.GETCODE_KEY, Constant.HttpUrl.REBINDINGPHONE_KEY, Constant.HttpUrl.CHECKACCOUNT_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
@@ -212,7 +217,8 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
 
                     break;
                 case Constant.HttpUrl.REBINDINGPHONE_KEY:
-
+                    Toast.makeText(this, "成功了", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this,PesonalInfoActivity.class));
                     finish();
                     break;
                 case Constant.HttpUrl.CHECKACCOUNT_KEY:
@@ -229,6 +235,13 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
 
                     break;
             }
+        }
+        else {//有错误
+            String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
+            String b=message.substring(message.length()-12,message.length());
+
+            Toast.makeText(this, b, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"hahahahahah", Toast.LENGTH_SHORT).show();
         }
     }
 
