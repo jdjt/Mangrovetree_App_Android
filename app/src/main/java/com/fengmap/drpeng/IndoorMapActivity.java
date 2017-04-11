@@ -336,6 +336,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             mInitGroupId = e.getGid();
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
+            setActionBarTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
             selectFid  = e.getFid();
             selectDetailsCode = e.getActivitycode();
 
@@ -346,6 +347,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             mInitGroupId = e.getGroupId();
 
             mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
+            setActionBarTitle(String.format("%s・%s", Tools.getInsideMapName(mapId), "室内地图"));
             // 目的
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
             if (TARGET_ADD_MARKER.equals(target)) {
@@ -385,6 +387,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
             mapId = pB.getString(FMAPI.ACTIVITY_MAP_ID);
             String hotelName = pB.getString(FMAPI.ACTIVITY_HOTEL_NAME);
             mTopBarView.setTitle(String.format("%s・%s", hotelName, "室内地图"));
+            setActionBarTitle(String.format("%s・%s", hotelName, "室内地图"));
 
             // 目的
             String target = pB.getString(FMAPI.ACTIVITY_TARGET);
@@ -526,6 +529,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
     @Override
     public void onMapInitSuccess(String mapPath) {
         mTopBarView.setTitle(String.format("%s・%s", Tools.getInsideMapName(mMap.currentMapId()), "室内地图"));
+        setActionBarTitle(String.format("%s・%s", Tools.getInsideMapName(mMap.currentMapId()), "室内地图"));
 
         mMap.setSceneZoomRange(1.0f, 20);
         mMap.setTiltAngle((float) FMMath.degreeToRad(90));
