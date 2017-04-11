@@ -250,6 +250,7 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         }
         Map<String, Object> heads = entity.getHeaders();
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
+            Handler_SharedPreferences.WriteSharedPreferences(Constant.HttpUrl.DATA_USER, "account", banding_tel_phone.getText().toString());
             finish();
         } else {
             String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
