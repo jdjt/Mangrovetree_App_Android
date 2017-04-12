@@ -1739,7 +1739,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         view.setEnterMapIdByModelFid(mCurrentModel.getFid());
         if (activitycode != null && !"".equals(activitycode) && !"NULL".equals(activitycode)) {
-            view.showDetail(true);
             mProgressDialog.setTitle("加载中，请稍后!");
             getActivityDetail(activitycode);
             ActivityCodeList.clear();
@@ -1762,7 +1761,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                .setDurationTime(800)
+                .setDurationTime(500)
                 .start();
         //导航线绘制逻辑
         clearCalculateRouteLineMarker();
@@ -2718,23 +2717,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
      */
     @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY, Constant.HttpUrl.UPDATESOFTADDRESS_KEY})
     public void result(ResponseEntity entity) {
-
-
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
-            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
-            switch (entity.getKey()){
-                case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
-                    NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
-                    view.showDetail(false);
-                    mProgressDialog.dismiss();
-                    popNaviView();
-                    break;
-                default:
-                    break;
+            if(!isShowDetail){
+                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+                mProgressDialog.dismiss();
+                view.showDetail(false);
+                popNaviView();
             }
+            ToastUtils.showToast(this, "网络请求失败，请检查网络");
             return;
         }
         //解析返回的数据
@@ -2754,6 +2747,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     view.downloadImage(imageLoader, image.get("url"));
                 }
                 mProgressDialog.dismiss();
+                view.showDetail(true);
+                isShowDetail = false;
                 popNaviView();
                 break;
             case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:

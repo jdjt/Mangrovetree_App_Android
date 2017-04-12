@@ -2257,10 +2257,12 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         NewInsideModelView view = (NewInsideModelView) mOpenModelInfoWindow.getConvertView();
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
-            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
-            view.showDetail(false);
+            ToastUtils.showToast(this, "网络请求失败，请检查网络");
             mProgressDialog.dismiss();
-            showNaviPopWinidow();
+            if(!isShowDetail){
+                view.showDetail(false);
+                showNaviPopWinidow();
+            }
             return;
         }
         //解析返回的数据
@@ -2282,7 +2284,9 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                     view.downloadImage(imageLoader,image.get("url"));
                 }
                 mProgressDialog.dismiss();
+                view.showDetail(true);
                 showNaviPopWinidow();
+                isShowDetail = false;
                 break;
         }
     }
