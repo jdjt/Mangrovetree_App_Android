@@ -108,7 +108,7 @@ public class MangrovetreeApplication extends Application {
                 return reslut;
             }
         };
-        IocListener.newInstance().setHttpListener(listener2);
+        IocListener.newInstance().setHttpListener(listener);
     }
 
     int ERROR = -1;
