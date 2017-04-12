@@ -1079,6 +1079,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
             case R.id.fm_map_img_location:
                 if (!FMLocationService.instance().checkLocationValid(this)) {
+                    ToastUtils.showToast(this,"请打开GPS和WIFI！");
                     return;
                 }
                 FMTotalMapCoord myLocatePos = FMLocationService.instance().getFirstMyLocatePosition();

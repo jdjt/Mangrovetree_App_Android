@@ -73,6 +73,7 @@ import com.fengmap.drpeng.widget.NaviView;
 import com.fengmap.drpeng.widget.NewInsideModelView;
 import com.fengmap.drpeng.widget.NewModelView;
 import com.fengmap.drpeng.widget.SwitchFloorView;
+import com.fengmap.drpeng.widget.ToastUtils;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
@@ -779,8 +780,8 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
         switch (v.getId()) {
             case R.id.fm_map_img_location:
 
-
                 if (!FMLocationService.instance().checkLocationValid(this)) {
+                    ToastUtils.showToast(this,"请打开GPS和WIFI！");
                     return;
                 }
 
