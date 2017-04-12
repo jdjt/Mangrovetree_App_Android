@@ -20,6 +20,7 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.InternetConfig;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Http;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,6 +34,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.BufferedSink;
 
 /**
  * @author wmy
@@ -111,21 +113,18 @@ public class MangrovetreeApplication extends Application {
         IocListener.newInstance().setHttpListener(listener2);
     }
 
-    int ERROR = -1;
-    int ok = 0;
     public IocHttpListener<ResponseEntity> listener2 = new IocHttpListener<ResponseEntity>() {
 
         final OkHttpClient client = new OkHttpClient();
 
         @Override
-        public ResponseEntity netCore(NetConfig config) {
+        public ResponseEntity netCore(final NetConfig config) {
             System.out.println("拦截请求：" + config);
             ResponseEntity responseEntity = new ResponseEntity();
             switch (config.getType()) {
                 case POST: {
                     try {
-                        MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
-                        RequestBody requerstBody = RequestBody.create(mediaType, config.getParam());
+
                         Request.Builder builder = new Request.Builder().url(config.getUrl());
                         String ticket = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "ticket", 0);
                         builder.addHeader(HeaderConst.MYMHOTEL_TICKET, ticket);
@@ -135,6 +134,20 @@ public class MangrovetreeApplication extends Application {
                         builder.addHeader(HeaderConst.MYMHOTEL_SOURCECODE, "");
                         builder.addHeader(HeaderConst.MYMHOTEL_DATETIME, new Date().getTime() + "");
                         builder.addHeader(HeaderConst.MYMHOTEL_ACKDATATYPE, "JSON");
+                        builder.addHeader("content-type", "application/json;charset=utf-8");
+                        final MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
+                        RequestBody requerstBody = new RequestBody() {
+                            @Override
+                            public MediaType contentType() {
+                                return mediaType;
+                            }
+                            @Override
+                            public void writeTo(BufferedSink sink) throws IOException {
+                                DataOutputStream out = new DataOutputStream(sink.outputStream());
+                                if(null!=config.getParam())
+                                    out.writeBytes(config.getParam());    //写入流
+                            }
+                        };
                         builder.post(requerstBody);
                         Request request = builder.build();
                         Response response = client.newCall(request).execute();
@@ -151,6 +164,7 @@ public class MangrovetreeApplication extends Application {
                         responseEntity.setHeaders(outHeaders(responseHeaders));
                     } catch (IOException e) {
                         e.printStackTrace();
+                        responseEntity.setStatus(FastHttp.result_net_err);
                     }
                 }
                 break;
