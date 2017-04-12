@@ -36,7 +36,7 @@ import java.util.Map;
  */
 @InLayer(value = R.layout.mem_find__password_reset,parent = R.id.center_common,isTitle = true)
 public class FindPasswordResetActivity extends CommonActivity implements Validator.ValidationListener {
-    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 1)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字组成的密码", order = 1)
     @InView
     private EditText find_reset_password;
 
@@ -93,6 +93,8 @@ public class FindPasswordResetActivity extends CommonActivity implements Validat
         Map<String, Object> heads = entity.getHeaders();
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
             finish();
+        }else {
+            Toast.makeText(this,"错误",Toast.LENGTH_SHORT).show();
         }
     }
 

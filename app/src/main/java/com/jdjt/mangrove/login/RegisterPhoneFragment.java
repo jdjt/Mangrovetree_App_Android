@@ -64,7 +64,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     @InView(value = R.id.register_account)
     private EditText register_account;//账号
 
-    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 3)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字组成的密码", order = 3)
     @InView(value = R.id.register_password)
     private EditText register_password;//密码
 
@@ -236,7 +236,6 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                     //账号重复
                     if (result.equals("1")) {
                         Ioc.getIoc().getLogger().e("该手机号已注册");
-//                        CommonUtils.onErrorToast(register_account, "该账号已注册，请直接登录", getActivity());
                         Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -246,7 +245,6 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                     String r = data.get("result") + "";
                     if (r.equals("1")) {
                         Toast.makeText(getContext(), "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
-//                         CommonUtils.onErrorToast(register_security_code, "验证码不正确请重新输入", this);
                         return;
                     }
 
@@ -275,19 +273,11 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
         //判断当前请求返回是否 有错误，OK 和 ERR
         Map<String, Object> heads = entity.getHeaders();
         if ("OK".equals(heads.get(HeaderConst.MYMHOTEL_STATUS))) {
-            HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
             MapVo.remove("register_valitation");
             login();
         } else {
             String message = (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
-//            if("EBA007".equals(message.split("|")[0])){
-//                Toast.makeText(getContext(), "验证码已失效，请重新获取", Toast.LENGTH_SHORT).show();
-//                return;
-//            }else if ("EBA005".equals(message.split("|")[0])){
-//                Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
-//            }
             String b = message.substring(message.length() - 12, message.length());
-
             Toast.makeText(getContext(), b, Toast.LENGTH_SHORT).show();
         }
     }

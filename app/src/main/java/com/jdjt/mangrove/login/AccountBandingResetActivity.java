@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fengmap.drpeng.widget.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
@@ -239,7 +240,8 @@ public class AccountBandingResetActivity extends CommonActivity implements Valid
         else {//有错误
             String message= (String) heads.get(HeaderConst.MYMHOTEL_MESSAGE);
             String b=message.substring(message.length()-12,message.length());
-            Toast.makeText(this, b, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, b, Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this,""+b);
         }
     }
     @InHttp(Constant.HttpUrl.REBINDINGPHONE_KEY)
