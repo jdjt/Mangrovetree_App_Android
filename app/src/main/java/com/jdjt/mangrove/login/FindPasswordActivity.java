@@ -166,11 +166,10 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
                     System.out.println("hynhhh" + account);
                     System.out.println("hyn" + accout_err);
 
-                    if (account != accout_err) {
-//                        System.out.println("hynhhh"+ account);
+                    if (!account.equals(accout_err)) {
                         Toast.makeText(this, "账号密码不匹配，请重新输入", Toast.LENGTH_SHORT).show();
                         return;
-                    } else if (account == accout_err){
+                    } else if (account.equals(accout_err)) {
                         String result = data.get("result") + "";
                         if (result.equals("0")) {
                             //正常
@@ -180,23 +179,14 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
                             intent.putExtra("uuid", uuid);
                             startActivity(intent);
                             finish();
+                        } else {
+                            Toast.makeText(this, "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
                         }
-                    }else{
-                    CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
-                }
-//                    else if(result.equals("1")){
-//                        //验证码不存在
-//                        Toast.makeText(this, "验证码不存在", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else if(result.equals("2")){
-//                        //无效的验证码（超时原因）
-//                        Toast.makeText(this, "验证码无效,已超时", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else if(result.equals("9")){
-//                        //无效的验证码（其他原因）
-//                        Toast.makeText(this, "验证码无效", Toast.LENGTH_SHORT).show();
-//                    }
-                break;
+                    } else {
+                        CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
+                    }
+                    break;
+
                 case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
                     String r = data.get("result") + "";
                     Ioc.getIoc().getLogger().e(r);

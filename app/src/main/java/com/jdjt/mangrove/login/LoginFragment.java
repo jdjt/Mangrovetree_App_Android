@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment implements ValidationListener {
     @InView
     EditText login_account;//账号
     @NotProguard
-    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 2)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字组成的密码 ", order = 2)
     @InView
     EditText login_password;//密码
     @NotProguard

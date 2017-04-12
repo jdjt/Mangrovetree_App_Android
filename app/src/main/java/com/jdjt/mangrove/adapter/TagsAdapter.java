@@ -57,7 +57,7 @@ public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdap
 //        txt.setLayoutParams(layoutParams);
         txt.setText(map);
         if((null != data.get("isClose")) && data.get("isClose").equals("true")){
-            Drawable rightDrawable = getContext().getDrawable(R.mipmap.icon_text_close);
+            Drawable rightDrawable = getContext().getResources().getDrawable(R.mipmap.icon_text_close,null);
             rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
             txt.setCompoundDrawables(null, null, rightDrawable, null);
             txt.setOnClickListener(new View.OnClickListener() {

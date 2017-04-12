@@ -64,7 +64,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
     @InView(value = R.id.register_account)
     private EditText register_account;//账号
 
-    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字_和-组成的密码", order = 3)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字组成的密码", order = 3)
     @InView(value = R.id.register_password)
     private EditText register_password;//密码
 

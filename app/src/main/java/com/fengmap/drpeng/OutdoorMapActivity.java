@@ -257,6 +257,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Init
     protected void initView() {
+        getUpdateSoftaddress();
         initSlidingMenu();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
