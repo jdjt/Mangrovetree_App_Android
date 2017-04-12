@@ -224,3 +224,6 @@
 #-keepclassmembers class com.fengmap.drpeng.** {
 #     *;
 #}
+-dontwarn com.squareup.okhttp3.**
+-keep class com.squareup.okhttp3.** { *;}
+-dontwarn okio.**
