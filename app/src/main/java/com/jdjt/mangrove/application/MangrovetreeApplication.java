@@ -139,14 +139,14 @@ public class MangrovetreeApplication extends Application {
                         Request request = builder.build();
                         Response response = client.newCall(request).execute();
                         if (!response.isSuccessful()) {
-                            responseEntity.setStatus(ERROR);
+                            responseEntity.setStatus(FastHttp.result_net_err);
                             break;
                         }
                         Headers responseHeaders = response.headers();
                         responseEntity.setUrl(config.getUrl());
                         responseEntity.setKey(config.getCode());
                         responseEntity.setContent(response.body().string(), false);
-                        responseEntity.setStatus(ok);
+                        responseEntity.setStatus(FastHttp.result_ok);
                         responseEntity.setJsonParams(config.getParam());
                         responseEntity.setHeaders(outHeaders(responseHeaders));
                     } catch (IOException e) {
