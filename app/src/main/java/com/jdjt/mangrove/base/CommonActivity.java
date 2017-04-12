@@ -2,6 +2,7 @@ package com.jdjt.mangrove.base;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,12 +12,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fengmap.android.map.geometry.FMTotalMapCoord;
 import com.jdjt.mangrove.R;
+import com.jdjt.mangrove.WelcomeActivity;
+import com.jdjt.mangrove.login.LoginAndRegisterFragmentActivity;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -228,6 +233,9 @@ public class CommonActivity extends AppCompatActivity {
         }
         initActionBar();
         setStatusBar();
+        if(!Handler_Network.isNetworkAvailable(this)){
+            Toast.makeText(this, "当前没有可用网络", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

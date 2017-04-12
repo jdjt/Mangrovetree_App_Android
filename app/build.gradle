@@ -117,21 +117,21 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-//    androidTestCompile('com.android.support:appcompat-v7:24.2.1', {
-//        exclude group: 'com.android.support', module: 'appcompat'
-//    })
+    //    androidTestCompile('com.android.support:appcompat-v7:24.2.1', {
+    //        exclude group: 'com.android.support', module: 'appcompat'
+    //    })
     compile project(path: ':mangrovetreelibray')
     compile project(path: ':sildingMenu')
     //异步加载图片框架
-
-
-
     compile 'cn.pedant.sweetalert:library:1.3'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    compile'com.android.support:design:24.2.1'
+    compile 'com.android.support:design:24.2.1'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
 }

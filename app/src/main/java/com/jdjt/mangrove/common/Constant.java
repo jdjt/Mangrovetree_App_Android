@@ -4,6 +4,8 @@ package com.jdjt.mangrove.common;
 import com.jdjt.mangrove.BuildConfig;
 import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
 
+import okhttp3.MediaType;
+
 /*
  * Author: wmy
  * Description:
@@ -11,6 +13,7 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.NotProguard;
  */
 public class Constant {
 
+    public static final MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
 
     @NotProguard
     public static class HttpUrl {
@@ -19,7 +22,7 @@ public class Constant {
          **/
 
         public static final String DATA_USER = "User";
-//        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
+        //        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
         public static final String SYW_PROJECTMANAGER = BuildConfig.API_SERVER_URL;// "http://syw.mymhotel.com/";
 
         //        public static final String BASE = "http://rc-ws.mymhotel.com/";
