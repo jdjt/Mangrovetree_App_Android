@@ -2722,13 +2722,19 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
-        NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
-            view.showDetail(false);
-            mProgressDialog.dismiss();
-            popNaviView();
+            switch (entity.getKey()){
+                case Constant.HttpUrl.GETACTIVITYDETAIL_KEY:
+                    NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+                    view.showDetail(false);
+                    mProgressDialog.dismiss();
+                    popNaviView();
+                    break;
+                default:
+                    break;
+            }
             return;
         }
         //解析返回的数据
@@ -2739,6 +2745,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
                 HashMap<String, Object> base_info = (HashMap<String, Object>) receive.get("base_info");
                 HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
+                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName("" + base_info.get("name"));
                 view.setComboDetails("" + base_info.get("abstracts"));
                 if (image.get("url") != null && !"".equals(image.get("url"))) {
