@@ -16,6 +16,7 @@
 #   public *;
 #}
 #1.基本指令区
+-dontwarn
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses

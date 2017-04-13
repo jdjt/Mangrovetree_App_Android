@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
 }
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 dependencies {
     provided 'com.android.support:support-v4:24.2.1'
