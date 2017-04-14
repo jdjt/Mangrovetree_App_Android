@@ -299,7 +299,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         call_button_text = (TextView) findViewById(R.id.call_button_text);
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
+
         header_first_tv = (TextView) findViewById(R.id.header_first_tv);
+        header_first_tv.setHorizontallyScrolling(true);
+        header_first_tv.setMarqueeRepeatLimit(-1);
+        header_first_tv.setFocusable(true);
 
         // 初始化定位服务
         initFMLocationService();
