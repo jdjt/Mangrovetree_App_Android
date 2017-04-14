@@ -39,7 +39,7 @@ public class UpdatePasswordActiviy extends CommonActivity implements Validator.V
     @InView
     private EditText password_old;
 
-    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母数字", order = 2)
+    @Password(maxLength = 18, minLength = 6, message = "请输入长度6-18位由字母或数字组成的密码", order = 2)
     @InView
     private EditText password_new;
     @ConfirmPassword(messageResId = R.string.err, order = 3)

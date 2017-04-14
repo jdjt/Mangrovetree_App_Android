@@ -145,7 +145,7 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
             Toast.makeText(getActivity(), "手机未联网", Toast.LENGTH_SHORT).show();
             return;
         }
-        checkAccount();
+
         switch (view.getId()) {
             case R.id.register_button:
                 //验证
@@ -154,8 +154,8 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                 validator.validate();
                 break;
             case R.id.register_valitation:
-                getCode();
 
+                checkAccount();
                 break;
         }
     }
@@ -238,13 +238,14 @@ public class RegisterPhoneFragment extends Fragment implements ValidationListene
                         Ioc.getIoc().getLogger().e("该手机号已注册");
                         Toast.makeText(getContext(), "该账号已注册，请直接登录", Toast.LENGTH_SHORT).show();
                         return;
+                    }else {
+                        getCode();
                     }
-//                    getCode();
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
                     String r = data.get("result") + "";
                     if (r.equals("1")) {
-                        Toast.makeText(getContext(), "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "验证码不正确,请重新输入", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
