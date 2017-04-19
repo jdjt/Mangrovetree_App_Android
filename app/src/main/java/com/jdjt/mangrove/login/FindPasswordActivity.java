@@ -65,6 +65,9 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
     String uuid;
     String account;
     String callPhone;
+    String account_ok;
+    String account_err;
+
 
     @InResume
     private void resume() {
@@ -94,15 +97,20 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         }
         switch (view.getId()) {
             case R.id.find_next_button:
+                account_err = find_account.getText().toString();
+                //验证
                 validator = new Validator(this);
                 validator.setValidationListener(this);
                 validator.validate();
+
                 break;
             case R.id.find_validation:
 //                uuid = Uuid.getUuid();//用于参数的uuid
 //                MapVo.set("find_validation", uuid);
 //                getCode();
+                account_ok = find_account.getText().toString();
                 checkAccount();
+
                 break;
         }
     }
@@ -161,15 +169,15 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
 
                     break;
                 case Constant.HttpUrl.CHECKCAPTCHA_KEY:
-                    String accout_err = find_account.getText().toString();
-                    System.out.println("hynhhh" + account);
-                    System.out.println("hyn" + accout_err);
 
-                    if (account != accout_err) {
-//                        System.out.println("hynhhh"+ account);
+                    System.out.println("hynhhh" + account_ok);
+                    System.out.println("hyn" + account_err);
+                    if (!account_ok.equals(null)){
+
+                    if (!account_ok.equals(account_err)) {
                         Toast.makeText(this, "账号密码不匹配，请重新输入", Toast.LENGTH_SHORT).show();
                         return;
-                    } else if (account == accout_err){
+                    } else if (account_ok.equals(account_err)) {
                         String result = data.get("result") + "";
                         if (result.equals("0")) {
                             //正常
@@ -179,23 +187,16 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
                             intent.putExtra("uuid", uuid);
                             startActivity(intent);
                             finish();
+                        } else {
+                            Toast.makeText(this, "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
                         }
+                    }
                     }else{
-                    CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
-                }
-//                    else if(result.equals("1")){
-//                        //验证码不存在
-//                        Toast.makeText(this, "验证码不存在", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else if(result.equals("2")){
-//                        //无效的验证码（超时原因）
-//                        Toast.makeText(this, "验证码无效,已超时", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else if(result.equals("9")){
-//                        //无效的验证码（其他原因）
-//                        Toast.makeText(this, "验证码无效", Toast.LENGTH_SHORT).show();
-//                    }
-                break;
+                        CommonUtils.onErrorToast(find_security_code, "请获取验证码", this);
+                    }
+
+                    break;
+
                 case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
                     String r = data.get("result") + "";
                     Ioc.getIoc().getLogger().e(r);

@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import im.fir.sdk.FIR;
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -113,7 +112,7 @@ public class MangrovetreeApplication extends Application {
                 return reslut;
             }
         };
-        IocListener.newInstance().setHttpListener(listener2);
+        IocListener.newInstance().setHttpListener(listener);
     }
 
     public IocHttpListener<ResponseEntity> listener2 = new IocHttpListener<ResponseEntity>() {

@@ -263,6 +263,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Init
     protected void initView() {
+        getUpdateSoftaddress();
         initSlidingMenu();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
@@ -304,7 +305,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         call_button_text = (TextView) findViewById(R.id.call_button_text);
         search_button_text = (TextView) findViewById(R.id.search_button_text);
         globle_plateform_button_text = (TextView) findViewById(R.id.globle_plateform_button_text);
+
         header_first_tv = (TextView) findViewById(R.id.header_first_tv);
+        header_first_tv.setHorizontallyScrolling(true);
+        header_first_tv.setMarqueeRepeatLimit(-1);
+        header_first_tv.setFocusable(true);
 
         // 初始化定位服务
         initFMLocationService();
@@ -1085,6 +1090,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
             case R.id.fm_map_img_location:
                 if (!FMLocationService.instance().checkLocationValid(this)) {
+                    ToastUtils.showToast(this,"请打开GPS和WIFI！");
                     return;
                 }
                 FMTotalMapCoord myLocatePos = FMLocationService.instance().getFirstMyLocatePosition();
@@ -1514,17 +1520,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     /**
      * 地图加载成功
-     *
      * @param mapId
-     */
+    */
     @Override
     public void onMapInitSuccess(String mapId) {
         mMapInfo = mMap.getFMMapInfo();
         mMap.setSceneZoomRange(1.0f, 20);
-        mMap.zoom(1.3f);
+        mMap.zoom(1.75f);
         mMap.setRotate(0);
-        mMap.setTiltAngle((float) FMMath.degreeToRad(85));
-        //mMap.setMapCenter(new FMMapCoord(1.2188300E7, 2071220.0, 0.0));
+        mMap.setTiltAngle((float) FMMath.degreeToRad(90));
+        mMap.setMapCenter(new FMMapCoord(1.2188250E7, 2071090.0, 0.0));
         //初始化路径分析器
         mNaviAnalyser = FMNaviAnalyser.init(mMap);
 
@@ -1744,7 +1749,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
         view.setEnterMapIdByModelFid(mCurrentModel.getFid());
         if (activitycode != null && !"".equals(activitycode) && !"NULL".equals(activitycode)) {
-            view.showDetail(true);
             mProgressDialog.setTitle("加载中，请稍后!");
             getActivityDetail(activitycode);
             ActivityCodeList.clear();
@@ -1767,7 +1771,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mOpenModelInfoWindow.showAsDropDown(main_bottom_bar, 0, -mOpenModelInfoWindow.getConvertView().getMeasuredHeight() - main_bottom_bar.getMeasuredHeight());
         mSceneAnimator.animateMoveToScreenCenter(mCurrentModel.getCenterMapCoord())
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
-                .setDurationTime(800)
+                .setDurationTime(500)
                 .start();
         //导航线绘制逻辑
         clearCalculateRouteLineMarker();
@@ -2722,17 +2726,17 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
      */
     @InHttp({Constant.HttpUrl.GETACTIVITYDETAIL_KEY, Constant.HttpUrl.UPDATESOFTADDRESS_KEY})
     public void result(ResponseEntity entity) {
-
-
         Ioc.getIoc().getLogger().e(entity.getContentAsString());
         Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
-        NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
-            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
-            view.showDetail(false);
-            mProgressDialog.dismiss();
-            popNaviView();
+            if(!isShowDetail){
+                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
+                mProgressDialog.dismiss();
+                view.showDetail(false);
+                popNaviView();
+            }
+            ToastUtils.showToast(this, "网络请求失败，请检查网络");
             return;
         }
         //解析返回的数据
@@ -2743,6 +2747,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 HashMap<String, Object> receive = (HashMap<String, Object>) data.get("receive");
                 HashMap<String, Object> base_info = (HashMap<String, Object>) receive.get("base_info");
                 HashMap<String, String> image = (HashMap<String, String>) base_info.get("first_image");
+                NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 view.setComboName("" + base_info.get("name"));
                 view.setComboDetails("" + base_info.get("abstracts"));
                 if (image.get("url") != null && !"".equals(image.get("url"))) {
@@ -2751,6 +2756,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     view.downloadImage(imageLoader, image.get("url"));
                 }
                 mProgressDialog.dismiss();
+                view.showDetail(true);
+                isShowDetail = false;
                 popNaviView();
                 break;
             case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
