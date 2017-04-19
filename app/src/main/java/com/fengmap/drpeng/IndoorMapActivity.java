@@ -579,6 +579,7 @@ public class IndoorMapActivity extends CommonActivity implements OnFMMapInitList
                         mOpenModelInfoWindow.close();
                     }
                     mCurrentModel = (FMModel) pFMNode;
+                    Log.d("OUTOUTOUT","坐标："+mCurrentModel.getCenterMapCoord()+" GroupId:"+mCurrentModel.getGroupId()+"  name"+Tools.getInsideMapName(mMap.currentMapId())+" mapid :"+mMap.currentMapId());
                     //这里查询activity_code
                     ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
                     if(ActivityCodeList.size()>0){

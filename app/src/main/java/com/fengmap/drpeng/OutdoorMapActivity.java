@@ -1514,17 +1514,16 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     /**
      * 地图加载成功
-     *
      * @param mapId
-     */
+    */
     @Override
     public void onMapInitSuccess(String mapId) {
         mMapInfo = mMap.getFMMapInfo();
         mMap.setSceneZoomRange(1.0f, 20);
-        mMap.zoom(1.6f);
+        mMap.zoom(1.75f);
         mMap.setRotate(0);
-        mMap.setTiltAngle((float) FMMath.degreeToRad(85));
-        //mMap.setMapCenter(new FMMapCoord(1.2188300E7, 2071220.0, 0.0));
+        mMap.setTiltAngle((float) FMMath.degreeToRad(90));
+        mMap.setMapCenter(new FMMapCoord(1.2188250E7, 2071090.0, 0.0));
         //初始化路径分析器
         mNaviAnalyser = FMNaviAnalyser.init(mMap);
 
