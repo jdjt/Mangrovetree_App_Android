@@ -171,6 +171,7 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
 
                     System.out.println("hynhhh" + account_ok);
                     System.out.println("hyn" + account_err);
+                    if (!account_ok.equals(null)){
 
                     if (!account_ok.equals(account_err)) {
                         Toast.makeText(this, "账号密码不匹配，请重新输入", Toast.LENGTH_SHORT).show();
@@ -188,9 +189,11 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
                         } else {
                             Toast.makeText(this, "验证码不正确请重新输入", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        CommonUtils.onErrorToast(find_security_code, "验证码不正确请重新输入", this);
                     }
+                    }else{
+                        CommonUtils.onErrorToast(find_security_code, "请获取验证码", this);
+                    }
+
                     break;
 
                 case Constant.HttpUrl.CHECKACCOUNT_KEY: //验证账号重复性，如果不重复 则发送验证码
