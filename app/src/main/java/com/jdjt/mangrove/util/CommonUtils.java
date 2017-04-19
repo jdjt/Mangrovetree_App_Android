@@ -1,14 +1,18 @@
 package com.jdjt.mangrove.util;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.jdjt.mangrove.service.DownloadService;
+import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+
+import im.fir.sdk.FIR;
+import im.fir.sdk.VersionCheckCallback;
 
 /**
  * @author wmy
@@ -19,10 +23,41 @@ import java.io.Serializable;
  */
 public class CommonUtils implements Serializable {
 
-    public static void updateApp(Context context) {
-        //启动服务
-        Intent service = new Intent(context,DownloadService.class);
-        context.startService(service);
+    public static void startupdateApp(Context context,String url) {
+        Downloader downloader=new Downloader(context);
+        downloader.startDownload(url);
+        downloader.setOnDownloadProgressChangeListener(new Downloader.OnDownloadProgressChangeListener() {
+            @Override
+            public void onDownloadProgressChange(long downloadSizeSoFar, long totalSize) {
+                Log.i("CommonUtils","downloadSizeSoFar ="+downloadSizeSoFar);
+                Log.i("CommonUtils","totalSize ="+totalSize);
+            }
+        });
+    }
+
+
+    public static void fircheckUpdate(final Context context){
+        FIR.checkForUpdateInFIR(Constant.fir_api_token , new VersionCheckCallback() {
+            @Override
+            public void onSuccess(String versionJson) {
+                Log.i("fir","check from fir.im success! " + "\n" + versionJson);
+            }
+
+            @Override
+            public void onFail(Exception exception) {
+                Log.i("fir", "check fir.im fail! " + "\n" + exception.getMessage());
+            }
+
+            @Override
+            public void onStart() {
+                Toast.makeText(context, "正在获取", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(context, "获取完成", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

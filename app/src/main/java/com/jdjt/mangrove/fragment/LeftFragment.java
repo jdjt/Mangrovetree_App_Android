@@ -19,6 +19,7 @@ import com.jdjt.mangrove.login.SettingActivity;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBinder;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InHttp;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InListener;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InUI;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InView;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
@@ -68,6 +69,10 @@ public class LeftFragment extends Fragment {
 
     }
 
+    @InListener(ids = {R.id.about_mangrove},listeners = {OnClick.class})
+    private void click1(View view){
+
+    }
     @Init
     public void init() {
         // get global application bus
@@ -76,7 +81,7 @@ public class LeftFragment extends Fragment {
         MangrovetreeApplication.instance.http.u(this).getUserInfo(json.toString());
     }
 
-    @InHttp(Constant.HttpUrl.GETUSERINFO_KEY)
+    @InHttp({Constant.HttpUrl.GETUSERINFO_KEY})
     public void result(ResponseEntity entity) {
         if (entity.getStatus() == FastHttp.result_net_err) {
             Toast.makeText(getActivity(), "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();

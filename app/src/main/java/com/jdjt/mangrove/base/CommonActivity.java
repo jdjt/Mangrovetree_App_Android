@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fengmap.android.map.geometry.FMTotalMapCoord;
+import com.jdjt.mangrove.BuildConfig;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.login.LoginAndRegisterFragmentActivity;
@@ -58,6 +59,22 @@ public class CommonActivity extends AppCompatActivity {
     public void showConfirm(String msg, SweetAlertDialog.OnSweetClickListener listener) {
         pDialog = new SweetAlertDialog(this);
         pDialog.setTitleText("温馨提示")
+                .setContentText(msg)
+                .setCancelText("取消")
+                .setConfirmText("确定")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                }).setConfirmClickListener(listener)
+                .show();
+    }
+
+    public void showConfirm(String title,String msg, SweetAlertDialog.OnSweetClickListener listener) {
+        pDialog = new SweetAlertDialog(this);
+        pDialog.setTitleText(title)
                 .setContentText(msg)
                 .setCancelText("取消")
                 .setConfirmText("确定")

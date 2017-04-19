@@ -79,7 +79,8 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     List<Map<String, String>> getData = null;
     InputMethodManager inputMethodManager;
     SearchView.SearchAutoComplete mSearchSrcTextView;
-    FlowLayout gl_tags=null;
+    FlowLayout gl_tags = null;
+
     /**
      * 设置标签组
      */
@@ -89,9 +90,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         map.put("isClose", "true");
         getData.add(map);
         //新建适配器
-
-         gl_tags = (FlowLayout) findViewById(R.id.title_tags);
-
+        gl_tags = (FlowLayout) findViewById(R.id.title_tags);
         tagsAdapter = new TagsAdapter(this);
 //        gl_tags.setHorizontalSpacing();
         gl_tags.setVerticalSpacing(10);
@@ -115,7 +114,6 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     }
 
 
-
     private void initSearchView() {
 
         findViewById(R.id.search_layout).setVisibility(View.VISIBLE);
@@ -137,7 +135,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         search_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getData.size()>0){
+                if (getData.size() > 0) {
                     gl_tags.removeViewAt(0);
                     getData.remove(0);
                 }
@@ -254,7 +252,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     @Override
     public boolean onQueryTextSubmit(String query) {
         Ioc.getIoc().getLogger().e("onQueryTextSubmit 当前查询条件 " + type);
-        if(TextUtils.isEmpty(query)){
+        if (TextUtils.isEmpty(query)) {
             clearData();
 
         }
@@ -362,7 +360,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
         type = SEARCHTYPE_NAME;
         index = 0;//还原指针
         list.clear();
-        if(getData.size()>0){
+        if (getData.size() > 0) {
             getData.remove(0);
             gl_tags.removeViewAt(0);
         }
@@ -408,7 +406,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DEL) {
             //返回事件
-            if(getData.size()>0){
+            if (getData.size() > 0) {
                 getData.remove(0);
                 gl_tags.removeViewAt(0);
                 mSearchSrcTextView.setText("");
@@ -416,7 +414,7 @@ public class MapSearchAcitivity extends CommonActivity implements SearchView.OnQ
                 return true;
             }
         }
-        super.onKeyDown(keyCode,event);
+        super.onKeyDown(keyCode, event);
         return true;
     }
 

@@ -1,6 +1,7 @@
 package com.jdjt.mangrove.application;
 
 import android.app.Application;
+import android.os.Build;
 import android.support.annotation.Keep;
 import android.util.Log;
 
@@ -24,10 +25,13 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import im.fir.sdk.FIR;
+import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -82,7 +86,6 @@ public class MangrovetreeApplication extends Application {
                 netConfig.setHead(HeaderConst.inHeaders());
                 netConfig.setKey(config.getCode());
                 ResponseEntity reslut = null;
-//
                 try {
                     switch (config.getType()) {
                         case GET:
@@ -125,31 +128,21 @@ public class MangrovetreeApplication extends Application {
                 case POST: {
                     try {
 
-                        Request.Builder builder = new Request.Builder().url(config.getUrl());
-                        String ticket = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "ticket", 0);
-                        builder.addHeader(HeaderConst.MYMHOTEL_TICKET, ticket);
-                        builder.addHeader(HeaderConst.MYMHOTEL_TYPE, "1001");
-                        builder.addHeader(HeaderConst.MYMHOTEL_VERSION, "1");
-                        builder.addHeader(HeaderConst.MYMHOTEL_DATATYPE, "JSON");
-                        builder.addHeader(HeaderConst.MYMHOTEL_SOURCECODE, "");
-                        builder.addHeader(HeaderConst.MYMHOTEL_DATETIME, new Date().getTime() + "");
-                        builder.addHeader(HeaderConst.MYMHOTEL_ACKDATATYPE, "JSON");
-                        builder.addHeader("content-type", "application/json;charset=utf-8");
                         final MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
                         RequestBody requerstBody = new RequestBody() {
                             @Override
                             public MediaType contentType() {
                                 return mediaType;
                             }
+
                             @Override
                             public void writeTo(BufferedSink sink) throws IOException {
                                 DataOutputStream out = new DataOutputStream(sink.outputStream());
-                                if(null!=config.getParam())
+                                if (null != config.getParam())
                                     out.writeBytes(config.getParam());    //写入流
                             }
                         };
-                        builder.post(requerstBody);
-                        Request request = builder.build();
+                        Request request = addHeaders().url(config.getUrl()).post(requerstBody).build();
                         Response response = client.newCall(request).execute();
                         if (!response.isSuccessful()) {
                             responseEntity.setStatus(FastHttp.result_net_err);
@@ -168,12 +161,66 @@ public class MangrovetreeApplication extends Application {
                     }
                 }
                 break;
+                case GET:
+                    StringBuilder tempParams = new StringBuilder();
+                    try {
+                        //处理参数
+                        int pos = 0;
+                        for (String key : config.getParams().keySet()) {
+                            if (pos > 0) {
+                                tempParams.append("&");
+                            }
+                            //对参数进行URLEncoder
+                            tempParams.append(String.format("%s=%s", key, URLEncoder.encode(String.valueOf(config.getParams().get(key)), "utf-8")));
+                            pos++;
+                        }
+                        //补全请求地址
+                        String requestUrl = String.format("%s?%s", config.getUrl(), tempParams.toString());
+                        //创建一个请求
+                        Request request = addHeaders().url(requestUrl).build();
+                        //执行请求
+                        Response response = client.newCall(request).execute();
+                        if (!response.isSuccessful()) {
+                            responseEntity.setStatus(FastHttp.result_net_err);
+                            break;
+                        }
+                        Headers responseHeaders = response.headers();
+                        responseEntity.setUrl(config.getUrl());
+                        responseEntity.setKey(config.getCode());
+                        responseEntity.setContent(response.body().string(), false);
+                        responseEntity.setStatus(FastHttp.result_ok);
+                        responseEntity.setJsonParams(config.getParam());
+                        responseEntity.setHeaders(outHeaders(responseHeaders));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        responseEntity.setStatus(FastHttp.result_net_err);
+                    }
+                    break;
             }
             Log.i("httpApi", "拦截结果:" + responseEntity);
             return responseEntity;
         }
     };
 
+    /**
+     * 统一为请求添加头信息
+     *
+     * @return
+     */
+    private Request.Builder addHeaders() {
+        Request.Builder builder = new Request.Builder();
+
+        String ticket = Handler_SharedPreferences.getValueByName(Constant.HttpUrl.DATA_USER, "ticket", 0);
+        builder.addHeader(HeaderConst.MYMHOTEL_TICKET, ticket);
+        builder.addHeader(HeaderConst.MYMHOTEL_TYPE, "1001");
+        builder.addHeader(HeaderConst.MYMHOTEL_VERSION, "1");
+        builder.addHeader(HeaderConst.MYMHOTEL_DATATYPE, "JSON");
+        builder.addHeader(HeaderConst.MYMHOTEL_SOURCECODE, "");
+        builder.addHeader(HeaderConst.MYMHOTEL_DATETIME, new Date().getTime() + "");
+        builder.addHeader(HeaderConst.MYMHOTEL_ACKDATATYPE, "JSON");
+        builder.addHeader("content-type", "application/json;charset=utf-8");
+        return builder;
+    }
 
     private static Map<String, Object> outHeaders(Headers resHeaders) throws UnsupportedEncodingException {
 

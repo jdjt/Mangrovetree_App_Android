@@ -102,6 +102,7 @@ import com.jdjt.mangrove.base.CommonActivity;
 import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrove.entity.Stores;
 import com.jdjt.mangrove.fragment.LeftFragment;
+import com.jdjt.mangrove.util.CommonUtils;
 import com.jdjt.mangrove.util.MapVo;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InBean;
@@ -110,10 +111,13 @@ import com.jdjt.mangrovetreelibray.ioc.annotation.InLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InResume;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Json;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_TextStyle;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Uuid;
+import com.jeremyfeinstein.slidingmenu.lib.BuildConfig;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
@@ -134,6 +138,8 @@ import static com.fengmap.drpeng.FMAPI.TARGET_CALCULATE_ROUTE;
 import static com.fengmap.drpeng.FMAPI.TARGET_LOCATE;
 import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
 import android.content.SharedPreferences.Editor;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 室外地图。注意: 退出整个应用前,需要把查询数据库给关了FMDatabaseHelper.getDatabaseHelper().close();
@@ -2602,7 +2608,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        setStatus();
 //      CommonUtils.updateApp(this);
         showPopWindow();
-
         Toolbar toolbar = getActionBarToolbar();
         toolbar.findViewById(R.id.app_back).setVisibility(View.GONE);
         toolbar.setBackgroundColor(Color.WHITE);
@@ -2772,7 +2777,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 }
         }
 //    }
- AlertDialog dialog;
+    AlertDialog dialog;
 
     private void showPopWindow() {
         LayoutInflater inflater = getLayoutInflater();
@@ -2794,6 +2799,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             public void onClick(View view) {
                 Ioc.getIoc().getLogger().e("点击 弹窗按钮");
                 dialog.dismiss();
+
+                //关闭窗口后检查更新
+                checkUpdate();
             }
         });
 //        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -2804,25 +2812,65 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        });
 
     }
-}
-//    private void showDialog() {
+
+    /**
+     * 检查更新
+     */
+    private void checkUpdate(){
+        MangrovetreeApplication.instance.http.u(this).getFIRUpdate(Constant.fir_api_token,"android");
+
+    }
+
+    @InHttp({Constant.HttpUrl.GETFIRUPDATE_KEY})
+    public void updateResult(ResponseEntity entity) {
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        HashMap<String, Object> data= Handler_Json.JsonToCollection(entity.getContentAsString());
+        if(BuildConfig.VERSION_CODE>=Integer.valueOf(data.get("version")+"")){
+            return;
+        }
+       ;
+        showDialog( data.get("installUrl")+"",data.get("changelog")+"");
+
+
+
+    }
+    private void showDialog(final String url,String msg) {
+
+        showConfirm("版本更新",msg, new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                CommonUtils.startupdateApp(getApplicationContext(),url);
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        });
 //        new AlertDialog.Builder(this)
-//                .setTitle("红树林管家版本更新")
-//                .setMessage("更新红树林管家最新版本 ")
+//                .setTitle("红树林导航版本更新")
+//                .setMessage(msg)
 //                .setPositiveButton("更新", new DialogInterface.OnClickListener() {
 //                    @Override
 //                    public void onClick(DialogInterface dialog, int which) {
-////                        CommonUtils.updateApp(this);
+//                       CommonUtils.updateApp(getApplicationContext(),url);
 //                    }
 //                })
 //                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
 //
 //                    @Override
 //                    public void onClick(DialogInterface dialog, int which) {
-//                        dismissDialog(0);
+//                        dialog.dismiss();
 //                    }
 //                })
 //                .show();
-//    }
+    }
+
+    @Override
+    public void finish() {
+        CommonUtils.startupdateApp(getApplicationContext(),null);
+        super.finish();
+    }
+}
+
 
 

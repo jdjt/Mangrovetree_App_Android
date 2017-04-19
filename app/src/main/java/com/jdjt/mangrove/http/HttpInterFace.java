@@ -2,6 +2,7 @@ package com.jdjt.mangrove.http;
 
 
 import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrovetreelibray.ioc.annotation.InGet;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InNet;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InParam;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPost;
@@ -113,5 +114,9 @@ public interface HttpInterFace {
 
     @InPost(Constant.HttpUrl.UPDATESOFTADDRESS)
     public void getUpdateSoftaddress(@InParam String json);
+
+
+    @InGet(Constant.HttpUrl.GET_FIRUPDATE)
+    public void getFIRUpdate(@InParam("api_token") String api_token,@InParam("type")String type);
 
 }

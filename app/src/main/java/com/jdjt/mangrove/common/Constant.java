@@ -14,6 +14,7 @@ import okhttp3.MediaType;
 public class Constant {
 
     public static final MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+    public static final String fir_api_token = "9eb1714c859b86b023fe70b4ca592908";
 
     @NotProguard
     public static class HttpUrl {
@@ -62,6 +63,12 @@ public class Constant {
          */
         public static final String UPDATESOFTADDRESS = BASE + "/common/versions";
 
+        /**
+         * 获取app更新 第三方平台fir
+         */
+        public static final String GET_FIRUPDATE = "http://api.fir.im/apps/latest/"+BuildConfig.APPLICATION_ID;
+
+
         public static final int LOGIN_KEY = 0;
         public static final int LOGOUT_KEY = 1;
         public static final int REGISTER_KEY = 2;
@@ -75,6 +82,7 @@ public class Constant {
         public static final int REBINDINGPHONE_KEY = 12;
         public static final int GETACTIVITYDETAIL_KEY = 13;
         public static final int UPDATESOFTADDRESS_KEY = 14;
+        public static final int GETFIRUPDATE_KEY = 15;
 
     }
 }

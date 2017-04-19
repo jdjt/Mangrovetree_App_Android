@@ -121,5 +121,7 @@
     <string name="button_confirm_txt">确定</string>
     <string name="button_cancel_txt">取消</string>
     <string name="about_mangrove_navigation">红树林导航，是集红树林全球度假平台、园区导航服务、呼叫服务、红树林一卡通系统于一体的综合性平台。功能涵盖酒店搜索、酒店展示、度假资讯、客房预订、度假产品销售，以及红树林自营酒店的地图导航、呼叫服务、一卡通消费等功能。</string>
+    <string name="update_desc">下载中...</string>
+
 
 </resources>

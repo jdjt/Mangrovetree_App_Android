@@ -73,7 +73,8 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
             uuid = MapVo.get("find_validation").toString();
         } else {
             uuid = Uuid.getUuid();//给初始值
-        }
+        }   //验证
+
 
     }
 
@@ -93,8 +94,6 @@ public class FindPasswordActivity extends CommonActivity implements Validator.Va
         }
         switch (view.getId()) {
             case R.id.find_next_button:
-
-                //验证
                 validator = new Validator(this);
                 validator.setValidationListener(this);
                 validator.validate();
