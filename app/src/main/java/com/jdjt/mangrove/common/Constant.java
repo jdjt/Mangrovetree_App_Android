@@ -75,6 +75,5 @@ public class Constant {
         public static final int REBINDINGPHONE_KEY = 12;
         public static final int GETACTIVITYDETAIL_KEY = 13;
         public static final int UPDATESOFTADDRESS_KEY = 14;
-
     }
 }

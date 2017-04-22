@@ -18,6 +18,7 @@
     <string name="str_setting">设置</string>
     <string name="app_person_activity">个人中心</string>
     <string name="app_find_password_activity">重置密码</string>
+    <string name="app_bind_room_activity">绑定客房</string>
     <string name="app_change_pwd">修改密码</string>
     <string name="app_change_phone">修改手机号</string>
     <string name="app_change_name">编辑姓名</string>

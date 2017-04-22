@@ -78,6 +78,9 @@
             android:name=".login.FindPasswordActivity"
             android:label="@string/app_find_password_activity" />
         <activity
+            android:name=".activity.BindRoomAcitivity"
+            android:label="@string/app_bind_room_activity" />
+        <activity
             android:name=".login.SettingActivity"
             android:label="@string/setting" />
         <activity

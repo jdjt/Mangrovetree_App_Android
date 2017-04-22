@@ -96,6 +96,7 @@ import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
+import com.jdjt.mangrove.activity.BindRoomAcitivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
@@ -1136,6 +1137,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 break;
             case R.id.call_service_btn:
                 ToastUtils.showToast(this, "呼叫服务");
+                startActivity(new Intent(this,BindRoomAcitivity.class));
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){

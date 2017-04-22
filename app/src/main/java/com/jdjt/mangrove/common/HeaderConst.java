@@ -76,7 +76,7 @@ public class HeaderConst {
 //            ticket = MapVo.get("ticket").toString();
 //        }
 		map.put(HeaderConst.MYMHOTEL_TICKET, ticket);
-		map.put(HeaderConst.MYMHOTEL_TYPE, "1001");
+		map.put(HeaderConst.MYMHOTEL_TYPE, "1005");
 		map.put(HeaderConst.MYMHOTEL_VERSION, "1");
 		map.put(HeaderConst.MYMHOTEL_DATATYPE, "JSON");
 		map.put(HeaderConst.MYMHOTEL_SOURCECODE, "");
