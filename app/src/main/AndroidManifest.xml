@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionName="V 1.0"
-    package="com.jdjt.mangrove">
+    package="com.jdjt.mangrove"
+    android:versionName="V 1.0">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -47,6 +47,9 @@
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
             android:value="586474d3190f48f1974777a7a847b063" />
+        <meta-data
+            android:name="BUG_HD_SDK_GENERAL_KEY"
+            android:value="6b4e78f3525d484d2ba4440d9ffba9e3" />
 
         <activity android:name=".WelcomeActivity">
             <intent-filter>
@@ -110,10 +113,18 @@
             android:label="关于红树林导航"
             android:theme="@style/AppTheme.Base" />
 
-        <service
-            android:name=".service.DownloadService"
-            android:enabled="true" />
+        <receiver android:name=".receiver.ApkInstallReceiver">
+            <intent-filter>
 
+                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <!-- <action android:name="android.intent.action.PACKAGE_INSTALL" /> -->
+                <!-- <action android:name="DownloadManager.ACTION_DOWNLOAD_COMPLETE"/> -->
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".activity.DownloadActivity"></activity>
     </application>
 
 </manifest>

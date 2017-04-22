@@ -55,6 +55,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import im.fir.sdk.FIR;
+import im.fir.sdk.VersionCheckCallback;
+
 /**
  * 欢迎页面
  */
@@ -121,6 +124,7 @@ public class WelcomeActivity extends AppCompatActivity {
         if (networkInfo != null && networkInfo.isAvailable()) {
         } else {
 //        Toast.makeText(this,"网络连接断开，请检查网络设置",Toast.LENGTH_SHORT).show();
+            Ioc.getIoc().init(MangrovetreeApplication.instance);
             startActivity(new Intent(WelcomeActivity.this, LoginAndRegisterFragmentActivity.class));
         }
         return false;
@@ -339,4 +343,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
             }
     }
+
+
 }

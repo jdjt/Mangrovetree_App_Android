@@ -1,5 +1,7 @@
 package com.jdjt.mangrovetreelibray.ioc.net;
 
+import android.util.Log;
+
 import com.jdjt.mangrovetreelibray.ioc.annotation.InForm;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InGet;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InNet;
@@ -116,15 +118,18 @@ public class IocHttpInvocationHandler implements InvocationHandler {
 				}
 			}
 
+			Log.i("IocHttp"," 当前请求 key :"+urlField + "_KEY");
 			try {
 				field = clazz.getDeclaredField(urlField + "_KEY");
+
 				if (field != null) {
 					field.setAccessible(true);
 					code = field.getInt(clazz);
+					Ioc.getIoc().getLogger().e(" 当前请求 code = "+code );
 				}
 			} catch (Exception e) {
 			}
-
+			Log.i("IocHttp"," 当前请求 code = "+code );
 			// 获取所有注解
 			Annotation[][] paramAnnotations = method.getParameterAnnotations();
 			Class<?>[] types = method.getParameterTypes();
