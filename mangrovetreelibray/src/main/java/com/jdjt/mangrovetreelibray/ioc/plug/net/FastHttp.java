@@ -323,7 +323,7 @@ public class FastHttp {
 		Ioc.getIoc().getLogger().i("请求输入参数"+responseEntity.toString());
 		HttpURLConnection conn=null;
 		try {
-			 conn = getDefaultHttpClient(url, config);
+			conn = getDefaultHttpClient(url, config);
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.connect();

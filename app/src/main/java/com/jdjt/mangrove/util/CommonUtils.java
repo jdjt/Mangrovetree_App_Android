@@ -1,14 +1,16 @@
 package com.jdjt.mangrove.util;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.jdjt.mangrove.service.DownloadService;
+import com.jdjt.mangrove.common.Constant;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+
 
 /**
  * @author wmy
@@ -19,11 +21,18 @@ import java.io.Serializable;
  */
 public class CommonUtils implements Serializable {
 
-    public static void updateApp(Context context) {
-        //启动服务
-        Intent service = new Intent(context,DownloadService.class);
-        context.startService(service);
+    public static void startupdateApp(Context context,String url) {
+        Downloader downloader=new Downloader(context);
+        downloader.startDownload(url);
+        downloader.setOnDownloadProgressChangeListener(new Downloader.OnDownloadProgressChangeListener() {
+            @Override
+            public void onDownloadProgressChange(long downloadSizeSoFar, long totalSize) {
+                Log.i("CommonUtils","downloadSizeSoFar ="+downloadSizeSoFar);
+                Log.i("CommonUtils","totalSize ="+totalSize);
+            }
+        });
     }
+
 
     /**
      * 获取Assets下的文件资源

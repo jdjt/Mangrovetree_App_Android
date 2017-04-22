@@ -20,7 +20,6 @@ import java.util.zip.Inflater;
 /**
  * @author wmy
  * @Description:
- * @version:${MODULE_VERSION}
  * @FileName:OperationAdapter
  * @Package com.jdjt.mangrove.adapter
  * @Date 2017/3/15 13:18

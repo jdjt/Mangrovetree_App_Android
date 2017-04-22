@@ -44,6 +44,7 @@
 
 
 # OrmLite uses reflection
+-dontwarn com.j256.**
 -keep class com.j256.**
 -keepclassmembers class com.j256.** { *; }
 -keep enum com.j256.**
@@ -227,3 +228,7 @@
 -dontwarn com.squareup.okhttp3.**
 -keep class com.squareup.okhttp3.** { *;}
 -dontwarn okio.**
+#SweetAlert 混淆
+-keep class cn.pedant.SweetAlert.Rotate3dAnimation {
+    public <init>(...);
+ }
