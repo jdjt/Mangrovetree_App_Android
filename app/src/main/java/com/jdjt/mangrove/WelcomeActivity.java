@@ -55,9 +55,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import im.fir.sdk.FIR;
-import im.fir.sdk.VersionCheckCallback;
-
 /**
  * 欢迎页面
  */

@@ -2616,10 +2616,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.findViewById(R.id.app_back).setVisibility(View.GONE);
-        toolbar.setBackgroundColor(Color.WHITE);
-        toolbar.setAlpha(1);
+//        toolbar.setBackgroundColor(Color.WHITE);
+//        toolbar.setAlpha(1);
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        textView.setTextColor(Color.parseColor("#666666"));
+//        textView.setTextColor(Color.parseColor("#666666"));
         textView.setText(getTitle());
         toolbar.setNavigationIcon(R.mipmap.ic_person);
         toolbar.setFitsSystemWindows(true);

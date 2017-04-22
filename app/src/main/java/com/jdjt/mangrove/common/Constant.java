@@ -15,7 +15,8 @@ public class Constant {
 
     public static final MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
     public static final String fir_api_token = "9eb1714c859b86b023fe70b4ca592908";
-
+    public static final String ALI_APPKEY = "23767275";
+    public static final String ALI_APPSECRET = "d2e085d699afb44e2ef23f54d9c363db";
     @NotProguard
     public static class HttpUrl {
         /**
