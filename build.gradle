@@ -22,7 +22,8 @@ allprojects {
         maven {
             url "http://maven.bughd.com/public"
         }
-
+        //阿里百川
+        maven { url 'http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/' }
     }
 
 }

@@ -104,7 +104,10 @@ android {
         //禁止掉某些lint检查
         disable 'NewApi'
     }
-
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
+    }
 //    sourceSets {
 //        main {
 //            manifest.srcFile 'src/main/AndroidManifest.xml'
@@ -137,4 +140,11 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+
+    //必选
+    compile 'com.alibaba.mobileim:IMCore:2.0.2.1@aar'
+    //可选，如果使用SDK的UI必须添加该依赖，如果不使用SDK的UI，完全自己开发UI则无需添加该依赖
+//    compile 'com.alibaba.mobileim:IMKit:2.0.2.1@aar'
+    //可选，如果使用小视频功能必须添加该依赖，如果不使用小视频功能则无需添加该依赖
+//    compile 'com.alibaba.mobileim:RecorderSDK:1.0.0@aar
 }

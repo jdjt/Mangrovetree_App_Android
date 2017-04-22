@@ -232,3 +232,5 @@
 -keep class cn.pedant.SweetAlert.Rotate3dAnimation {
     public <init>(...);
  }
+ #阿里百川混淆
+-keep class com.taobao.wireless.**{*;}
