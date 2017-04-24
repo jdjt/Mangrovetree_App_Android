@@ -83,7 +83,7 @@
             android:marqueeRepeatLimit="-1"
             android:singleLine="true"
             android:textSize="16sp"
-            android:textColor="@color/title_bg"
+            android:textColor="@color/black2"
             android:background="@color/white"/>
 
         <com.fengmap.drpeng.widget.DrawableCenterTextView
