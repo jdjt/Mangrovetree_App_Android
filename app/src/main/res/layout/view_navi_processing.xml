@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@color/btn_orange"
+              android:background="@color/white"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
@@ -24,7 +24,7 @@
             android:id="@+id/fm_navi_processing_time"
             android:text="10分钟"
             android:textSize="25dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:textStyle="normal|bold"/>
 
@@ -33,7 +33,7 @@
             android:text="全程还剩余100米"
             android:textSize="14dp"
             android:layout_marginTop="2dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -52,7 +52,7 @@
         android:background="@drawable/fm_white_circle_shadow_button"
         android:scaleType="centerInside"
         android:text="结束导航"
-        android:textColor="@color/btn_orange"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="normal"

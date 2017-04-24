@@ -2652,10 +2652,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        view.setLayoutParams(params);
         //或者可以设置padding
         //v.setPadding(0,height,0,0);
+
+        //监听侧边栏关闭状态
         menu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
             @Override
             public void onClose() {
-                Log.d("SSSSSSSSSSSS","setOnCloseListener");
+                //业态详情提示框复位
                 if(mCurrentModel!=null){
                     if(!isMapLoadCompleted){
                         return;
@@ -2668,15 +2670,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     }
                     ShowPopModelView(mCurrentModel, activitycode);
                 }
+
+                //导航过程提示框复位
+                if(FMLocationService.instance().isInNavigationMode()){
+                    if(mOpenNaviProcessWindow!=null){
+                        mOpenNaviProcessWindow.showAsDropDown(mMapView, 0, -mMapView.getHeight());
+                    }
+                }
             }
         });
 
+        //监听侧边栏打开状态
         menu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
             @Override
             public void onOpen() {
-                Log.d("SSSSSSSSSSSS","setOnOpenListener");
+                //业态详情提示框打开则关闭
                 if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
                     mOpenModelInfoWindow.close();
+                }
+                //导航过程提示栏打开则关闭
+                if (mOpenNaviProcessWindow != null && mOpenNaviProcessWindow.isShowing()) {
+                    mOpenNaviProcessWindow.close();
                 }
             }
         });
