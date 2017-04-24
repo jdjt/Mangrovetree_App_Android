@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fengmap.android.FMDevice;
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.analysis.navi.FMNaviAnalyser;
 import com.fengmap.android.analysis.navi.FMNaviMultiAnalyer;
@@ -1143,8 +1144,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 ToastUtils.showToast(this, "全球度假");
                 break;
             case R.id.call_service_btn:
-                ToastUtils.showToast(this, "呼叫服务");
-                startActivity(new Intent(this,BindRoomAcitivity.class));
+                getBindingInfo(FMDevice.getMacAddress(),getDeviceToken());
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){
@@ -2718,6 +2718,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
     }
 
+
+    /**
+    *  获取业态详情
+    */
     private void getActivityDetail(String code) {
         if (code == null || code.equals("")) {
             return;
@@ -2737,6 +2741,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         HashMap<String, Object> mapBase = new HashMap<>();
         MangrovetreeApplication.instance.http.u(this).getUpdateSoftaddress(new Gson().toJson(mapBase));
     }
+
 
     /**
      * 网络请求逻辑
@@ -2778,7 +2783,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 popNaviView();
                 break;
             case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
-
 //                if (Float.parseFloat(currVersion) < Float.parseFloat(map.get("newVersion"))) {
                     new AlertDialog.Builder(this)
                             .setTitle("红树林管家版本更新")
@@ -2799,6 +2803,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                             .show();
                     break;
                 }
+
+
         }
 //    }
     AlertDialog dialog;
@@ -2838,6 +2844,39 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     /**
+     *  获取绑房信息
+     */
+    private void getBindingInfo(String deviceId,String deviceToken){
+        HashMap<String, Object> mapBase = new HashMap<>();
+        mapBase.put("deviceId", deviceId);
+        mapBase.put("deviceToken", deviceToken);
+        MangrovetreeApplication.instance.http.u(this).getBindingInFo(new Gson().toJson(mapBase));
+        Log.d("NETNETNET", "网络请求参数：" + Constant.HttpUrl.GETBINDINGINFO+"  "+new Gson().toJson(mapBase));
+    }
+
+    /**
+     * 网络请求逻辑
+     */
+    @InHttp({Constant.HttpUrl.GETBINDINGINFO_KEY})
+    public void Bindingresult(ResponseEntity entity) {
+        Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
+        //请求失败
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            ToastUtils.showToast(this, "网络请求失败，请检查网络");
+            return;
+        }
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        String retOk = data.get("retOk").toString();
+        if(retOk!=null&&"0".equals(retOk)){
+            //绑房成功 跳发任务界面
+        }else {
+            //跳绑房界面
+            startActivity(new Intent(this,BindRoomAcitivity.class));
+        }
+    }
+
+    /**
      * 检查更新
      */
     private void checkUpdate(){
@@ -2857,8 +2896,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
        ;
         showDialog( data.get("installUrl")+"",data.get("changelog")+"");
-
-
 
     }
     private void showDialog(final String url,String msg) {

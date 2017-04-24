@@ -51,6 +51,15 @@
             android:name="BUG_HD_SDK_GENERAL_KEY"
             android:value="6b4e78f3525d484d2ba4440d9ffba9e3" />
 
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58f9d40ef43e4847cb00056c" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="eaf609b081592986af6b4320503683f0" >
+        </meta-data>
+
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -125,6 +134,139 @@
         </receiver>
 
         <activity android:name=".activity.DownloadActivity"></activity>
+
+        <!--umeng消息推送相关-->
+        <service
+            android:name="com.taobao.accs.ChannelService"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.SERVICE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.ELECTION" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.taobao.accs.data.MsgDistributeService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.taobao.accs.EventReceiver"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.taobao.accs.ServiceReceiver"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.COMMAND" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.START_FROM_AGOO" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.taobao.accs.ChannelService$KernelService"
+            android:process=":channel" />
+
+        <service
+            android:name="org.android.agoo.accs.AgooService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.umeng.message.UmengIntentService"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.umeng.message.XiaomiIntentService"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.taobao.agoo.AgooCommondReceiver"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="${applicationId}.intent.action.COMMAND" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.umeng.message.UmengMessageIntentReceiverService"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="org.android.agoo.client.MessageReceiverService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
+            android:exported="false" />
+
+        <service
+            android:name="com.umeng.message.UmengMessageCallbackHandlerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.umeng.messge.registercallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.enablecallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.disablecallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.message.handler.action" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.umeng.message.UmengDownloadResourceService"
+            android:exported="false" />
+
+        <provider
+            android:name="com.umeng.message.provider.MessageProvider"
+            android:authorities="${applicationId}.umeng.message"
+            android:exported="false"/>
+        <grant-uri-permission android:pathPattern=".*" />
     </application>
 
 </manifest>
