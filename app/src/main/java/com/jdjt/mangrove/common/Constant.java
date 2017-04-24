@@ -71,15 +71,15 @@ public class Constant {
 
         /**
          * 客房绑定状态
-         * "192.168.1.45:8181"
+         * "http://192.168.1.45:8181"
          */
-        public static final String GETBINDINGINFO = BASE + "/hotelcallservice/customer/getBindingInfo.json";
+        public static final String GETBINDINGINFO = "http://192.168.1.45:8181" + "/hotelcallservice/customer/getBindingInfo.json";
 
 
         /**
          * 入住客人绑定客房
          */
-        public static final String CUSTOMER_BINDINGROOM = BASE + "/hotelcallservice/customer/binding.json";
+        public static final String CUSTOMER_BINDINGROOM = "http://192.168.1.45:8181" + "/hotelcallservice/customer/binding.json";
 
         public static final int LOGIN_KEY = 0;
         public static final int LOGOUT_KEY = 1;

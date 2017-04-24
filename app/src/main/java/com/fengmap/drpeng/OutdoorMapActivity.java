@@ -95,6 +95,7 @@ import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.ToastUtils;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.BindRoomAcitivity;
@@ -1145,6 +1146,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 break;
             case R.id.call_service_btn:
                 getBindingInfo(FMDevice.getMacAddress(),getDeviceToken());
+//                startActivity(new Intent(OutdoorMapActivity.this,BindRoomAcitivity.class));
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){
@@ -2847,11 +2849,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
      *  获取绑房信息
      */
     private void getBindingInfo(String deviceId,String deviceToken){
-        HashMap<String, Object> mapBase = new HashMap<>();
-        mapBase.put("deviceId", deviceId);
-        mapBase.put("deviceToken", deviceToken);
-        MangrovetreeApplication.instance.http.u(this).getBindingInFo(new Gson().toJson(mapBase));
-        Log.d("NETNETNET", "网络请求参数：" + Constant.HttpUrl.GETBINDINGINFO+"  "+new Gson().toJson(mapBase));
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("deviceId", deviceId);
+        jsonObject.addProperty("deviceToken", deviceToken);
+        MangrovetreeApplication.instance.http.u(this).getBindingInFo(jsonObject.toString());
+        Log.d("NETNETNET", "网络请求参数：" + Constant.HttpUrl.GETBINDINGINFO+"  "+jsonObject.toString());
     }
 
     /**
@@ -2867,9 +2869,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
         //解析返回的数据
         HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
-        String retOk = data.get("retOk").toString();
+        HashMap<String, String> map = (HashMap<String, String>) data.get("getBindingInfoRes");
+        String retOk = map.get("retOk");
         if(retOk!=null&&"0".equals(retOk)){
             //绑房成功 跳发任务界面
+            ToastUtils.showToast(this,"绑房成功");
         }else {
             //跳绑房界面
             startActivity(new Intent(this,BindRoomAcitivity.class));
