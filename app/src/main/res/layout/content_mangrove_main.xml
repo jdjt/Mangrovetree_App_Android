@@ -74,7 +74,7 @@
             android:id="@+id/header_first_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="点击任意建筑，即可为您提供导航路线，您可以通过手势进行缩放、旋转地图及调整地图倾斜角"
+            android:text="@string/scroll_text"
             android:padding="5dp"
             android:gravity ="center"
             android:focusable="true"
@@ -83,8 +83,8 @@
             android:marqueeRepeatLimit="-1"
             android:singleLine="true"
             android:textSize="16sp"
-            android:textColor="@color/white"
-            android:background="@color/head_remind_bg"/>
+            android:textColor="@color/title_bg"
+            android:background="@color/white"/>
 
         <com.fengmap.drpeng.widget.DrawableCenterTextView
             android:text="呼叫"

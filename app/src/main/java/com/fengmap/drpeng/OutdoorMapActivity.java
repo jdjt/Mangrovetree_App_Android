@@ -457,6 +457,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void dealWhere(Bundle pB, String pWhere) {
         if (MapSearchAcitivity.class.getName().equals(pWhere)) {
             // 从搜索结果界面而来
+            clearSpecialMarker();
             Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
 
             mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGid(),
@@ -2597,7 +2598,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        setTranslucentStatus(R.color.transparent);
 //        initTranslucentStatus();
         StatusUtil.StatusBarLightMode(this);
-        setTranslucentStatus(R.color.transparent);
+        setTranslucentStatus(R.color.title_bg);
     }
     ImageLoader imageLoader = null;
 
@@ -2616,10 +2617,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.findViewById(R.id.app_back).setVisibility(View.GONE);
-        toolbar.setBackgroundColor(Color.WHITE);
+//        toolbar.setBackgroundColor(Color.parseColor("#ee652c"));
         toolbar.setAlpha(1);
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        textView.setTextColor(Color.parseColor("#666666"));
+        textView.setTextColor(Color.WHITE);
         textView.setText(getTitle());
         toolbar.setNavigationIcon(R.mipmap.ic_person);
         toolbar.setFitsSystemWindows(true);
