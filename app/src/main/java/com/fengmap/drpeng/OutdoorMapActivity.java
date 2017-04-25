@@ -97,6 +97,7 @@ import com.google.gson.Gson;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.BindRoomAcitivity;
+import com.jdjt.mangrove.activity.CallServiceActivity;
 import com.jdjt.mangrove.activity.MapSearchAcitivity;
 import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.base.CommonActivity;
@@ -138,6 +139,7 @@ import static com.fengmap.drpeng.FMAPI.TARGET_ADD_MARKER;
 import static com.fengmap.drpeng.FMAPI.TARGET_CALCULATE_ROUTE;
 import static com.fengmap.drpeng.FMAPI.TARGET_LOCATE;
 import static com.fengmap.drpeng.FMAPI.TARGET_SELECT_POINT;
+
 import android.content.SharedPreferences.Editor;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -236,12 +238,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private LinearLayout main_bottom_bar;
     private TextView call_button, search_button, globle_plateform_button;//呼叫按钮
     private TextView call_button_text, search_button_text, globle_plateform_button_text;
-    private TextView header_first_tv,map_cover;
+    private TextView header_first_tv, map_cover;
 
     //侧滑logo
-    private TextView map_logo,map_logo_text;
+    private TextView map_logo, map_logo_text;
     private RelativeLayout logo_view;
-    private int slidingWidth,textWidth,logoWidth;
+    private int slidingWidth, textWidth, logoWidth;
     private boolean logoTextShow = true;//是否显示text
 
     //    导航菜单
@@ -264,7 +266,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Init
     protected void initView() {
-        getUpdateSoftaddress();
+//        getUpdateSoftaddress();
         initSlidingMenu();
         mInstance = this;
         UiHandler = new Handler(getMainLooper());
@@ -354,23 +356,23 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 slidingWidth = logo_view.getWidth();
                 logoWidth = map_logo.getWidth();
                 textWidth = map_logo_text.getWidth() - map_logo.getWidth();
-                ViewHelper.setTranslationX(logo_view,textWidth);
+                ViewHelper.setTranslationX(logo_view, textWidth);
                 map_logo_text.setBackgroundResource(R.color.transparent);
             }
         });
         map_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(logoTextShow){
+                if (logoTextShow) {
                     phowAnimation();//显示
-                }else {
+                } else {
                     phidAnimation();//隐藏
                 }
             }
         });
     }
 
-//
+    //
 //    private void date() {  
 //        SharedPreferences shared=getSharedPreferences("is", MODE_PRIVATE);  
 //        boolean isfer=shared.getBoolean("isfer", true);  
@@ -719,14 +721,14 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
                 LayoutInflater inflater = getLayoutInflater();
                 View layout = inflater.inflate(R.layout.custom_dialog, null);
-                AlertDialog.Builder builder= new AlertDialog.Builder(mInstance);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mInstance);
                 builder.setView(layout);
-                TextView msg= (TextView) layout.findViewById(R.id.msg);
+                TextView msg = (TextView) layout.findViewById(R.id.msg);
                 msg.setText("确认退出导航?");
                 final AlertDialog dialog = builder.show();
                 dialog.setCancelable(false);
-                TextView positiveBtn= (TextView) layout.findViewById(R.id.positive_button);
-                TextView negativeBtn= (TextView) layout.findViewById(R.id.negative_button);
+                TextView positiveBtn = (TextView) layout.findViewById(R.id.positive_button);
+                TextView negativeBtn = (TextView) layout.findViewById(R.id.negative_button);
                 positiveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -1056,7 +1058,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if(!isMapLoadCompleted){
+        if (!isMapLoadCompleted) {
             return;
         }
         switch (v.getId()) {
@@ -1091,7 +1093,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
             case R.id.fm_map_img_location:
                 if (!FMLocationService.instance().checkLocationValid(this)) {
-                    ToastUtils.showToast(this,"请打开GPS和WIFI！");
+                    ToastUtils.showToast(this, "请打开GPS和WIFI！");
                     return;
                 }
                 FMTotalMapCoord myLocatePos = FMLocationService.instance().getFirstMyLocatePosition();
@@ -1122,9 +1124,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 break;
             case R.id.search_dest_btn:
                 //导航模式下禁止搜索
-                if(FMLocationService.instance().isInNavigationMode()){
-                   ToastUtils.showToast(this,"导航中，该功能不可用！");
-                   return;
+                if (FMLocationService.instance().isInNavigationMode()) {
+                    ToastUtils.showToast(this, "导航中，该功能不可用！");
+                    return;
                 }
                 Bundle b = new Bundle();
 //                OutdoorMapActivity.mInstance.clearSpecialMarker();
@@ -1142,8 +1144,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 ToastUtils.showToast(this, "全球度假");
                 break;
             case R.id.call_service_btn:
+//                ToastUtils.showToast(this, "呼叫服务");
+//                startActivity(new Intent(this,BindRoomAcitivity.class));
                 ToastUtils.showToast(this, "呼叫服务");
-                startActivity(new Intent(this,BindRoomAcitivity.class));
+                startActivity(new Intent(this, CallServiceActivity.class));
+
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){
@@ -1151,7 +1156,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //                }
 //                break;
             case R.id.map_cover:
-                ToastUtils.showToast(this,"map loading!");
+                ToastUtils.showToast(this, "map loading!");
                 break;
             default:
                 break;
@@ -1161,7 +1166,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     // 按钮触摸事件
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if(!isMapLoadCompleted){
+        if (!isMapLoadCompleted) {
             return false;
         }
         switch (v.getId()) {
@@ -1237,8 +1242,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
                 }
                 break;
-            case  R.id.mapview:
-                Log.d("GGGGGGGG","地图当前缩放量"+  mMap.getFMMapView());
+            case R.id.mapview:
+                Log.d("GGGGGGGG", "地图当前缩放量" + mMap.getFMMapView());
                 if (header_first_tv.getVisibility() == View.VISIBLE) {
                     UiHandler.post(new Runnable() {
                         @Override
@@ -1522,8 +1527,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     /**
      * 地图加载成功
+     *
      * @param mapId
-    */
+     */
     @Override
     public void onMapInitSuccess(String mapId) {
         mMapInfo = mMap.getFMMapInfo();
@@ -1549,13 +1555,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         eml.setOnFMNodeListener(new OnFMNodeListener() {
             @Override
             public boolean onClick(FMNode pFMNode) {
-                if(!isMapLoadCompleted){
+                if (!isMapLoadCompleted) {
                     return false;
                 }
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
-                if(mOpenModelInfoWindow.isShowing()){
+                if (mOpenModelInfoWindow.isShowing()) {
                     mOpenModelInfoWindow.close();
                 }
 
@@ -1593,13 +1599,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         lableLayer.setOnFMNodeListener(new OnFMNodeListener() {
             @Override
             public boolean onClick(FMNode fmNode) {
-                if(!isMapLoadCompleted){
+                if (!isMapLoadCompleted) {
                     return false;
                 }
                 if (FMAPI.instance().needFilterNavigationWhenOperation(mInstance)) {
                     return false;
                 }
-                if(mOpenModelInfoWindow.isShowing()){
+                if (mOpenModelInfoWindow.isShowing()) {
                     mOpenModelInfoWindow.close();
                 }
 
@@ -1612,11 +1618,11 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     });
                 }
 
-                FMLabel l = (FMLabel)fmNode;
+                FMLabel l = (FMLabel) fmNode;
                 //获取标签对应的模型句柄
                 long modelHandle = mMapView.getAssociation().getAssociationNodeHandleWithLabel(l);
 
-                mCurrentModel = eml.getMarker(modelHandle) ;
+                mCurrentModel = eml.getMarker(modelHandle);
                 //这里需要添加查询模型activity_code的逻辑
                 String activitycode = "";
                 ActivityCodeList = fbd.queryStoresByName(mCurrentModel.getName(), 0);
@@ -1662,7 +1668,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         isMapLoadCompleted = true;
 
         mProgressDialog.dismiss();
-        if(isMapLoadCompleted){
+        if (isMapLoadCompleted) {
             UiHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -2100,9 +2106,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 FMTotalMapCoord locatePosition = null;
 
                 while (isRun) {
-                    if(isInHotel){
+                    if (isInHotel) {
                         locatePosition = FMLocationService.instance().getFirstMyLocatePosition();
-                    }else {
+                    } else {
                         locatePosition = getdefaultcoord();
                     }
                     if (locatePosition != null) {
@@ -2233,9 +2239,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         } else {
             // 添加定位标注
             dealAddLocateMarker(locatePosition.getGroupId(), locatePosition.getMapCoord(), mLocationLayer);
-            if(isFirstLoad){
+            if (isFirstLoad) {
                 isFirstLoad = false;
-            }else {
+            } else {
                 animateCenterWithZoom(locatePosition.getGroupId(), locatePosition.getMapCoord());
             }
         }
@@ -2323,28 +2329,29 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     /**
-    * @method  定时刷新位置图标线程
-    */
+     * @method 定时刷新位置图标线程
+     */
     Runnable flashrun = new Runnable() {
         @Override
         public void run() {
             Message msg = new Message();
             msg.what = 23;
             mHandler.sendMessage(msg);
-            mHandler.postDelayed(this,500);
+            mHandler.postDelayed(this, 500);
         }
     };
 
     int i = 2;
+
     private void animateCenterWithZoom(int groupId, FMMapCoord initMapCoord) {
         mSceneAnimator.animateMoveToScreenCenter(initMapCoord)
                 .setInterpolator(new FMLinearInterpolator(FMInterpolator.STAGE_INOUT))
                 .setDurationTime(500);
-        if(i>=0){
+        if (i >= 0) {
             mSceneAnimator.animateZoom(1.5);
             i--;
         }
-        ToastUtils.showToast(this,"地图已显示当前位置");
+        ToastUtils.showToast(this, "地图已显示当前位置");
         mSceneAnimator.start();
     }
 
@@ -2523,9 +2530,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         mDialog.setMessage(warnText);
         return mDialog;
     }
+
     /**
      * @method text隐藏动画
-     *
      */
     private void phidAnimation() {
         logoTextShow = true;
@@ -2545,7 +2552,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 .setDuration(500)
                 .start();
     }
-
 
 
     /**
@@ -2590,15 +2596,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         });
     }
 
-    @Override
-    protected void setStatusBar() {
-//        StatusBarUtil.setColor(this, getResources().getColor(R.color.white), 0);
-
-//        setTranslucentStatus(R.color.transparent);
-//        initTranslucentStatus();
-        StatusUtil.StatusBarLightMode(this);
-        setTranslucentStatus(R.color.transparent);
-    }
     ImageLoader imageLoader = null;
 
     private void initSlidingMenu() {
@@ -2654,9 +2651,9 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         menu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
             @Override
             public void onClose() {
-                Log.d("SSSSSSSSSSSS","setOnCloseListener");
-                if(mCurrentModel!=null){
-                    if(!isMapLoadCompleted){
+                Log.d("SSSSSSSSSSSS", "setOnCloseListener");
+                if (mCurrentModel != null) {
+                    if (!isMapLoadCompleted) {
                         return;
                     }
                     //这里需要添加查询模型activity_code的逻辑
@@ -2673,8 +2670,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         menu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
             @Override
             public void onOpen() {
-                Log.d("SSSSSSSSSSSS","setOnOpenListener");
-                if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
+                Log.d("SSSSSSSSSSSS", "setOnOpenListener");
+                if (mOpenModelInfoWindow != null && mOpenModelInfoWindow.isShowing()) {
                     mOpenModelInfoWindow.close();
                 }
             }
@@ -2687,6 +2684,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             }
         });
     }
+
     public void isShow() {
         menu.toggle();
     }
@@ -2715,13 +2713,13 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         MangrovetreeApplication.instance.http.u(this).getActivityDetail(new Gson().toJson(mapBase));
     }
 
-    /**
-     * 检查版本更新接口
-     */
-    private void getUpdateSoftaddress() {
-        HashMap<String, Object> mapBase = new HashMap<>();
-        MangrovetreeApplication.instance.http.u(this).getUpdateSoftaddress(new Gson().toJson(mapBase));
-    }
+//    /**
+//     * 检查版本更新接口
+//     */
+//    private void getUpdateSoftaddress() {
+//        HashMap<String, Object> mapBase = new HashMap<>();
+//        MangrovetreeApplication.instance.http.u(this).getUpdateSoftaddress(new Gson().toJson(mapBase));
+//    }
 
     /**
      * 网络请求逻辑
@@ -2732,7 +2730,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
         //请求失败
         if (entity.getStatus() == FastHttp.result_net_err) {
-            if(!isShowDetail){
+            if (!isShowDetail) {
                 NewModelView view = (NewModelView) mOpenModelInfoWindow.getConvertView();
                 mProgressDialog.dismiss();
                 view.showDetail(false);
@@ -2762,41 +2760,20 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 isShowDetail = false;
                 popNaviView();
                 break;
-            case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
-
-//                if (Float.parseFloat(currVersion) < Float.parseFloat(map.get("newVersion"))) {
-                    new AlertDialog.Builder(this)
-                            .setTitle("红树林管家版本更新")
-                            .setMessage("更新红树林管家最新版本 ")
-                            .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-//                        CommonUtils.updateApp(this);
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dismissDialog(0);
-                                }
-                            })
-                            .show();
-                    break;
-                }
         }
-//    }
+    }
+
     AlertDialog dialog;
 
     private void showPopWindow() {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.main_dialog, null);
-        dialog = new AlertDialog.Builder(this,R.style.CustomAlertDialogBackground).create();
+        dialog = new AlertDialog.Builder(this, R.style.CustomAlertDialogBackground).create();
         dialog.show();
 //        final AlertDialog dialog = builder.show();
-        WindowManager.LayoutParams layoutParams=dialog.getWindow().getAttributes();
-        layoutParams.width= ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutParams.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         dialog.getWindow().setAttributes(layoutParams);
         dialog.setContentView(R.layout.main_dialog);
         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -2825,8 +2802,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     /**
      * 检查更新
      */
-    private void checkUpdate(){
-        MangrovetreeApplication.instance.http.u(this).getFIRUpdate(Constant.fir_api_token,"android");
+    private void checkUpdate() {
+        MangrovetreeApplication.instance.http.u(this).getFIRUpdate(Constant.fir_api_token, "android");
 
     }
 
@@ -2836,22 +2813,22 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
             Toast.makeText(this, "网络请求失败，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
-        HashMap<String, Object> data= Handler_Json.JsonToCollection(entity.getContentAsString());
-        if(BuildConfig.VERSION_CODE>=Integer.valueOf(data.get("version")+"")){
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        if (BuildConfig.VERSION_CODE >= Integer.valueOf(data.get("version") + "")) {
             return;
         }
-       ;
-        showDialog( data.get("installUrl")+"",data.get("changelog")+"");
-
+        ;
+        showDialog(data.get("installUrl") + "", data.get("changelog") + "");
 
 
     }
-    private void showDialog(final String url,String msg) {
 
-        showConfirm("版本更新",msg, new SweetAlertDialog.OnSweetClickListener() {
+    private void showDialog(final String url, String msg) {
+
+        showConfirm("版本更新", msg, new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                CommonUtils.startupdateApp(getApplicationContext(),url);
+                CommonUtils.startupdateApp(getApplicationContext(), url);
                 sweetAlertDialog.dismissWithAnimation();
             }
         });
@@ -2876,7 +2853,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 
     @Override
     public void finish() {
-        CommonUtils.startupdateApp(getApplicationContext(),null);
+        CommonUtils.startupdateApp(getApplicationContext(), null);
         super.finish();
     }
 }

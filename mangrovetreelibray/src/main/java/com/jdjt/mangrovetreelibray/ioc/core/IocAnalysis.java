@@ -124,9 +124,11 @@ public class IocAnalysis {
 						if (dealed.containsKey(template)) {
 							return false;
 						}
-						for (String name : LoonConfig.instance().getLimit()) {
-							if (template.indexOf(name) > -1) {
-								return false;
+						if(LoonConfig.instance().getLimit()!=null) {
+							for (String name : LoonConfig.instance().getLimit()) {
+								if (template.indexOf(name) > -1) {
+									return false;
+								}
 							}
 						}
 						for (String name : LoonConfig.instance().getPermit()) {

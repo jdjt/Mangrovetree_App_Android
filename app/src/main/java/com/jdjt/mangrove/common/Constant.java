@@ -27,8 +27,8 @@ public class Constant {
         //        public static final String BASE = "http://mws.mymhotel.com/";// 服务器 外网
         public static final String SYW_PROJECTMANAGER = BuildConfig.API_SERVER_URL;// "http://syw.mymhotel.com/";
 
-        //        public static final String BASE = "http://rc-ws.mymhotel.com/";
-        public static final String BASE = "http://rc-ws.mymhotel.com/";
+                public static final String BASE = "http://192.168.1.45:8181/";
+//        public static final String BASE = "http://rc-ws.mymhotel.com/";
         public static final String LOGIN = BASE + "uum/mem/sso/login.json";
         //获取会员信息
         public static final String GETUSERINFO = BASE + "uum/mem/account/member_info.json";
@@ -68,7 +68,10 @@ public class Constant {
          * 获取app更新 第三方平台fir
          */
         public static final String GET_FIRUPDATE = "http://api.fir.im/apps/latest/"+BuildConfig.APPLICATION_ID;
-
+        /**
+         * 创建呼叫任务
+         */
+        public static final String ADD_TASK =BASE+ "hotelcallservice/customer/addTask.json";
 
         public static final int LOGIN_KEY = 0;
         public static final int LOGOUT_KEY = 1;
@@ -84,6 +87,7 @@ public class Constant {
         public static final int GETACTIVITYDETAIL_KEY = 13;
         public static final int UPDATESOFTADDRESS_KEY = 14;
         public static final int GETFIRUPDATE_KEY = 15;
+        public static final int ADDTASK_KEY=16;
 
     }
 }

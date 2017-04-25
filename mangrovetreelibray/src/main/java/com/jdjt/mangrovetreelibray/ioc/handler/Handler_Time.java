@@ -1,6 +1,7 @@
 package com.jdjt.mangrovetreelibray.ioc.handler;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -283,6 +284,22 @@ public class Handler_Time {
 		return sbf.toString();
 	}
 
+	/**
+	 * 格式化日期
+	 * @param formatStr
+	 * @return 返回当前日期
+	 */
+	public String getFormatStr(String formatStr){
+		long time=System.currentTimeMillis();//long now = android.os.SystemClock.uptimeMillis();
+		SimpleDateFormat format;
+		if(Handler_String.isBlank(formatStr))
+			 format=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		else
+			format=new SimpleDateFormat(formatStr);
+		Date d1=new Date(time);
+		String now=format.format(d1);
+		return  now;
+	}
 	/**
 	 * 获得前一天的TimeStamp格式的年月日字符串<br>
 	 * 例：2007-05-08

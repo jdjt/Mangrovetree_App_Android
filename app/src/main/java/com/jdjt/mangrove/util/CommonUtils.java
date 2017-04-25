@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.common.Constant;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
 import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.io.BufferedReader;
@@ -55,4 +57,7 @@ public class CommonUtils implements Serializable {
         }
         return Result;
     }
+//    public static void  main(String[] args){
+//        Ioc.getIoc().getLogger().e(Handler_System.getDeviceId(MangrovetreeApplication.instance));
+//    }
 }

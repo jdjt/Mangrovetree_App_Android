@@ -124,7 +124,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.DownloadActivity"></activity>
+        <activity android:name=".activity.DownloadActivity" />
+        <activity android:name=".activity.CallServiceActivity"
+            android:label="呼叫服务"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
     </application>
 
 </manifest>

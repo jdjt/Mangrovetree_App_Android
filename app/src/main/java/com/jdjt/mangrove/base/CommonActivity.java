@@ -88,6 +88,12 @@ public class CommonActivity extends AppCompatActivity {
                 }).setConfirmClickListener(listener)
                 .show();
     }
+    public void dismissDialog(){
+        if (pDialog != null) {
+            pDialog.dismiss();
+            pDialog = null;
+        }
+    }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

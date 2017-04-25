@@ -2,7 +2,10 @@ package com.jdjt.mangrove.common;
 
 import android.util.Log;
 
+import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_SharedPreferences;
+import com.jdjt.mangrovetreelibray.ioc.handler.Handler_System;
+import com.jdjt.mangrovetreelibray.ioc.ioc.Ioc;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -65,7 +68,6 @@ public class HeaderConst {
 	public static final String MYMHOTEL_MESSAGE = "mymhotel-message";
 
 
-
 	public static HashMap<String, Object> inHeaders() {
 
 		// 取出头部信息
@@ -75,11 +77,12 @@ public class HeaderConst {
 //            Ioc.getIoc().getLogger().i("获取Handler_SharedPreferences 下的ticket 失败");
 //            ticket = MapVo.get("ticket").toString();
 //        }
+		Ioc.getIoc().getLogger().e(Handler_System.getDeviceId(Ioc.getIoc().getApplication()));
 		map.put(HeaderConst.MYMHOTEL_TICKET, ticket);
 		map.put(HeaderConst.MYMHOTEL_TYPE, "1005");
 		map.put(HeaderConst.MYMHOTEL_VERSION, "1");
 		map.put(HeaderConst.MYMHOTEL_DATATYPE, "JSON");
-		map.put(HeaderConst.MYMHOTEL_SOURCECODE, "");
+		map.put(HeaderConst.MYMHOTEL_SOURCECODE, Handler_System.getDeviceId(Ioc.getIoc().getApplication())+"|AiEryyW6SqlVgEydBq5yvG20hv-s2sZWNpCh7PUFk-CU");
 		map.put(HeaderConst.MYMHOTEL_DATETIME, new Date().getTime() + "");
 		map.put(HeaderConst.MYMHOTEL_ACKDATATYPE, "JSON");
 		Log.i("LoginApi","输入头部参数信息:{" + map.toString() + "}");

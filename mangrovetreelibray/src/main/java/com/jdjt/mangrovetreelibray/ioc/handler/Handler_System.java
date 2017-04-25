@@ -976,6 +976,7 @@ public class Handler_System {
 		return dir.delete();
 	}
 
+
 	// 获取文件
 	//Context.getExternalFilesDir() --> SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
 	//Context.getExternalCacheDir() --> SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
@@ -1034,6 +1035,7 @@ public class Handler_System {
 		return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()
 				+ "TB";
 	}
+
 
 
 }

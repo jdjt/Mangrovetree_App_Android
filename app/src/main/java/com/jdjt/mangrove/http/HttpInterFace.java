@@ -116,7 +116,18 @@ public interface HttpInterFace {
     public void getUpdateSoftaddress(@InParam String json);
 
 
+    /**
+     * 检查更新
+     * @param api_token
+     * @param type
+     */
     @InGet(Constant.HttpUrl.GET_FIRUPDATE)
     public void getFIRUpdate(@InParam("api_token") String api_token,@InParam("type")String type);
 
+    /**
+     * 创建呼叫任务
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.ADD_TASK)
+    public void addTask(@InParam String json);
 }
