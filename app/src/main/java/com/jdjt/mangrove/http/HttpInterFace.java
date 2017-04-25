@@ -119,4 +119,20 @@ public interface HttpInterFace {
     @InGet(Constant.HttpUrl.GET_FIRUPDATE)
     public void getFIRUpdate(@InParam("api_token") String api_token,@InParam("type")String type);
 
+    /**
+     * 获取绑房信息
+     *
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.GETBINDINGINFO)
+    public void getBindingInFo(@InParam String json);
+
+    /**
+     * 入住客人绑房
+     *
+     * @param json
+     */
+    @InPost(Constant.HttpUrl.CUSTOMER_BINDINGROOM)
+    public void customerBindingRoom(@InParam String json);
+
 }

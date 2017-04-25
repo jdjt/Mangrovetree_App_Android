@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 
-
 /**
  * @author wmy
  * @Description: 公共类 杂项方法可以写在这里做整理
@@ -33,6 +32,30 @@ public class CommonUtils implements Serializable {
         });
     }
 
+
+//    public static void fircheckUpdate(final Context context){
+//        FIR.checkForUpdateInFIR(Constant.fir_api_token , new VersionCheckCallback() {
+//            @Override
+//            public void onSuccess(String versionJson) {
+//                Log.i("fir","check from fir.im success! " + "\n" + versionJson);
+//            }
+//
+//            @Override
+//            public void onFail(Exception exception) {
+//                Log.i("fir", "check fir.im fail! " + "\n" + exception.getMessage());
+//            }
+//
+//            @Override
+//            public void onStart() {
+//                Toast.makeText(context, "正在获取", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                Toast.makeText(context, "获取完成", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     /**
      * 获取Assets下的文件资源

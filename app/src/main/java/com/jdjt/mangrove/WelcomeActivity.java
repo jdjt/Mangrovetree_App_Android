@@ -55,9 +55,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import im.fir.sdk.FIR;
-import im.fir.sdk.VersionCheckCallback;
-
 /**
  * 欢迎页面
  */
@@ -313,7 +310,7 @@ public class WelcomeActivity extends AppCompatActivity {
             editor.commit();
             deleteAllFiles(new File(SDPATH));// 递规的方式删除文件夹
         }else {//不是第一次
-//            Toast.makeText(this,"第n次",Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 

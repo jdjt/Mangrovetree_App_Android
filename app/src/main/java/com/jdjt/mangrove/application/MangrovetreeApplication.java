@@ -1,7 +1,10 @@
 package com.jdjt.mangrove.application;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.Keep;
 import android.util.Log;
 
@@ -22,6 +25,9 @@ import com.jdjt.mangrovetreelibray.ioc.plug.net.FastHttp;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.InternetConfig;
 import com.jdjt.mangrovetreelibray.ioc.plug.net.ResponseEntity;
 import com.jdjt.mangrovetreelibray.ioc.util.Http;
+import com.umeng.message.IUmengCallback;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -54,14 +60,32 @@ public class MangrovetreeApplication extends Application {
     public Http<HttpInterFace> http;
     //全局拦截器
     public IocHttpListener<ResponseEntity> listener = null;
+    private static Handler handler;
+    private static int mainThreadId;
+    public static String device_token;
+    private static SharedPreferences tokenSharedPreference;//保存获取到的device_token
 
     @Override
     public void onCreate() {
         instance = this;
         plugLoad();
-
         FMMapSDK.init(this, ResourcesUtils.getSDPath() + "/fm_drpeng");
         super.onCreate();
+        PushAgent mPushAgent = PushAgent.getInstance(instance);
+        tokenSharedPreference = getSharedPreferences("Device_Token", Context.MODE_PRIVATE);
+        mPushAgent.register(new IUmengRegisterCallback() {
+            @Override
+            public void onSuccess(String deviceToken) {
+                device_token = deviceToken;
+                Log.d("MangrovetreeApplication", "获取到的友盟 device token = " + deviceToken);
+                tokenSharedPreference.edit().putString("device_token", deviceToken).commit();
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                Log.d("MangrovetreeApplication", "获取到的友盟 device token失败" + s+s1);
+            }
+        });
     }
 
     private void initIM() {
@@ -265,5 +289,10 @@ public class MangrovetreeApplication extends Application {
         // 设置输出头部参数信息
         Ioc.getIoc().getLogger().i("mssage转换后:" + msg);
         return map;
+    }
+
+    //其他类中可用改方法获取device_token
+    public static String getDeviceToken(){
+        return  tokenSharedPreference.getString("device_token", "");
     }
 }

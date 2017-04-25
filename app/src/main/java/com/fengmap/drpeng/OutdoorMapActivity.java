@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fengmap.android.FMDevice;
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.analysis.navi.FMNaviAnalyser;
 import com.fengmap.android.analysis.navi.FMNaviMultiAnalyer;
@@ -94,6 +95,7 @@ import com.fengmap.drpeng.widget.RouteView;
 import com.fengmap.drpeng.widget.ToastUtils;
 import com.fengmap.drpeng.widget.TopBarView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
 import com.jdjt.mangrove.activity.BindRoomAcitivity;
@@ -457,6 +459,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     private void dealWhere(Bundle pB, String pWhere) {
         if (MapSearchAcitivity.class.getName().equals(pWhere)) {
             // 从搜索结果界面而来
+            clearSpecialMarker();
             Stores e = (Stores) pB.getSerializable(MapSearchAcitivity.class.getName());
 
             mSpecialWorkMarker = FMAPI.instance().buildImageMarker(e.getGid(),
@@ -1142,8 +1145,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 ToastUtils.showToast(this, "全球度假");
                 break;
             case R.id.call_service_btn:
-                ToastUtils.showToast(this, "呼叫服务");
-                startActivity(new Intent(this,BindRoomAcitivity.class));
+                getBindingInfo(FMDevice.getMacAddress(),getDeviceToken());
+//                startActivity(new Intent(OutdoorMapActivity.this,BindRoomAcitivity.class));
                 break;
 //            case R.id.affirm:
 //                if(popupWindow.isShowing()){
@@ -2597,7 +2600,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        setTranslucentStatus(R.color.transparent);
 //        initTranslucentStatus();
         StatusUtil.StatusBarLightMode(this);
-        setTranslucentStatus(R.color.transparent);
+        setTranslucentStatus(R.color.title_bg);
     }
     ImageLoader imageLoader = null;
 
@@ -2616,10 +2619,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         showPopWindow();
         Toolbar toolbar = getActionBarToolbar();
         toolbar.findViewById(R.id.app_back).setVisibility(View.GONE);
-        toolbar.setBackgroundColor(Color.WHITE);
+//        toolbar.setBackgroundColor(Color.parseColor("#ee652c"));
         toolbar.setAlpha(1);
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        textView.setTextColor(Color.parseColor("#666666"));
+        textView.setTextColor(Color.WHITE);
         textView.setText(getTitle());
         toolbar.setNavigationIcon(R.mipmap.ic_person);
         toolbar.setFitsSystemWindows(true);
@@ -2651,10 +2654,12 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
 //        view.setLayoutParams(params);
         //或者可以设置padding
         //v.setPadding(0,height,0,0);
+
+        //监听侧边栏关闭状态
         menu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
             @Override
             public void onClose() {
-                Log.d("SSSSSSSSSSSS","setOnCloseListener");
+                //业态详情提示框复位
                 if(mCurrentModel!=null){
                     if(!isMapLoadCompleted){
                         return;
@@ -2667,15 +2672,27 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                     }
                     ShowPopModelView(mCurrentModel, activitycode);
                 }
+
+                //导航过程提示框复位
+                if(FMLocationService.instance().isInNavigationMode()){
+                    if(mOpenNaviProcessWindow!=null){
+                        mOpenNaviProcessWindow.showAsDropDown(mMapView, 0, -mMapView.getHeight());
+                    }
+                }
             }
         });
 
+        //监听侧边栏打开状态
         menu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
             @Override
             public void onOpen() {
-                Log.d("SSSSSSSSSSSS","setOnOpenListener");
+                //业态详情提示框打开则关闭
                 if(mOpenModelInfoWindow!=null&&mOpenModelInfoWindow.isShowing()){
                     mOpenModelInfoWindow.close();
+                }
+                //导航过程提示栏打开则关闭
+                if (mOpenNaviProcessWindow != null && mOpenNaviProcessWindow.isShowing()) {
+                    mOpenNaviProcessWindow.close();
                 }
             }
         });
@@ -2703,6 +2720,10 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
     }
 
+
+    /**
+    *  获取业态详情
+    */
     private void getActivityDetail(String code) {
         if (code == null || code.equals("")) {
             return;
@@ -2722,6 +2743,7 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         HashMap<String, Object> mapBase = new HashMap<>();
         MangrovetreeApplication.instance.http.u(this).getUpdateSoftaddress(new Gson().toJson(mapBase));
     }
+
 
     /**
      * 网络请求逻辑
@@ -2763,7 +2785,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                 popNaviView();
                 break;
             case Constant.HttpUrl.UPDATESOFTADDRESS_KEY:
-
 //                if (Float.parseFloat(currVersion) < Float.parseFloat(map.get("newVersion"))) {
                     new AlertDialog.Builder(this)
                             .setTitle("红树林管家版本更新")
@@ -2784,6 +2805,8 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
                             .show();
                     break;
                 }
+
+
         }
 //    }
     AlertDialog dialog;
@@ -2823,6 +2846,41 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
     }
 
     /**
+     *  获取绑房信息
+     */
+    private void getBindingInfo(String deviceId,String deviceToken){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("deviceId", deviceId);
+        jsonObject.addProperty("deviceToken", deviceToken);
+        MangrovetreeApplication.instance.http.u(this).getBindingInFo(jsonObject.toString());
+        Log.d("NETNETNET", "网络请求参数：" + Constant.HttpUrl.GETBINDINGINFO+"  "+jsonObject.toString());
+    }
+
+    /**
+     * 网络请求逻辑
+     */
+    @InHttp({Constant.HttpUrl.GETBINDINGINFO_KEY})
+    public void Bindingresult(ResponseEntity entity) {
+        Log.d("NETNETNET", "网络请求的数据：" + entity.getContentAsString());
+        //请求失败
+        if (entity.getStatus() == FastHttp.result_net_err) {
+            ToastUtils.showToast(this, "网络请求失败，请检查网络");
+            return;
+        }
+        //解析返回的数据
+        HashMap<String, Object> data = Handler_Json.JsonToCollection(entity.getContentAsString());
+        HashMap<String, String> map = (HashMap<String, String>) data.get("getBindingInfoRes");
+        String retOk = map.get("retOk");
+        if(retOk!=null&&"0".equals(retOk)){
+            //绑房成功 跳发任务界面
+            ToastUtils.showToast(this,"绑房成功");
+        }else {
+            //跳绑房界面
+            startActivity(new Intent(this,BindRoomAcitivity.class));
+        }
+    }
+
+    /**
      * 检查更新
      */
     private void checkUpdate(){
@@ -2842,8 +2900,6 @@ public class OutdoorMapActivity extends CommonActivity implements View.OnClickLi
         }
        ;
         showDialog( data.get("installUrl")+"",data.get("changelog")+"");
-
-
 
     }
     private void showDialog(final String url,String msg) {

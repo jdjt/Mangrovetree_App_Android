@@ -70,6 +70,18 @@ public class Constant {
         public static final String GET_FIRUPDATE = "http://api.fir.im/apps/latest/"+BuildConfig.APPLICATION_ID;
 
 
+        /**
+         * 客房绑定状态
+         * "http://192.168.1.45:8181"
+         */
+        public static final String GETBINDINGINFO = "http://192.168.1.45:8181" + "/hotelcallservice/customer/getBindingInfo.json";
+
+
+        /**
+         * 入住客人绑定客房
+         */
+        public static final String CUSTOMER_BINDINGROOM = "http://192.168.1.45:8181" + "/hotelcallservice/customer/binding.json";
+
         public static final int LOGIN_KEY = 0;
         public static final int LOGOUT_KEY = 1;
         public static final int REGISTER_KEY = 2;
@@ -84,6 +96,10 @@ public class Constant {
         public static final int GETACTIVITYDETAIL_KEY = 13;
         public static final int UPDATESOFTADDRESS_KEY = 14;
         public static final int GETFIRUPDATE_KEY = 15;
+
+        //绑房相关
+        public static final int GETBINDINGINFO_KEY = 16;
+        public static final int CUSTOMER_BINDINGROOM_KEY = 17;
 
     }
 }

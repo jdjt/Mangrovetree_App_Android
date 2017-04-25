@@ -2,12 +2,14 @@ package com.jdjt.mangrove.base;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,12 +20,14 @@ import com.fengmap.android.map.geometry.FMTotalMapCoord;
 import com.jdjt.mangrove.BuildConfig;
 import com.jdjt.mangrove.R;
 import com.jdjt.mangrove.WelcomeActivity;
+import com.jdjt.mangrove.application.MangrovetreeApplication;
 import com.jdjt.mangrove.login.LoginAndRegisterFragmentActivity;
 import com.jdjt.mangrove.util.StatusUtil;
 import com.jdjt.mangrovetreelibray.ioc.annotation.InPLayer;
 import com.jdjt.mangrovetreelibray.ioc.annotation.Init;
 import com.jdjt.mangrovetreelibray.ioc.handler.Handler_Network;
 import com.jdjt.mangrovetreelibray.utils.SystemStatusManager;
+import com.umeng.message.PushAgent;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -273,5 +277,20 @@ public class CommonActivity extends AppCompatActivity {
         defaultPosition.setGroupId(1);
         defaultPosition.setMapId("79980");
         return defaultPosition;
+    }
+
+    /**
+    * 获取友盟device_token
+    */
+    public static String getDeviceToken(){
+        String device_token = MangrovetreeApplication.getDeviceToken();
+        if(device_token ==null||"".equals(device_token)){
+            Context context = MangrovetreeApplication.instance;
+            PushAgent mPushAgent = PushAgent.getInstance(context);
+            mPushAgent.setDebugMode(true);
+            device_token = mPushAgent.getRegistrationId();;
+            Log.d("MangrovetreeApplication", "CommonActivity中重新获取的 device_token......" + device_token);
+        }
+        return device_token;
     }
 }
